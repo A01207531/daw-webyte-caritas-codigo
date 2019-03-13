@@ -32,8 +32,10 @@ app.engine('hbs', hbs({
 app.locals.title = 'Cáritas de Querétaro';
 
 app.get('/', async (req, res) => {
-  console.log( await db.sequelize.query('SELECT * FROM usuario'));
-  res.render('index/index', {title: "Gola"});
+  const query = await db.sequelize.query('SELECT * FROM usuario');
+  console.log(query);
+  // res.render('index/index', {title: "Gola", query});
+  res.json(query);
 });
 
 const port=process.env.PORT || 3000
