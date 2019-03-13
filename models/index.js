@@ -6,7 +6,7 @@ sequelize = new Sequelize({
   database: process.env.dbname,
   username: process.env.user,
   host: process.env.host,
-  port: process.env.port,
+  port: process.env.portDB,
   password: process.env.password,
   dialectOptions: {
     ssl: true
