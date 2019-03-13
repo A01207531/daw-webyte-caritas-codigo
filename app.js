@@ -33,7 +33,7 @@ app.locals.title = 'Cáritas de Querétaro';
 
 app.get('/', async (req, res) => {
   const query = await db.sequelize.query('SELECT * FROM usuario');
-  console.log(query);
+  console.log('Hola');
   // res.render('index/index', {title: "Gola", query});
   res.json(query);
 });
