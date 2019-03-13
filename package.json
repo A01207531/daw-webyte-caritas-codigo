@@ -1,0 +1,19 @@
+{
+    "name": "AppCaritasWebyte",
+    "version": "1.0.0",
+    "description": "Aplicación de caritas ",
+    "main": "app.js",
+    "scripts": {
+    "start": "node app.js"
+    },
+    "repository": {
+    "type": "git",
+    "url": ""
+    },
+    "author": "Team WeByte ITESM",
+    "license": "MIT",
+    "bugs": {
+    "url": ""
+    },
+    "homepage": ""
+}
