@@ -37,27 +37,29 @@
 
   <div class="section">
     <div class="row">
-      <div class="col s12 center"> <h5 class="red-text text-darken-2"> Nuestros Programas</h5></div>
-        <div class="col s4 center">
-          <div class="card">
-            <div class="card-image waves-effect waves-block waves-light">
-              <img class="activator" src="images/asistencia_social.jpg" width="120px" height="180px">
-            </div>
-            <div class="card-content">
-              <span class="card-title activator grey-text text-darken-4">Asistencia Social<i class="material-icons right">more_vert</i></span>
-              <p>
-              <div id="donapls" ></div>
-                <script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
-                <script>paypal.Buttons().render('#donapls');</script>
+      <div class="center"> <h5 class="red-text text-darken-2"> Conoce nuestros proyectos</h5></div><br><br>
 
-                </p>
+      
+      {{#each projects}}
+      <div class="col s12 m6">
+            <div class="card large">
+              <div class="card-image">
+                <img src="https://picsum.photos/500/500/?random">
+              </div>
+              <div class="card-content">
+                <h5>{{nombre}}</h5>
+                <p>{{descripcion}}</p>
+              </div>
+              <div class="card-action">
+                <a href="#">Mas Información</a>
+              </div>
             </div>
-            <div class="card-reveal">
-              <span class="card-title grey-text text-darken-4">Promoción Humana y Asistencia Social<i class="material-icons right">close</i></span>
-              <p>Here is some more information about this product that is only revealed once clicked on.</p>
-            </div>
-          </div>
-        </div>
+      </div>
+      {{/each}}
+      
+          
+    
+  </div>
     </div>
   </div>
 </div>

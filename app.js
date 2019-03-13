@@ -34,11 +34,11 @@ app.engine('hbs', hbs({
 app.locals.title = 'Cáritas de Querétaro';
 
 //Index
-app.get('/', (req, res) => {
-  // const query = await db.sequelize.query('SELECT * FROM usuario');
-  // console.log('Hola');
-  res.render('index.hbs');
-  // res.json(query);
+app.get('/', async (req, res) => {
+  const query = await db.sequelize.query('SELECT nombre,descripcion FROM proyecto');
+  const data = query[0];
+  console.log(data);
+  res.render('index.hbs',{projects: data});
 });
 
 app.get('/login', (req,res) => {
