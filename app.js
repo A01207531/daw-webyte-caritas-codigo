@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const path = require('path');
 const logger = require('morgan');
+const db = require('./models');
 
 const app = express();
 
@@ -30,8 +31,9 @@ app.engine('hbs', hbs({
 
 app.locals.title = 'Cáritas de Querétaro';
 
-app.get('/', (req, res) => {
-  res.render('index/index');
+app.get('/', async (req, res) => {
+  console.log( await db.sequelize.query('SELECT * FROM usuario'));
+  res.render('index/index', {title: "Gola"});
 });
 
 const port=process.env.PORT || 3000
