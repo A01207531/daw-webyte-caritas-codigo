@@ -1,19 +1,30 @@
-const http = require('http');
+require('dotenv').config();
+
+const express = require('express');
+const hbs = require('hbs');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const path = require('path');
+
+const app = express();
+
+// Setup View Engine
+app.use(require('node-sass-middleware')({
+  src: path.join(__dirname, 'public'),
+  dest: path.join(__dirname, 'public'),
+  sourceMap: true
+}));
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs');
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.locals.title = 'Cáritas de Querétaro';
+
+app.get('/', (req, res) => {
+  res.send('Bien, bien');
+});
 
 const port=process.env.PORT || 3000
 
-const server = http.createServer((req, res) => {
-
-res.statusCode = 200;
-
-res.setHeader('Content-Type', 'text/html');
-
-res.end('<h1>Hola Crayola con Continuous Integration</h1>');
-
-});
-
-server.listen(port,() => {
-
-console.log(`Server running at port `+port);
-
-});
+app.listen(port);

@@ -4,16 +4,27 @@
     "description": "Aplicación de caritas ",
     "main": "app.js",
     "scripts": {
-    "start": "node app.js"
+        "start": "node app.js",
+        "dev": "nodemon app.js"
     },
     "repository": {
-    "type": "git",
-    "url": ""
+        "type": "git",
+        "url": ""
     },
     "author": "Team WeByte ITESM",
     "license": "MIT",
     "bugs": {
-    "url": ""
+        "url": ""
     },
-    "homepage": ""
+    "homepage": "",
+    "dependencies": {
+        "body-parser": "^1.18.3",
+        "dotenv": "^6.2.0",
+        "express": "^4.16.4",
+        "express-session": "^1.15.6",
+        "hbs": "^4.0.3",
+        "node-sass-middleware": "^0.11.0",
+        "nodemon": "^1.18.10",
+        "passport": "^0.4.0"
+    }
 }
