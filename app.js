@@ -5,13 +5,12 @@ const hbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const path = require('path');
-const logger = require('morgan');
 const db = require('./models');
 
 const app = express();
 
 // Middleware
-app.use(logger('dev'));
+//app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
