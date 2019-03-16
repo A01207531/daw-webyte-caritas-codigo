@@ -16,6 +16,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Setup View Engine
+
+//Topi te pasas con los modulos
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('views', path.join(__dirname, 'views'));
@@ -31,13 +33,19 @@ app.engine('hbs', hbs({
 
 app.locals.title = 'Cáritas de Querétaro';
 
+//Index
 app.get('/', async (req, res) => {
-  const query = await db.sequelize.query('SELECT * FROM usuario');
-  console.log('Hola');
-  // res.render('index/index', {title: "Gola", query});
-  res.json(query);
+  const query = await db.sequelize.query('SELECT nombre,descripcion FROM proyecto');
+  const data = query[0];
+  console.log(data);
+  res.render('index.hbs',{projects: data});
 });
 
+app.get('/login', (req,res) => {
+  res.render('login.hbs');
+});
+
+//para el azure
 const port=process.env.PORT || 3000
 
 app.listen(port);

@@ -1,7 +1,6 @@
 const Sequelize = require('sequelize');
-let sequelize = null;
 
-sequelize = new Sequelize({
+let sequelize = new Sequelize({
   dialect: 'postgres',
   database: process.env.dbname,
   username: process.env.user,
