@@ -8,12 +8,14 @@ const path = require('path');
 const db = require('./models');
 const bcrypt = require('bcrypt');
 
+const dashboardRouter = require('./dashboard');
 const app = express();
 
 // Middleware
 //app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use("/dashboard",dashboardRouter);
 
 // Setup View Engine
 
@@ -74,7 +76,7 @@ app.post('/login', async (req,res) => {
 	//verify the password
 
 	if(bcrypt.compareSync(pass,hash)){
-		res.send("Bienvenido/a "+userData.nombre+" "+userData.apellido);
+		res.redirect("/dashboard");
 	}else{
 		res.send("Credenciales incorrectas");
 	}
