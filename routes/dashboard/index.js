@@ -10,7 +10,9 @@ dash.get('/', async (req, res) => {
 		res.redirect("/login");
 		return;
 	}
-	res.json(req.session.user);
+	res.render('dashboard/landing',{
+		layout: 'dashboard-base'
+	})
 });
 
 
