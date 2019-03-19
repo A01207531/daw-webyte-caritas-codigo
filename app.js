@@ -15,6 +15,19 @@ const app = express();
 //app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// add & configure middleware
+app.use(session({
+	secret: process.env.randomkey,
+	resave: false,
+	saveUninitialized: true,
+	cookie: {
+		maxAge: 24*3600*1000,
+		sameSite: true
+	}
+  }))
+
+//Sub route for the dashboard
 app.use("/dashboard",dashboardRouter);
 
 // Setup View Engine
@@ -40,7 +53,7 @@ app.get('/', async (req, res) => {
 	const query = await db.query('SELECT nombre,descripcion FROM proyecto');
 	//console.log(query);
 	const data = query.rows;
-	console.log(data);
+	//console.log(data);
 	res.render('index.hbs',{projects: data});
 });
 
@@ -76,6 +89,25 @@ app.post('/login', async (req,res) => {
 	//verify the password
 
 	if(bcrypt.compareSync(pass,hash)){
+		//Successfull auth
+		req.session.userID = userData.id;
+
+		//get the RBAC privileges right now
+		const privq = await db.query('SELECT priv FROM usuario_privilegio WHERE login=$1',[username]);
+
+		req.session.user = {
+			name: userData.nombre,
+			lastname: userData.apellido,
+			fullName: userData.nombre + " " +userData.apellido,
+			privileges: []
+		}
+
+		//only push the strings
+		privq.rows.forEach(p => {
+			req.session.user.privileges.push(p.priv);
+		});
+
+		//we officially have the session with the privileges
 		res.redirect("/dashboard");
 	}else{
 		res.send("Credenciales incorrectas");
