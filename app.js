@@ -8,7 +8,7 @@ const path = require('path');
 const db = require('./models');
 const bcrypt = require('bcryptjs');
 
-const dashboardRouter = require('./dashboard');
+const dashboardRouter = require('./routes/dashboard');
 const app = express();
 
 // Middleware
