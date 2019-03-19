@@ -5,7 +5,11 @@ projectRouter.get('/', async (req, res) => {
 		res.redirect("/login");
 		return;
 	}
-	res.send("Aqui deberia aparecer una lista de usuarios")
+	
+	res.render('dashboard/list-projects',{
+		layout: 'dashboard-base',
+		user: req.session.user
+	})
 });
 
 projectRouter.get('/new', async (req, res) => {

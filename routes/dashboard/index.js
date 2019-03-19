@@ -11,7 +11,8 @@ dash.get('/', async (req, res) => {
 		return;
 	}
 	res.render('dashboard/landing',{
-		layout: 'dashboard-base'
+		layout: 'dashboard-base',
+		user: req.session.user
 	})
 });
 

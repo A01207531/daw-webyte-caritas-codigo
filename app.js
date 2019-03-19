@@ -108,7 +108,7 @@ app.post('/login', async (req,res) => {
 		});
 
 		//we officially have the session with the privileges
-		res.redirect("/dashboard");
+		res.redirect("/dashboard/");
 	}else{
 		res.send("Credenciales incorrectas");
 	}
