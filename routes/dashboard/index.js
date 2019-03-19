@@ -13,9 +13,5 @@ dash.get('/', async (req, res) => {
 	res.json(req.session.user);
 });
 
-dash.get('/xd', async (req, res) => {
-	res.send("Hello XD");
-});
-
 
 module.exports = dash;
