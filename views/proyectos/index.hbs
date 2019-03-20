@@ -1,0 +1,10 @@
+<h1>Listado de proyectos</h1>
+
+<section>
+  {{#if proyectos}}
+    {{#each proyectos}}
+      <p> Nombre: {{nombre}} </p>
+      <p> Descripción: {{descripcion}} </p>
+    {{/each}}
+  {{/if}}
+</section>
