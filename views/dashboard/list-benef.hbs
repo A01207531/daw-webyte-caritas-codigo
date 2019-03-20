@@ -7,6 +7,8 @@
               <th>CURP</th>
               <th>Sexo</th>
               <th>Fecha de nacimiento</th>
+              <th></th>
+              <th></th>
           </tr>
         </thead>
             {{#each benef}}
@@ -18,7 +20,9 @@
                 <td>ND</td>
                 {{/if}}
                 <td>{{sexo}}</td>
-                <td>{{nacimiento}}</td>
+                <td>{{dateFormat nacimiento "DD/MM/YYYY"}}</td>
+                <td>Ver</td>
+                <td><a href="/dashboard/beneficiarios/editar/{{id}}" class="waves-effect waves-light btn">Editar</a></td>
             </tr>
             {{/each}}
         <tbody>
