@@ -1,6 +1,8 @@
 <h1>Listado de beneficiarios</h1>
 
-<table>
+ <a class="waves-effect waves-light btn-large">Nuevo</a>
+
+<table class="striped">
         <thead>
           <tr>
               <th>Nombre</th>
@@ -11,7 +13,8 @@
               <th></th>
           </tr>
         </thead>
-            {{#each benef}}
+        <tbody>
+          {{#each benef}}
             <tr>
                 <td>{{nombre}} {{apellido}}</td>
                 {{#if curp}}
@@ -25,7 +28,5 @@
                 <td><a href="/dashboard/beneficiarios/editar/{{id}}" class="waves-effect waves-light btn">Editar</a></td>
             </tr>
             {{/each}}
-        <tbody>
-          
         </tbody>
       </table>
