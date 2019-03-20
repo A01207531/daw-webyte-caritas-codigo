@@ -2,6 +2,10 @@ require('dotenv').config();
 
 const express = require('express');
 const hbs = require('express-handlebars');
+
+//To format the date
+//hbs.registerHelper('dateFormat', require('handlebars-dateformat'));
+
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const path = require('path');
@@ -46,7 +50,10 @@ app.engine('hbs', hbs({
 	extname: 'hbs',
 	defaultLayout: 'base',
 	layoutsDir: path.join(__dirname, 'views', 'layouts'),
-	partialsDir: path.join(__dirname, 'views', 'partials')
+	partialsDir: path.join(__dirname, 'views', 'partials'),
+	helpers: {
+		dateFormat: require('handlebars-dateformat')
+	}
 }));
 
 app.locals.title = 'Cáritas de Querétaro';
