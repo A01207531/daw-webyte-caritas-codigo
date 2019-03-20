@@ -9,6 +9,8 @@ const db = require('./models');
 const bcrypt = require('bcryptjs');
 
 const dashboardRouter = require('./routes/dashboard');
+const proyectRouter = require('./routes/proyectos');
+
 const app = express();
 
 // Middleware
@@ -25,10 +27,11 @@ app.use(session({
 		maxAge: 24*3600*1000,
 		sameSite: true
 	}
-  }))
+}));
 
 //Sub route for the dashboard
-app.use("/dashboard",dashboardRouter);
+app.use("/dashboard", dashboardRouter);
+app.use('/proyectos', proyectRouter);
 
 // Setup View Engine
 
