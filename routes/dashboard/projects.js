@@ -24,6 +24,7 @@ projectRouter.get('/nuevo', async (req, res) => {
 		res.redirect("/login");
 		return;
 	}
+
 	res.render('dashboard/new-proj',{
 		layout: 'dashboard-base',
 		user: req.session.user,
