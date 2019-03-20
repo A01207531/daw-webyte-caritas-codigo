@@ -11,4 +11,7 @@ router.get('/', async (req, res) => {
   res.render('proyectos/index', { proyectos });
 });
 
+router.get('/:id', async (req, res) => {
+  res.render('proyectos/detalle', {id: req.params.id});
+});
 module.exports = router;
