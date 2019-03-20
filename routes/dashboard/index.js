@@ -1,9 +1,11 @@
 const dash = require('express').Router();
 
-const proj = require('./projects');
+const projRouter = require('./projects');
+const benefRouter = require('./benef');
 
 //append sub router
-dash.use('/proyectos',proj);
+dash.use('/proyectos',projRouter);
+dash.use('/beneficiarios',benefRouter);
 
 dash.get('/', async (req, res) => {
 	if(!req.session.userID){
