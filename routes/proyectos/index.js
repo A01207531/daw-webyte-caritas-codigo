@@ -1,14 +1,12 @@
 const router = require('express').Router();
+const db = require('../../models');
 
 router.get('/', async (req, res) => {
-
-  const proyectos = [
-    { nombre: 'Cualquier cosita', descripcion: 'ESta es la descripción del proyecto 1.' },
-    { nombre: 'Proyecto 2', descripcion: 'ESta es la descripción del proyecto 2.' },    
-    { nombre: 'Proyecto 3', descripcion: 'ESta es la descripción del proyecto 3.' },    
-  ];
+  let proyectos = await db.query('SELECT * from proyecto');
+  proyectos = proyectos.rows;
 
   res.render('proyectos/index', { proyectos });
+  // res.json(proyectos)
 });
 
 module.exports = router;
