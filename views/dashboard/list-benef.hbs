@@ -1,1 +1,27 @@
 <h1>Listado de beneficiarios</h1>
+
+<table>
+        <thead>
+          <tr>
+              <th>Nombre</th>
+              <th>CURP</th>
+              <th>Sexo</th>
+              <th>Fecha de nacimiento</th>
+          </tr>
+        </thead>
+            {{#each benef}}
+            <tr>
+                <td>{{nombre}} {{apellido}}</td>
+                {{#if curp}}
+                <td>{{curp}}</td>
+                {{else}}
+                <td>ND</td>
+                {{/if}}
+                <td>{{sexo}}</td>
+                <td>{{nacimiento}}</td>
+            </tr>
+            {{/each}}
+        <tbody>
+          
+        </tbody>
+      </table>
