@@ -12,7 +12,7 @@ projectRouter.get('/', async (req, res) => {
 	})
 });
 
-projectRouter.get('/new', async (req, res) => {
+projectRouter.get('/nuevo', async (req, res) => {
 	if(!req.session.userID){
 		res.redirect("/login");
 		return;
