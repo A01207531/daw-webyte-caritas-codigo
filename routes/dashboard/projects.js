@@ -24,15 +24,19 @@ projectRouter.get('/nuevo', async (req, res) => {
 		res.redirect("/login");
 		return;
 	}
-	res.send("Aqui deberia aparecer un form para crear un proyecto")
+
+	res.render('dashboard/new-proj',{
+		layout: 'dashboard-base',
+		user: req.session.user,
+	})
 });
 
 projectRouter.get('/edit/:projectid', async (req, res) => {
 	if(!req.session.userID){
 		res.redirect("/login");
 		return;
-    }
-    
+	}
+	
 	res.send("Aqui es para editar el proyecto " + req.params.projectid);
 });
 
