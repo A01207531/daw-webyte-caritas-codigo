@@ -2,7 +2,8 @@ require('dotenv').config();
 
 const express = require('express');
 const hbs = require('express-handlebars');
-
+// var extend = require('handlebars-extend-block');
+// hbs = extend(hbs);
 //To format the date
 //hbs.registerHelper('dateFormat', require('handlebars-dateformat'));
 
@@ -52,7 +53,8 @@ app.engine('hbs', hbs({
 	layoutsDir: path.join(__dirname, 'views', 'layouts'),
 	partialsDir: path.join(__dirname, 'views', 'partials'),
 	helpers: {
-		dateFormat: require('handlebars-dateformat')
+		dateFormat: require('handlebars-dateformat'),
+		// extend: require('handlebars-extend-block')
 	}
 }));
 
