@@ -1,29 +1,28 @@
 <h1>Lista de proyectos</h1>
 
 <table class="striped">
-        <thead>
-          <tr>
-              <th>Name</th>
-              <th>Item Name</th>
-              <th>Item Price</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td>Alvin</td>
-            <td>Eclair</td>
-            <td>$0.87</td>
-          </tr>
-          <tr>
-            <td>Alan</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-          </tr>
-          <tr>
-            <td>Jonathan</td>
-            <td>Lollipop</td>
-            <td>$7.00</td>
-          </tr>
-        </tbody>
-      </table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Descripción</th>
+      <th>Fecha de inicio</th>
+      <th>Fecha de final</th>
+      <th>Estatus</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each proj}}
+    <tr>
+      <td> {{nombre}} </td>
+      <td> {{descripcion}} </td>
+      <td>{{dateFormat inicio "DD/MM/YYYY"}}</td>
+      <td>{{dateFormat final "DD/MM/YYYY"}}</td>
+      <td> {{estatus}} </td>
+      <td><a href="/dashboard/proyectos/{{id}}" class="waves-effect waves-light btn">Ver</a></td>
+      <td><a href="/dashboard/proyectos/editar/{{id}}" class="waves-effect waves-light btn">Editar</a></td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

@@ -6,9 +6,16 @@
  * Made By MaterializeCSS.com
  */
 
+ body {
+   background-color: rgb(253, 253, 253);
+ }
+
  nav ul a,
  nav .brand-logo {
    color: #444;
+   display: flex;
+   align-items: center;
+   justify-content: center;
  }
  
  p {
