@@ -16,6 +16,11 @@
    display: flex;
    align-items: center;
    justify-content: center;
+   height: 64px;
+ }
+
+ nav .brand-logo img {
+   height: 50px;
  }
  
  p {
