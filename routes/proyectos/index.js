@@ -10,6 +10,9 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  res.render('proyectos/detalle', {id: req.params.id});
+  let proyecto = await db.query('SELECT * FROM proyecto WHERE id=$1', [req.params.id]);
+  proyecto = proyecto.rows[0];
+  console.log(proyecto)
+  res.render('proyectos/detalle', { proyecto });
 });
 module.exports = router;
