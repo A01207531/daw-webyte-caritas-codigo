@@ -40,4 +40,16 @@ projectRouter.get('/edit/:projectid', async (req, res) => {
 	res.send("Aqui es para editar el proyecto " + req.params.projectid);
 });
 
+
+projectRouter.get('/programAPI',async (req, res) => {
+	if(!req.session.userID){
+		res.redirect("/login");
+		return;
+	}
+
+	const q = await db.query("SELECT * FROM resumen_programas");
+
+	res.json(q.rows);
+})
+
 module.exports = projectRouter;
