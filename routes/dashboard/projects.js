@@ -37,7 +37,7 @@ projectRouter.post('/nuevo', (req, res) => {
 		return;
 	}
 
-	const query = 'INSERT INTO proyecto(nombre,descripcripcion,inicio,final,estatus,responsable,observaciones,subprograma_id,municipio_id,direccion)';
+	const query = 'INSERT INTO proyecto(id,nombre,descripcion,inicio,final,estatus,responsable,observaciones,subprograma_id,municipio_id,direccion) VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10)';
 
 	const p = req.body; //p de post
 
@@ -45,16 +45,17 @@ projectRouter.post('/nuevo', (req, res) => {
 
 	const values = [p.name,p.desc,p.inicio,p.final,p.status,responsable,p.observation,p.sub,p.city,p.address];
 
-	res.json(p);
+	//res.json(p);
 
-	/*db.query(query, values, (err, res) => {
+	db.query(query, values, (err, resp) => {
 		if (err) {
 		  console.log(err.stack)
 		} else {
 		  console.log(res.rows[0])
 		  // { name: 'brianc', email: 'brian.m.carlson@gmail.com' }
+		  res.send("Se registró el proyecto con exito ");
 		}
-	  })*/
+	  })
 });
 
 projectRouter.get('/edit/:projectid', async (req, res) => {
