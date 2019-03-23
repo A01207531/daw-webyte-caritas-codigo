@@ -14,7 +14,7 @@
 
       <div class="row">
         <div class="input-field col m6 s12">
-          <select name="state" id="state">
+          <select name="state" id="state" class="browser-default">
             <option value='AGUASCALIENTES'>AGUASCALIENTES</option>
             <option value='BAJA CALIFORNIA'>BAJA CALIFORNIA</option>
             <option value='BAJA CALIFORNIA SUR'>BAJA CALIFORNIA SUR</option>
@@ -49,19 +49,19 @@
             <option value='ZACATECAS'>ZACATECAS</option>
  
           </select>
-          <label>Estado</label>
+          <label class="active">Estado</label>
         </div>
-        <div class="input-field col m6 s12">
-          <select>
+        <div class="input-field col m6 s12" >
+          <select name="city" id="city" class="browser-default">
           </select>
-          <label>Municipio</label>
+          <label class="active">Municipio</label>
         </div>
       </div>
       
       <div class="row">
         <div class="input-field col s12">
-          <input id="first_name" type="text" class="validate">
-          <label for="first_name">Dirección</label>
+          <input id="address" name="address"type="text" class="validate">
+          <label for="address">Dirección</label>
         </div>
       </div>
 
@@ -81,17 +81,17 @@
 
       <div class="row">
         <div class="input-field col m6 s12">
-          <select>
+          <select id="status" name="status" class="browser-default">
             <option value="" disabled selected>Seleccione un estatus</option>
             <option value="1">NUEVO</option>
             <option value="2">PROCESO</option>
             <option value="3">TERMINADO</option>
           </select>
-          <label for="first_name">Estatus</label>
+          <label for="first_name" class="active">Estatus</label>
         </div>
         <div class="input-field col m6 s12">
-          <input id="last_name" type="text" class="validate">
-          <label for="last_name">Observaciones</label>
+          <input id="observation" type="text" class="validate" name="observation">
+          <label for="observation">Observaciones</label>
         </div>
       </div>
 
