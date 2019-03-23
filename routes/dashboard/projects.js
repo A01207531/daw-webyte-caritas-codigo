@@ -31,6 +31,32 @@ projectRouter.get('/nuevo', async (req, res) => {
 	})
 });
 
+projectRouter.post('/nuevo', (req, res) => {
+	if(!req.session.userID){
+		res.redirect("/login");
+		return;
+	}
+
+	const query = 'INSERT INTO proyecto(nombre,descripcripcion,inicio,final,estatus,responsable,observaciones,subprograma_id,municipio_id,direccion)';
+
+	const p = req.body; //p de post
+
+	const responsable = req.session.userID;
+
+	const values = [p.name,p.desc,p.inicio,p.final,p.status,responsable,p.observation,p.sub,p.city,p.address];
+
+	res.json(p);
+
+	/*db.query(query, values, (err, res) => {
+		if (err) {
+		  console.log(err.stack)
+		} else {
+		  console.log(res.rows[0])
+		  // { name: 'brianc', email: 'brian.m.carlson@gmail.com' }
+		}
+	  })*/
+});
+
 projectRouter.get('/edit/:projectid', async (req, res) => {
 	if(!req.session.userID){
 		res.redirect("/login");
