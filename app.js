@@ -80,7 +80,9 @@ app.post('/login', async (req,res) => {
 	const pass = req.body.password;
 
 	if(!(username && pass)){
-		res.render('login.hbs');
+		res.render('login.hbs',{
+			error: "No debes introducir datos en blanco"
+		});
 		return;
 	}
 
@@ -89,7 +91,9 @@ app.post('/login', async (req,res) => {
 	const q = await db.query('SELECT id,nombre,apellido,passhash FROM usuario WHERE login=$1',[username]);
 
 	if(!q || q.rowCount != 1){
-		res.send("No existe tal usuario");
+		res.render('login.hbs',{
+			error: "El usuario introducido no existe"
+		});
 		return;
 	}
 
@@ -122,7 +126,9 @@ app.post('/login', async (req,res) => {
 		//we officially have the session with the privileges
 		res.redirect("/dashboard/");
 	}else{
-		res.send("Credenciales incorrectas");
+		res.render('login.hbs',{
+			error: "La contraseña es incorrecta"
+		});
 	}
 	
 });
