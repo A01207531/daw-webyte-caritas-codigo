@@ -52,8 +52,10 @@ projectRouter.post('/nuevo', (req, res) => {
 		  console.log(err.stack)
 		} else {
 		  console.log(res.rows[0])
-		  // { name: 'brianc', email: 'brian.m.carlson@gmail.com' }
-		  res.send("Se registró el proyecto con exito ");
+		  res.render('dashboard/proyecto-creado',{
+			layout: 'dashboard-base',
+			user: req.session.user,
+		  })
 		}
 	  })
 });
