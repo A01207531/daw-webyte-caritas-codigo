@@ -81,7 +81,17 @@
       </div>
 
 
-      
+      <div class="row">
+        <div class="input-field col m6 s12">
+          <input id="rfc" type="text" class="validate" name="rfc">
+          <label for="rfc">RFC</label>
+        </div>
+        <div class="input-field col m6 s12">
+          <input id="ine" type="text" class="validate"
+            name="ine">
+          <label for="ine">INE</label>
+        </div>
+      </div>
 
       <div class="row">
         <div class="input-field col m6 s12">
@@ -93,8 +103,14 @@
           <label for="first_name" class="active">Género</label>
         </div>
         <div class="input-field col m6 s12">
-          <input id="observation" type="text" class="validate" name="observation">
-          <label for="observation">Observaciones</label>
+          <select id="estadoCivil" name="estadoCivil" class="browser-default">
+            <option value="" disabled selected>Seleccione...</option>
+            <option value="CASADO">Casado</option>
+            <option value="DIVORCIADO">Divorciado</option>
+            <option value="UNIONLIBRE">Union Libre</option>
+            <option value="SOLTERO">Soltero</option>          
+          </select>
+          <label for="first_name" class="active">Estado Civil</label>
         </div>
       </div>
 
