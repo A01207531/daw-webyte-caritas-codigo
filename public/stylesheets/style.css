@@ -154,3 +154,19 @@ img {
 .no-margin-top {
   margin-top: 0;
 }
+
+.err {
+  border: 1px solid #db0000;
+  color: rgb(50, 50, 50);
+  background-color: #ffeaea;
+  visibility: visible;
+  opacity: 1;
+  transition: .3s ease;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+}
