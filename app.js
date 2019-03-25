@@ -87,10 +87,14 @@ app.post('/login', async (req,res) => {
 		});
 		return;
 	}
+<<<<<<< HEAD
 
 	//We have data
 	//consult the db
 	const q = await db.query('SELECT id,nombre,apellido,passhash FROM usuario WHERE login=$1 OR email=$1',[username]);
+=======
+	const q = await db.query('SELECT id,nombre,apellido,passhash FROM usuario WHERE login=$1',[username]);
+>>>>>>> f839d701b867fdc28bc8b9a625ecd6cd3d042bca
 
 	if(!q || q.rowCount != 1){
 		res.render('login.hbs',{
