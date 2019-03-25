@@ -159,7 +159,7 @@ app.post('/registro', async (req, res) => {
 				const result = await db.query('INSERT INTO usuario (login, passHash, nombre, apellido, email) VALUES ($1, $2, $3, $4, $5)', [username, passHash, name, lastname, email]);
 				// const result2 = await db.query('INSERT INTO usuario_privilegio (login, priv) VALUES ($1, $2)', [username, 'realizarDonativo']);
 
-				res.json({ result, result2, status: 'ok' });
+				res.json({ result, status: 'ok' });
 				return;
 
 			} else {
