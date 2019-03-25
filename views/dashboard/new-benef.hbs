@@ -62,31 +62,29 @@
       </div>
       
       <div class="row">
-        <div class="input-field col s12">
+        <div class="input-field col m6 s12">
+          Fecha de nacimiento
+          <input type="date" name="nacimiento" id="nacimiento">
+        </div>
+        <div class="input-field col m6 s12">
           <input id="address" name="address"type="text" class="validate">
           <label for="address">Dirección</label>
         </div>
       </div>
 
 
+
+
       <div class="row">
-        <div class="input-field col m6 s12">
-          Fecha de nacimiento
-          <input type="date" name="nacimiento" id="nacimiento">
-        </div>
-        <div class="input-field col m6 s12">
+        <div class="input-field col m4 s12">
           <input id="curp" name="curp"type="text" class="validate">
           <label for="curp">CURP</label>
         </div>
-      </div>
-
-
-      <div class="row">
-        <div class="input-field col m6 s12">
+        <div class="input-field col m4 s12">
           <input id="rfc" type="text" class="validate" name="rfc">
           <label for="rfc">RFC</label>
         </div>
-        <div class="input-field col m6 s12">
+        <div class="input-field col m4 s12">
           <input id="ine" type="text" class="validate"
             name="ine">
           <label for="ine">INE</label>
@@ -94,7 +92,7 @@
       </div>
 
       <div class="row">
-        <div class="input-field col m6 s12">
+        <div class="input-field col m4 s12">
           <select id="status" name="status" class="browser-default">
             <option value="" disabled selected>Seleccione...</option>
             <option value="M">Masculino</option>
@@ -102,7 +100,7 @@
           </select>
           <label for="first_name" class="active">Género</label>
         </div>
-        <div class="input-field col m6 s12">
+        <div class="input-field col m4 s12">
           <select id="estadoCivil" name="estadoCivil" class="browser-default">
             <option value="" disabled selected>Seleccione...</option>
             <option value="CASADO">Casado</option>
@@ -110,7 +108,13 @@
             <option value="UNIONLIBRE">Union Libre</option>
             <option value="SOLTERO">Soltero</option>          
           </select>
-          <label for="first_name" class="active">Estado Civil</label>
+          <label for="estadoCivil" class="active">Estado Civil</label>
+        </div>
+        <div class="input-field col m4 s12">
+          <select id="canalizacion" name="canalizacion" class="browser-default">
+            <option value="" disabled selected>Seleccione...</option>         
+          </select>
+          <label for="canalizacion" class="active">Canalización</label>
         </div>
       </div>
 
