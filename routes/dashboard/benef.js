@@ -33,6 +33,16 @@ benef.get('/nuevo', async (req, res) => {
 
 });
 
+benef.post('/nuevo', async (req, res) => {
+	if(!req.session.userID){
+		res.redirect("/login");
+		return;
+	}
+
+	res.json(req.body);
+
+});
+
 benef.get('/editar/:benefid', async (req, res) => {
 	if(!req.session.userID){
 		res.redirect("/login");
