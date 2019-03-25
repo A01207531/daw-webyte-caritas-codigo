@@ -90,7 +90,7 @@ app.post('/login', async (req,res) => {
 
 	//We have data
 	//consult the db
-	const q = await db.query('SELECT id,nombre,apellido,passhash FROM usuario WHERE login=$1',[username]);
+	const q = await db.query('SELECT id,nombre,apellido,passhash FROM usuario WHERE login=$1 OR email=$1',[username]);
 
 	if(!q || q.rowCount != 1){
 		res.render('login.hbs',{
@@ -159,7 +159,7 @@ app.post('/registro', async (req, res) => {
 				const result = await db.query('INSERT INTO usuario (login, passHash, nombre, apellido, email) VALUES ($1, $2, $3, $4, $5)', [username, passHash, name, lastname, email]);
 				// const result2 = await db.query('INSERT INTO usuario_privilegio (login, priv) VALUES ($1, $2)', [username, 'realizarDonativo']);
 
-				res.json({ result, result2, status: 'ok' });
+				res.json({ result, status: 'ok' });
 				return;
 
 			} else {
