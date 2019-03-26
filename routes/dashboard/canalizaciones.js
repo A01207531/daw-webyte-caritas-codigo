@@ -12,12 +12,25 @@ can.get('/', async (req,res) => {
 
 		console.log(cq.rows);
 		
-    //por mientras
+    //Listar los datos obtenidos
     res.render('dashboard/list-canalizaciones',{
 			layout: 'dashboard-base',
 			user: req.session.user,
 			canalizaciones: cq.rows
 		})
+})
+
+
+can.get('/nueva', async (req,res) => {
+	if(!req.session.userID){
+		res.redirect("/login");
+		return;
+	}
+	
+	res.render('dashboard/new-canalizacion',{
+		layout: 'dashboard-base',
+		user: req.session.user
+	})
 })
 
 
