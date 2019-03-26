@@ -3,7 +3,6 @@
 <table class="striped">
   <thead>
     <tr>
-      <th>Nombre</th>
       <th>Contacto</th>
       <th>Teléfono</th>
       <th>Dirección</th>
@@ -12,13 +11,15 @@
     </tr>
   </thead>
   <tbody>
+    
+  {{#each canalizaciones}}
     <tr>
+      <td>{{contacto}}</td>
+      <td>{{telefono}}</td>
+      <td>{{direccion}}</td>
       <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td><a href="/dashboard/proyectos/{{id}}" class="waves-effect waves-light btn">Ver</a></td>
-      <td><a href="/dashboard/proyectos/editar/{{id}}" class="waves-effect waves-light btn">Editar</a></td>
+      <td><a href="/dashboard/canalizacion/editar/{{id}}" class="waves-effect waves-light btn">Editar</a></td>
     </tr>
+  {{/each}}
   </tbody>
 </table>
