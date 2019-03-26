@@ -3,19 +3,19 @@
     <form method="POST">
       <div class="row">
         <div class="input-field col m6 s12">
-          <input id="name" type="text" class="validate" name="name">
+          <input id="name" type="text" class="validate" name="name" required>
           <label for="name">Nombre</label>
         </div>
         <div class="input-field col m6 s12">
           <input id="last_name" type="text" class="validate"
-            name="desc">
+            name="desc" required>
           <label for="last_name">Descripción corta</label>
         </div>
       </div>
 
       <div class="row">
         <div class="input-field col m6 s12">
-          <select name="state" id="state" class="browser-default">
+          <select name="state" id="state" class="browser-default" required>
             <option value="" disabled selected>Seleccione...</option>
             <option value='AGUASCALIENTES'>AGUASCALIENTES</option>
             <option value='BAJA CALIFORNIA'>BAJA CALIFORNIA</option>
@@ -54,7 +54,7 @@
           <label class="active">Estado</label>
         </div>
         <div class="input-field col m6 s12" >
-          <select name="city" id="city" class="browser-default">
+          <select name="city" id="city" class="browser-default" required>
           </select>
           <label class="active">Municipio</label>
         </div>
@@ -62,7 +62,7 @@
       
       <div class="row">
         <div class="input-field col s12">
-          <input id="address" name="address"type="text" class="validate">
+          <input id="address" name="address"type="text" class="validate" required>
           <label for="address">Dirección</label>
         </div>
       </div>
@@ -71,11 +71,11 @@
       <div class="row">
         <div class="input-field col m6 s12">
           Fecha de inicio
-          <input type="date" name="inicio" id="inicio">
+          <input type="date" name="inicio" id="inicio" required>
         </div>
         <div class="input-field col m6 s12">
           Fecha de fin
-          <input type="date" name="final" id="final">
+          <input type="date" name="final" id="final" required>
           
         </div>
       </div>
@@ -83,7 +83,7 @@
 
       <div class="row">
         <div class="input-field col m4 s12">
-          <select id="lineadeaccion" class="browser-default">
+          <select id="lineadeaccion" class="browser-default" required>
             <option value="" disabled selected>Seleccione...</option>
             <option value='ASISTENCIA SOCIAL'>ASISTENCIA SOCIAL</option>
             <option value='DESARROLLO HUMANO'>DESARROLLO HUMANO</option>
@@ -94,13 +94,13 @@
         </div>
 
         <div class="input-field col m4 s12">
-          <select id="program" class="browser-default">
+          <select id="program" class="browser-default" required>
           </select>
           <label for="program" class="active">Programa</label>
         </div>
 
         <div class="input-field col m4 s12">
-          <select id="sub" name="sub" class="browser-default">
+          <select id="sub" name="sub" class="browser-default" required>
           </select>
           <label for="sub" class="active">Sub Programa</label>
         </div>
@@ -109,7 +109,7 @@
 
       <div class="row">
         <div class="input-field col m6 s12">
-          <select id="status" name="status" class="browser-default">
+          <select id="status" name="status" class="browser-default" required>
             <option value="" disabled selected>Seleccione un estatus</option>
             <option value="NUEVO">NUEVO</option>
             <option value="PROCESO">PROCESO</option>
