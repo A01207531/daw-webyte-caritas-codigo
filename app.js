@@ -15,7 +15,7 @@ const bcrypt = require('bcryptjs');
 
 const dashboardRouter = require('./routes/dashboard');
 const proyectRouter = require('./routes/proyectos');
-const benefRouter=require('./routes/dashboard/beneficiarios')
+const benefRouter=require('./routes/dashboard/consultar-benef')
 
 const to = require('./util/to');
 
