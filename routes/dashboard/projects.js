@@ -49,7 +49,15 @@ projectRouter.post('/nuevo', (req, res) => {
 
 	db.query(query, values, (err, resp) => {
 		if (err) {
-		  console.log(err.stack)
+		  console.log(err.stack);
+		  //Este error viene de la BD, por lo que solo puede ser por la
+		  //violación de la llave única. 
+		  res.render('dashboard/error-generico',{
+			  layout: 'dashboard-base',
+			  user: req.session.user,
+			  title: 'Error al ingresar los datos',
+			  text: 'El error se debe a que los datos no son validos. Es posible que el nombre del proyecto ya exista.'
+		  });
 		} else {
 		  res.render('dashboard/proyecto-creado',{
 			layout: 'dashboard-base',
