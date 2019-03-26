@@ -13,7 +13,7 @@ benef.get('/', async (req, res) => {
 
     //res.json(bq.rows);
 	
-	res.render('dashboard/list-benef',{
+	res.render('dashboard/beneficiarios/list-benef',{
 		layout: 'dashboard-base',
         user: req.session.user,
         benef: bq.rows

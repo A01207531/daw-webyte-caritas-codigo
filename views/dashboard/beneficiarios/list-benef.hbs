@@ -24,7 +24,7 @@
                 {{/if}}
                 <td>{{sexo}}</td>
                 <td>{{dateFormat nacimiento "DD/MM/YYYY"}}</td>
-                <td>Ver</td>
+                <td><a href="/beneficiarios/{{id}}" class="waves-effect waves-light btn">Consultar</a></td>
                 <td><a href="/dashboard/beneficiarios/editar/{{id}}" class="waves-effect waves-light btn">Editar</a></td>
             </tr>
             {{/each}}

@@ -15,6 +15,7 @@ const bcrypt = require('bcryptjs');
 
 const dashboardRouter = require('./routes/dashboard');
 const proyectRouter = require('./routes/proyectos');
+const benefRouter=require('./routes/dashboard/beneficiarios')
 
 const to = require('./util/to');
 
@@ -39,6 +40,7 @@ app.use(session({
 //Sub route for the dashboard
 app.use("/dashboard", dashboardRouter);
 app.use('/proyectos', proyectRouter);
+app.use('/beneficiarios',benefRouter)
 
 // Setup View Engine
 
