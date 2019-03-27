@@ -174,3 +174,11 @@ img {
 section#main {
   min-height: 100vh;
 }
+
+#nav-mobile {
+  z-index: 997 !important;
+}
+
+.sidenav-overlay {
+  z-index: 996 !important;
+}
