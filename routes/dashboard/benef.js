@@ -52,4 +52,5 @@ benef.get('/editar/:benefid', async (req, res) => {
 	res.send("Aqui es para editar el beneficiario " + req.params.benefid);
 });
 
+
 module.exports = benef;

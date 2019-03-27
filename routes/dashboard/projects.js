@@ -12,7 +12,7 @@ projectRouter.get('/', async (req, res) => {
 	
 	console.log(pq);
 
-	res.render('dashboard/list-projects',{
+	res.render('dashboard/proyectos/list',{
 		layout: 'dashboard-base',
 		user: req.session.user,
 		proj: pq.rows
@@ -25,7 +25,7 @@ projectRouter.get('/nuevo', async (req, res) => {
 		return;
 	}
 
-	res.render('dashboard/new-proj',{
+	res.render('dashboard/proyectos/create',{
 		layout: 'dashboard-base',
 		user: req.session.user,
 	})
@@ -54,14 +54,14 @@ projectRouter.post('/nuevo', (req, res) => {
 		  console.log(err.stack);
 		  //Este error viene de la BD, por lo que solo puede ser por la
 		  //violación de la llave única. 
-		  res.render('dashboard/error-generico',{
+		  res.render('dashboard/errors/generic',{
 			  layout: 'dashboard-base',
 			  user: req.session.user,
 			  title: 'Error al ingresar los datos',
 			  text: 'El error se debe a que los datos no son validos. Es posible que el nombre del proyecto ya exista.'
 		  });
 		} else {
-		  res.render('dashboard/proyecto-creado',{
+		  res.render('dashboard/proyectos/success',{
 			layout: 'dashboard-base',
 			user: req.session.user,
 		  })
@@ -69,7 +69,7 @@ projectRouter.post('/nuevo', (req, res) => {
 	  })
 });
 
-projectRouter.get('/edit/:projectid', async (req, res) => {
+projectRouter.get('/editar/:projectid', async (req, res) => {
 	if(!req.session.userID){
 		res.redirect("/login");
 		return;
