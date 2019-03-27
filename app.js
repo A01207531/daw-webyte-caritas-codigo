@@ -189,7 +189,7 @@ app.get('/logout', (req, res) => {
 		res.redirect('login');
 	} else {
 		req.session.destroy();
-		res.end('bye :)');
+		res.render('logout.hbs');
 	}
 	
 })
