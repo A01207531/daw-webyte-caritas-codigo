@@ -46,9 +46,31 @@ can.get('/nueva', async (req,res) => {
 	})
 })
 
-can.post('/nueva', async (req,res) => {
-	res.json(req.body);
-	console.log(validatePhone('9999985754'));
+can.post('/nueva', (req,res) => {
+	const con = req.body.contacto;
+	const tel = req.body.telefono;
+	const dir = req.body.direccion;
+
+	const query = 'INSERT INTO canalizacion(id,contacto,telefono,direccion) VALUES (DEFAULT,$1,$2,$3)';
+
+	const values = [con,tel,dir];
+
+	db.query(query,values, (err, resp) => {
+		if(err){
+			console.log(err.stack);
+		  //Este error viene de la BD, por lo que solo puede ser por la
+		  //violación de la llave única. 
+		  res.render('dashboard/error-generico',{
+			  layout: 'dashboard-base',
+			  user: req.session.user,
+			  title: 'Error al ingresar los datos',
+			  text: 'Ocurrio un error al insertar la canalizacion'
+		  });
+		}else{
+			res.json(resp);
+		}
+	})
+
 })
 
 

@@ -37,13 +37,15 @@ projectRouter.post('/nuevo', (req, res) => {
 		return;
 	}
 
-	const query = 'INSERT INTO proyecto(id,nombre,descripcion,inicio,final,estatus,responsable,observaciones,subprograma_id,municipio_id,direccion) VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10)';
+	const query = 'INSERT INTO proyecto(id,nombre,descripcion,inicio,final,estatus,responsable,observaciones,subprograma_id,municipio_id,direccion,solicitado) VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)';
 
 	const p = req.body; //p de post
 
+	const sol = p.solicitado;
+
 	const responsable = req.session.userID;
 
-	const values = [p.name,p.desc,p.inicio,p.final,p.status,responsable,p.observation,p.sub,p.city,p.address];
+	const values = [p.name,p.desc,p.inicio,p.final,p.status,responsable,p.observation,p.sub,p.city,p.address,sol];
 
 	//res.json(p);
 
