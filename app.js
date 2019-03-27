@@ -66,11 +66,12 @@ app.locals.title = 'Cáritas de Querétaro';
 
 //Index
 app.get('/', async (req, res) => {
-	const query = await db.query('SELECT nombre,descripcion FROM proyecto');
-	//console.log(query);
+	const query = await db.query('SELECT nombre,descripcion FROM proyecto LIMIT 9');
+	// console.log(query);
 	const data = query.rows;
-	//console.log(data);
+	// console.log(data);
 	res.render('index.hbs',{projects: data});
+	// res.json(await db.query('SELECT * FROM usuario_rol'));
 });
 
 //Login: GET & POST
@@ -139,7 +140,9 @@ app.post('/login', async (req,res) => {
 
 app.get('/registro', async (req, res) => {
 	res.render('registro', {session: req.session});
+	// const result = await db.query('INSERT INTO usuario (login, passHash, nombre, apellido, email) VALUES ($1, $2, $3, $4, $5)', ['username', 'passHash', 'name', 'lastname', 'email@e.com']);
 	// res.json(await db.query('SELECT * FROM privilegio'));
+	// res.json(result);
 });
 
 app.post('/registro', async (req, res) => {
@@ -158,10 +161,12 @@ app.post('/registro', async (req, res) => {
 				const passHash = bcrypt.hashSync(password, salt);
 				
 				// Creamos el Usuario
-				const result = await db.query('INSERT INTO usuario (login, passHash, nombre, apellido, email) VALUES ($1, $2, $3, $4, $5)', [username, passHash, name, lastname, email]);
+				await db.query('INSERT INTO usuario (login, passHash, nombre, apellido, email) VALUES ($1, $2, $3, $4, $5)', [username, passHash, name, lastname, email]);
 				// const result2 = await db.query('INSERT INTO usuario_privilegio (login, priv) VALUES ($1, $2)', [username, 'realizarDonativo']);
+				const id = await db.query('SELECT id FROM usuario WHERE login=$1', [username])
+				db.query('INSERT INTO usuario_rol (id_usuario, id_rol, activo) VALUES ($1, $2, $3)', [id.rows[0].id, 3, true]);
 
-				res.json({ result, status: 'ok' });
+				res.json({ status: 'ok' });
 				return;
 
 			} else {
