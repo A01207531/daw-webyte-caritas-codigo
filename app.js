@@ -77,7 +77,11 @@ app.get('/', async (req, res) => {
 
 //Login: GET & POST
 app.get('/login', (req,res) => {
-	res.render('login.hbs');
+	if(req.session.userID){
+		res.redirect('/dashboard');
+	}else{
+		res.render('login.hbs');
+	}
 });
 
 app.post('/login', async (req,res) => {
@@ -183,6 +187,16 @@ app.post('/registro', async (req, res) => {
 		return;
 	}
 });
+
+app.get('/logout', (req, res) => {
+	if(!req.session.userID){
+		res.redirect('login');
+	} else {
+		req.session.destroy();
+		res.render('logout.hbs');
+	}
+	
+})
 
 //para el azure
 const port=process.env.PORT || 3000
