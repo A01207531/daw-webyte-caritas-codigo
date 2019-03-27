@@ -67,7 +67,10 @@ can.post('/nueva', (req,res) => {
 			  text: 'Ocurrio un error al insertar la canalizacion'
 		  });
 		}else{
-			res.json(resp);
+			res.render('dashboard/canalizacion-creada',{
+				layout: 'dashboard-base',
+				user: req.session.user,
+				})
 		}
 	})
 
