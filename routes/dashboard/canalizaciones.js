@@ -24,7 +24,7 @@ can.get('/', async (req,res) => {
 		console.log(cq.rows);
 		
     //Listar los datos obtenidos
-    res.render('dashboard/list-canalizaciones',{
+    res.render('dashboard/canalizaciones/list',{
 			layout: 'dashboard-base',
 			user: req.session.user,
 			canalizaciones: cq.rows
@@ -40,7 +40,7 @@ can.get('/nueva', async (req,res) => {
 
 	//console.log(phoneRegEx.test('(999) 998 5754'));
 	
-	res.render('dashboard/new-canalizacion',{
+	res.render('dashboard/canalizaciones/create',{
 		layout: 'dashboard-base',
 		user: req.session.user
 	})
@@ -60,14 +60,14 @@ can.post('/nueva', (req,res) => {
 			console.log(err.stack);
 		  //Este error viene de la BD, por lo que solo puede ser por la
 		  //violación de la llave única. 
-		  res.render('dashboard/error-generico',{
+		  res.render('dashboard/errors/generic',{
 			  layout: 'dashboard-base',
 			  user: req.session.user,
 			  title: 'Error al ingresar los datos',
 			  text: 'Ocurrio un error al insertar la canalizacion'
 		  });
 		}else{
-			res.render('dashboard/canalizacion-creada',{
+			res.render('dashboard/canalizaciones/success',{
 				layout: 'dashboard-base',
 				user: req.session.user,
 				})
