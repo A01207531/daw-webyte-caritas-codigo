@@ -184,6 +184,16 @@ app.post('/registro', async (req, res) => {
 	}
 });
 
+app.get('/logout', (req, res) => {
+	if(!req.session.userID){
+		res.redirect('login');
+	} else {
+		req.session.destroy();
+		res.end('bye :)');
+	}
+	
+})
+
 //para el azure
 const port=process.env.PORT || 3000
 
