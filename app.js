@@ -77,7 +77,11 @@ app.get('/', async (req, res) => {
 
 //Login: GET & POST
 app.get('/login', (req,res) => {
-	res.render('login.hbs');
+	if(req.session.userID){
+		res.redirect('/dashboard');
+	}else{
+		res.render('login.hbs');
+	}
 });
 
 app.post('/login', async (req,res) => {
