@@ -1,13 +1,21 @@
 const db = require('../../models');
 const can = require('express').Router();
 
+function validatePhone(phone){
+	const l = phone.legth;
+	for(var i = 0; i < l; i++){
+		if(!(phone[i] in "0123456789 ()-+")){
+			return false;
+		}
+	}
 
-const phoneRegEx = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+	return true;
+}
 
 can.get('/', async (req,res) => {
     if(!req.session.userID){
-		res.redirect("/login");
-		return;
+			res.redirect("/login");
+			return;
 		}
 		
 		//En esta hacemos un query sencillo a las canalizaciones
@@ -36,6 +44,11 @@ can.get('/nueva', async (req,res) => {
 		layout: 'dashboard-base',
 		user: req.session.user
 	})
+})
+
+can.post('/nueva', async (req,res) => {
+	res.json(req.body);
+	console.log(validatePhone('9999985754'));
 })
 
 
