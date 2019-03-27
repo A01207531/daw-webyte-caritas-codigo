@@ -15,9 +15,14 @@ router.get('/:id', async (req, res) => {
   proyecto = proyecto.rows[0];
 
   let [ subPrograma, municipio ] = await Promise.all([db.query('SELECT * FROM subprograma WHERE id=$1', [proyecto.subprograma_id]), db.query('SELECT * FROM municipio WHERE id=$1', [proyecto.municipio_id])]);
-  subPrograma = subPrograma.rows[0];
-  municipio = municipio.rows[0];
-  // res.render('proyectos/detalle', { proyecto, session: req.session });
-  res.json({proyecto, subPrograma, municipio});
+  proyecto.municipio = municipio.rows[0];
+  // subPrograma = subPrograma.rows[0];
+  
+  let programa = await db.query('SELECT * FROM programa WHERE id=$1', [subPrograma.rows[0].programa_id]);
+  proyecto.programa = programa.rows[0];
+  proyecto.programa.subPrograma = subPrograma.rows[0];
+
+  console.log(programa);
+  res.render('proyectos/detalle', { proyecto, session: req.session });
 });
 module.exports = router;
