@@ -66,11 +66,12 @@ app.locals.title = 'Cáritas de Querétaro';
 
 //Index
 app.get('/', async (req, res) => {
-	const query = await db.query('SELECT nombre,descripcion FROM proyecto LIMIT 9');
+	const query = await db.query('SELECT nombre,descripcion FROM proyecto LIMIT 6');
 	// console.log(query);
 	const data = query.rows;
 	// console.log(data);
-	res.render('index.hbs',{projects: data});
+	// db.query('INSERT INTO usuario_rol (id_usuario, id_rol, activo) VALUES ($1, $2, $3)', [30, 3, true]);
+	res.render('index.hbs',{projects: data, session: req.session});
 	// res.json(await db.query('SELECT * FROM usuario_rol'));
 });
 

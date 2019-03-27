@@ -4,6 +4,8 @@ const projRouter = require('./projects');
 const benefRouter = require('./benef');
 const canRouter = require('./canalizaciones.js');
 
+const CONSTANTS = require('../../constants/rbac');
+
 //append sub router
 dash.use('/proyectos',projRouter);
 dash.use('/beneficiarios',benefRouter);
@@ -14,10 +16,19 @@ dash.get('/', async (req, res) => {
 		res.redirect("/login");
 		return;
 	}
-	res.render('dashboard/landing',{
-		layout: 'dashboard-base',
-		user: req.session.user
-	})
+	const user = req.session.user;
+	console.log(user);
+	if(user.privileges.some(r => [CONSTANTS.CREATE_BOX, CONSTANTS.CREATE_PROJECT, CONSTANTS.CREATE_USER].indexOf(r) >= 0))
+		res.render('dashboard/landing',{
+			layout: 'dashboard-base',
+			user: user
+		})
+	else 
+		res.render('dashboard/landing',{
+			session: req.session,
+			user: user,
+			container: true
+		})
 });
 
 

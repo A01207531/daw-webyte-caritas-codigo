@@ -1,12 +1,12 @@
-export const CREATE_USER = "crearUsuario";
-export const READ_USER = "consultarUsuarios";
-export const UPDATE_USER = "modificarUsuario";
-export const DELETE_USER = "eliminarUsuario";
+module.exports.CREATE_USER = "crearUsuario";
+module.exports.READ_USER = "consultarUsuarios";
+module.exports.UPDATE_USER = "modificarUsuario";
+module.exports.DELETE_USER = "eliminarUsuario";
 
-export const CREATE_PROJECT = "crearProyecto";
-export const UPDATE_USER = "modificarProyecto";
+module.exports.CREATE_PROJECT = "crearProyecto";
+module.exports.UPDATE_USER = "modificarProyecto";
 
-export const CREATE_BOX = "crearBuzon";
-export const UPDATE_BOX = "modificarBuzon";
+module.exports.CREATE_BOX = "crearBuzon";
+module.exports.UPDATE_BOX = "modificarBuzon";
 
-export const DONATE = "realizarDonativo";
+module.exports.DONATE = "realizarDonativo";

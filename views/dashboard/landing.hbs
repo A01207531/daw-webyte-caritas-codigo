@@ -1,1 +1,7 @@
-<h1>Bienvenido</h1>
+{{#if container}}
+  <div class="container">
+{{/if}}
+    <h1>{{user.fullName}}</h1>
+{{#if container}}
+  </div>
+{{/if}}

@@ -170,3 +170,7 @@ img {
   visibility: hidden;
   opacity: 0;
 }
+
+section#main {
+  min-height: 100vh;
+}
