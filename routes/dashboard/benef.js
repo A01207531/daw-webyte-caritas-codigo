@@ -13,7 +13,7 @@ benef.get('/', async (req, res) => {
 
     //res.json(bq.rows);
 	
-	res.render('dashboard/beneficiarios/list-benef',{
+	res.render('dashboard/beneficiarios/list',{
 		layout: 'dashboard-base',
         user: req.session.user,
         benef: bq.rows
@@ -27,7 +27,7 @@ benef.get('/nuevo', async (req, res) => {
 	}
 	
 
-	res.render('dashboard/new-benef',{
+	res.render('dashboard/beneficiarios/create',{
 		layout: 'dashboard-base'
 	});
 
@@ -51,5 +51,6 @@ benef.get('/editar/:benefid', async (req, res) => {
     
 	res.send("Aqui es para editar el beneficiario " + req.params.benefid);
 });
+
 
 module.exports = benef;

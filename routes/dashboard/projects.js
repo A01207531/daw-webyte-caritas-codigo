@@ -12,7 +12,7 @@ projectRouter.get('/', async (req, res) => {
 	
 	console.log(pq);
 
-	res.render('dashboard/list-projects',{
+	res.render('dashboard/proyectos/list',{
 		layout: 'dashboard-base',
 		user: req.session.user,
 		proj: pq.rows
@@ -25,7 +25,7 @@ projectRouter.get('/nuevo', async (req, res) => {
 		return;
 	}
 
-	res.render('dashboard/new-proj',{
+	res.render('dashboard/proyectos/create',{
 		layout: 'dashboard-base',
 		user: req.session.user,
 	})
@@ -37,13 +37,15 @@ projectRouter.post('/nuevo', (req, res) => {
 		return;
 	}
 
-	const query = 'INSERT INTO proyecto(id,nombre,descripcion,inicio,final,estatus,responsable,observaciones,subprograma_id,municipio_id,direccion) VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10)';
+	const query = 'INSERT INTO proyecto(id,nombre,descripcion,inicio,final,estatus,responsable,observaciones,subprograma_id,municipio_id,direccion,solicitado) VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)';
 
 	const p = req.body; //p de post
 
+	const sol = p.solicitado;
+
 	const responsable = req.session.userID;
 
-	const values = [p.name,p.desc,p.inicio,p.final,p.status,responsable,p.observation,p.sub,p.city,p.address];
+	const values = [p.name,p.desc,p.inicio,p.final,p.status,responsable,p.observation,p.sub,p.city,p.address,sol];
 
 	//res.json(p);
 
@@ -52,14 +54,14 @@ projectRouter.post('/nuevo', (req, res) => {
 		  console.log(err.stack);
 		  //Este error viene de la BD, por lo que solo puede ser por la
 		  //violación de la llave única. 
-		  res.render('dashboard/error-generico',{
+		  res.render('dashboard/errors/generic',{
 			  layout: 'dashboard-base',
 			  user: req.session.user,
 			  title: 'Error al ingresar los datos',
 			  text: 'El error se debe a que los datos no son validos. Es posible que el nombre del proyecto ya exista.'
 		  });
 		} else {
-		  res.render('dashboard/proyecto-creado',{
+		  res.render('dashboard/proyectos/success',{
 			layout: 'dashboard-base',
 			user: req.session.user,
 		  })
@@ -67,7 +69,7 @@ projectRouter.post('/nuevo', (req, res) => {
 	  })
 });
 
-projectRouter.get('/edit/:projectid', async (req, res) => {
+projectRouter.get('/editar/:projectid', async (req, res) => {
 	if(!req.session.userID){
 		res.redirect("/login");
 		return;

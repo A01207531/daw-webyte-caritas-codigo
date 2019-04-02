@@ -16,6 +16,8 @@ const bcrypt = require('bcryptjs');
 const dashboardRouter = require('./routes/dashboard');
 const proyectRouter = require('./routes/proyectos');
 const benefRouter=require('./routes/dashboard/consultar-benef')
+const contenedorRouter = require('./routes/contenedor');
+
 
 const to = require('./util/to');
 
@@ -41,6 +43,7 @@ app.use(session({
 app.use("/dashboard", dashboardRouter);
 app.use('/proyectos', proyectRouter);
 app.use('/beneficiarios',benefRouter)
+app.use('/contenedor', contenedorRouter);
 
 // Setup View Engine
 
@@ -77,7 +80,11 @@ app.get('/', async (req, res) => {
 
 //Login: GET & POST
 app.get('/login', (req,res) => {
-	res.render('login.hbs');
+	if(req.session.userID){
+		res.redirect('/dashboard');
+	}else{
+		res.render('login.hbs');
+	}
 });
 
 app.post('/login', async (req,res) => {
@@ -183,6 +190,16 @@ app.post('/registro', async (req, res) => {
 		return;
 	}
 });
+
+app.get('/logout', (req, res) => {
+	if(!req.session.userID){
+		res.redirect('login');
+	} else {
+		req.session.destroy();
+		res.render('logout.hbs');
+	}
+	
+})
 
 //para el azure
 const port=process.env.PORT || 3000

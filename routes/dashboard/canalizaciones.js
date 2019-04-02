@@ -1,13 +1,21 @@
 const db = require('../../models');
 const can = require('express').Router();
 
+function validatePhone(phone){
+	const l = phone.legth;
+	for(var i = 0; i < l; i++){
+		if(!(phone[i] in "0123456789 ()-+")){
+			return false;
+		}
+	}
 
-const phoneRegEx = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+	return true;
+}
 
 can.get('/', async (req,res) => {
     if(!req.session.userID){
-		res.redirect("/login");
-		return;
+			res.redirect("/login");
+			return;
 		}
 		
 		//En esta hacemos un query sencillo a las canalizaciones
@@ -16,7 +24,7 @@ can.get('/', async (req,res) => {
 		console.log(cq.rows);
 		
     //Listar los datos obtenidos
-    res.render('dashboard/list-canalizaciones',{
+    res.render('dashboard/canalizaciones/list',{
 			layout: 'dashboard-base',
 			user: req.session.user,
 			canalizaciones: cq.rows
@@ -32,10 +40,40 @@ can.get('/nueva', async (req,res) => {
 
 	//console.log(phoneRegEx.test('(999) 998 5754'));
 	
-	res.render('dashboard/new-canalizacion',{
+	res.render('dashboard/canalizaciones/create',{
 		layout: 'dashboard-base',
 		user: req.session.user
 	})
+})
+
+can.post('/nueva', (req,res) => {
+	const con = req.body.contacto;
+	const tel = req.body.telefono;
+	const dir = req.body.direccion;
+
+	const query = 'INSERT INTO canalizacion(id,contacto,telefono,direccion) VALUES (DEFAULT,$1,$2,$3)';
+
+	const values = [con,tel,dir];
+
+	db.query(query,values, (err, resp) => {
+		if(err){
+			console.log(err.stack);
+		  //Este error viene de la BD, por lo que solo puede ser por la
+		  //violación de la llave única. 
+		  res.render('dashboard/errors/generic',{
+			  layout: 'dashboard-base',
+			  user: req.session.user,
+			  title: 'Error al ingresar los datos',
+			  text: 'Ocurrio un error al insertar la canalizacion'
+		  });
+		}else{
+			res.render('dashboard/canalizaciones/success',{
+				layout: 'dashboard-base',
+				user: req.session.user,
+				})
+		}
+	})
+
 })
 
 
