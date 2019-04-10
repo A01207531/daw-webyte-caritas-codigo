@@ -16,8 +16,8 @@ const bcrypt = require('bcryptjs');
 const dashboardRouter = require('./routes/dashboard');
 const proyectRouter = require('./routes/proyectos');
 const benefRouter=require('./routes/dashboard/consultar-benef')
-const contenedorRouter = require('./routes/contenedor');
-
+//Elimine esto porque ya no era necesario. Solamente hay que poner el mapa y ya,
+//el cual es estatico
 
 const to = require('./util/to');
 
@@ -43,7 +43,10 @@ app.use(session({
 app.use("/dashboard", dashboardRouter);
 app.use('/proyectos', proyectRouter);
 app.use('/beneficiarios',benefRouter)
-app.use('/contenedor', contenedorRouter);
+
+//El view de contenedores el el mapa adminostrado por google, por lo que
+//para nosotros es meramente estatico
+
 
 // Setup View Engine
 
@@ -77,6 +80,15 @@ app.get('/', async (req, res) => {
 	res.render('index.hbs',{projects: data, session: req.session});
 	// res.json(await db.query('SELECT * FROM usuario_rol'));
 });
+
+//Contenedores que son en realidad un mapa
+const GOOGLE_MAPS_KEY = process.env.key; //en realidad esto tampoco es necesario
+app.get('/contenedores',(req,res) => {
+	//nada mas renderizar la vista con la sesión y el API key
+	res.render('contenedor/index', {
+        session: req.session,
+    });
+})
 
 //Login: GET & POST
 app.get('/login', (req,res) => {
