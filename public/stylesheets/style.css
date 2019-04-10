@@ -174,20 +174,10 @@ img {
 section#main {
   min-height: 100vh;
 }
-<<<<<<< HEAD
 
-#nav-mobile {
-  z-index: 997 !important;
-}
-
-.sidenav-overlay {
-  z-index: 996 !important;
-}
-=======
 #map {
       width: 100%;
       height: 400px;
       background-color: grey;
 }
   
->>>>>>> 477fb8c11938903c08108a35f4dbdace078d1657
