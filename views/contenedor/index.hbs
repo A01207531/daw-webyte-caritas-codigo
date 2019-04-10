@@ -1,46 +1,61 @@
 <div class="container card separate">
     <div class="row">
-        <div class="col s8">
-            <h3>Contenedor el Pueblito</h3>
+        <div class="col s12">
+            <h3 class="card-panel red darken-1 center"><span class="white-text">Contenedores Cáritas</span></h3>
             <!--The div element for the map -->
-            <div id="map"></div>
-            <h3>¿Todavía tienes dudas?</h3>
-            <h4>Puedes marcanos a nuestras oficinas </h4>
-            <h5>Tels: 212 33 19 / 212 35 96 <br>
-            Horario de oficinas: Lunes a
-            Viernes de 8am a 4pm</h5>
-        </div>
-        <div class="col s4">
-            <br>
-            <h5>¿Qué puedo donar a Cáritas?</h5>
-            <hr>
-            <ul>
-                <li> <h5>-Ropa, Zapatos y accesorios</h5> </li>
-                <li> <h5>-Muebles y Cobijas</h5> </li>
-                <li> <h5>-Mochilas y Bolsas</h5> </li>
-                <li> <h5>-Herramientas</h5> </li>
-                <li> <h5>-Cosméticos</h5> </li>
-                <li> <h5>-Juguetes</h5> </li>
-                <li> <h5>-Libros y Revistas</h5> </li>
-                <li> <h5>-Electrónicos</h5> </li>
-                <li> <h5>-Artículos de Cocina</h5> </li>
-                <li> <h5>-Electrodomésticos</h5> </li>
-            </ul>
+            <div>
+                <iframe id="map" src="https://www.google.com/maps/d/u/0/embed?mid=11fu-yZtTJIPHDMNxWfzJqvYT-WJT20kf" <!--width="640"
+                height="480"-->></iframe></div>
+            <div class="col s6">
+
+            </div>
+                    <div class="col s6">
+                        <br>
+                        <h5>¿Qué puedo donar a Cáritas?</h5>
+                        <hr>
+                        <ul>
+                            <li>
+                                <h5>-Ropa, Zapatos y accesorios</h5>
+                            </li>
+                            <li>
+                                <h5>-Muebles y Cobijas</h5>
+                            </li>
+                            <li>
+                                <h5>-Mochilas y Bolsas</h5>
+                            </li>
+                            <li>
+                                <h5>-Herramientas</h5>
+                            </li>
+                            <li>
+                                <h5>-Cosméticos</h5>
+                            </li>
+                            <li>
+                                <h5>-Juguetes</h5>
+                            </li>
+                            <li>
+                                <h5>-Libros y Revistas</h5>
+                            </li>
+                            <li>
+                                <h5>-Electrónicos</h5>
+                            </li>
+                            <li>
+                                <h5>-Artículos de Cocina</h5>
+                            </li>
+                            <li>
+                                <h5>-Electrodomésticos</h5>
+                            </li>
+                        </ul>
+                    
+                    </div>
+            <div class="col s12">
+                            <h3>¿Todavía tienes dudas?</h3>
+                            <h4>Puedes marcanos a nuestras oficinas </h4>
+                            <h5>Tels: 212 33 19 / 212 35 96 <br>
+                                Horario de oficinas: Lunes a
+                                Viernes de 8am a 4pm</h5>
+            </div>
 
         </div>
+
     </div>
 </div>
-    <script>
-        // Initialize and add the map
-        function initMap() {
-            // The location of Uluru
-            var uluru = { lat: 20.590, lng: -100.38 };
-            // The map, centered at Uluru
-            var map = new google.maps.Map(
-                document.getElementById('map'), { zoom: 10, center: uluru });
-            // The marker, positioned at Uluru
-            var marker = new google.maps.Marker({ position: uluru, map: map });
-        }
-    </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCj7fOlp4EzPzUU1I29hZ6KayEXALHAYSE&callback=initMap">
-    </script>

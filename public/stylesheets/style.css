@@ -6,6 +6,10 @@
 * Made By MaterializeCSS.com
 */
 
+.margin-top {
+  margin-top: 80px !important;
+}
+
 body {
   background-color: rgb(253, 253, 253);
 }
@@ -69,11 +73,13 @@ nav {
   font-size: inherit;
 }
 
+
+
 footer.page-footer {
   margin: 0;
 }
 
-.indicator-item{
+.indicator-item {
   padding: 7px;
 }
 
@@ -83,11 +89,12 @@ footer.page-footer {
   border: 0 !important;
   height: 100vh;
   position: fixed;
-  box-shadow: 1px 0px 3px rgba(0,0,0,.15),
-              2px 0px 5px rgba(0,0,0,.3);
+  box-shadow: 1px 0px 3px rgba(0, 0, 0, .15),
+    2px 0px 5px rgba(0, 0, 0, .3);
 }
 
-.collection a, .collection li {
+.collection a,
+.collection li {
   display: flex !important;
   flex-direction: column;
   justify-content: center;
@@ -101,17 +108,18 @@ footer.page-footer {
   transition: .4s ease-out !important;
 }
 
-.collection a:hover, .collection a:hover .circle {
+.collection a:hover,
+.collection a:hover .circle {
   background-color: #e53935 !important;
 }
 
 .collection-title {
-text-align: center; 
-padding: 20px 0px;
-margin: 0;
+  text-align: center;
+  padding: 20px 0px;
+  margin: 0;
 }
 
-.collection-header{
+.collection-header {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -176,8 +184,8 @@ section#main {
 }
 
 #map {
-      width: 100%;
-      height: 400px;
-      background-color: grey;
+  width: 100%;
+  height: 500px;
+  background-color: grey;
 }
   
