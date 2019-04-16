@@ -2,11 +2,11 @@ const r = require('express').Router();
 const db = require('../models');
 
 r.get('/', async (req, res) => {
-  let proyectos = await db.query('SELECT * from proyecto');
-  proyectos = proyectos.rows;
+  let posts = await db.query('SELECT id,titulo,fotourl,fecha from posts ORDER BY fecha DESC');
+  posts = posts.rows;
   const session = req.session;
 
-  res.render('proyectos/index', { proyectos, session });
+  res.json(posts);
   // res.json(proyectos)
 });
 
