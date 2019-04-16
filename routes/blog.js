@@ -1,5 +1,5 @@
 const r = require('express').Router();
-const db = require('../../models');
+const db = require('../models');
 
 r.get('/', async (req, res) => {
   let proyectos = await db.query('SELECT * from proyecto');
