@@ -15,7 +15,8 @@ const bcrypt = require('bcryptjs');
 
 const dashboardRouter = require('./routes/dashboard');
 const proyectRouter = require('./routes/proyectos');
-const benefRouter=require('./routes/dashboard/consultar-benef')
+const blogRouter = require('./routes/blog');
+const benefRouter=require('./routes/dashboard/consultar-benef');
 //Elimine esto porque ya no era necesario. Solamente hay que poner el mapa y ya,
 //el cual es estatico
 
@@ -42,7 +43,8 @@ app.use(session({
 //Sub route for the dashboard
 app.use("/dashboard", dashboardRouter);
 app.use('/proyectos', proyectRouter);
-app.use('/beneficiarios',benefRouter)
+app.use('/beneficiarios',benefRouter);
+app.use('/blog',blogRouter);
 
 //El view de contenedores el el mapa adminostrado por google, por lo que
 //para nosotros es meramente estatico
