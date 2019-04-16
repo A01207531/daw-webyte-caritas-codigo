@@ -6,8 +6,7 @@ r.get('/', async (req, res) => {
   posts = posts.rows;
   const session = req.session;
 
-  res.json(posts);
-  // res.json(proyectos)
+  res.render('blog/list', { posts, session });
 });
 
 r.get('/:id', async (req, res) => {
