@@ -13,6 +13,7 @@ r.get('/:id', async (req, res) => {
   let proyecto = await db.query('SELECT * FROM posts WHERE id=$1', [req.params.id]);
   if(proyecto.rowCount>0) {
     proyecto = proyecto.rows[0];
+    //res.json(proyecto);
   
     res.render('blog/detalle', { proyecto, session: req.session });
   } else {
