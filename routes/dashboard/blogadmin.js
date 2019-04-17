@@ -11,26 +11,23 @@ r.get('/', async (req,res) => {
 		//En esta hacemos un query sencillo a las canalizaciones
 		const cq = await db.query('SELECT id,titulo,fecha FROM posts ORDER BY fecha');
 
-		console.log(cq.rows);
+		//console.log(cq.rows);
 		
     //Listar los datos obtenidos
-    /*res.render('dashboard/canalizaciones/list',{
+    res.render('dashboard/blog/list',{
 			layout: 'dashboard-base',
 			user: req.session.user,
-			canalizaciones: cq.rows
-        })*/
-    res.json(cq.rows);
+			posts: cq.rows
+        })
 })
 
 
 //Esto es un formulario para crear un nuevo post
-r.get('/nuevo', async (req,res) => {
+r.get('/nuevo', (req,res) => {
 	if(!req.session.userID){
 		res.redirect("/login");
 		return;
 	}
-
-	//console.log(phoneRegEx.test('(999) 998 5754'));
 	
 	res.render('dashboard/canalizaciones/create',{
 		layout: 'dashboard-base',
