@@ -28,6 +28,7 @@
         "handlebars-extend-block": "^1.0.0",
         "nodemon": "^1.18.10",
         "pg": "^7.8.2",
-        "pg-hstore": "^2.3.2"
+        "pg-hstore": "^2.3.2",
+        "uuid": "^3.3.2"
     }
 }
