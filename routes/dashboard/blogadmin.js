@@ -9,16 +9,17 @@ r.get('/', async (req,res) => {
 		}
 		
 		//En esta hacemos un query sencillo a las canalizaciones
-		const cq = await db.query('SELECT * FROM canalizacion ORDER BY contacto');
+		const cq = await db.query('SELECT id,titulo,fecha FROM posts ORDER BY fecha');
 
 		console.log(cq.rows);
 		
     //Listar los datos obtenidos
-    res.render('dashboard/canalizaciones/list',{
+    /*res.render('dashboard/canalizaciones/list',{
 			layout: 'dashboard-base',
 			user: req.session.user,
 			canalizaciones: cq.rows
-		})
+        })*/
+    res.json(cq.rows);
 })
 
 
@@ -38,7 +39,7 @@ r.get('/nuevo', async (req,res) => {
 })
 
 //esto es el endpoint del form
-r.post('/nueva', (req,res) => {
+r.post('/nuevo', (req,res) => {
 	const con = req.body.contacto;
 	const tel = req.body.telefono;
 	const dir = req.body.direccion;
