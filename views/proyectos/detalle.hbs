@@ -22,20 +22,24 @@
 						suscipit adipisci esse quibusdam quaerat autem dicta iste beatae vitae porro!</p>
 			</div>
 			<div class="col s12 m4 ">
-				<a class="col s12 waves-effect red lighten-1 btn-large">Patrocina este Proyecto</a> <br> <br>
-				<br>
-				
+				<h4 class=" donacion-title">{{#if session.user}}Dona a este Proyecto {{else}} Inicia sesión para donar {{/if}} </h4>
+				{{#if session.user}}
+				<p class="input-field">
+					<label for="amount">Candidad a donar (default $10.00MXN)</label>
+					<input type="number" id="amount" name="amount">
+				</p>
+				{{/if}}
+					
 				<div id="pp-container">
 					<div id="pp-button"></div>
 				</div>
-				<script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
-				<script>paypal.Buttons().render('#pp-button');</script>
+				
 				<br>
 				<blockquote>
 					<ul>
-						<li> <h5>0</h5> </li>
+						<li> <h5 id="totalDonadores">{{totalDonadores}}</h5> </li>
 						<li>Patrocinadores</li>
-						<li> <h5>$0.00</h5> </li>
+						<li> <h5 id="totalDonaciones">${{totalDonaciones}}</h5> </li>
 						<li>Contribuido</li>
 						<li> <h5>${{proyecto.solicitado}}</h5> </li>
 						<li>Solicitado</li>
@@ -49,3 +53,38 @@
 		</div>
 	</div>
 </div>
+
+<script src={{paypal_string}}></script>
+{{#if session.user}}
+<script>
+  paypal.Buttons({
+    createOrder: (data, actions) => {
+      // Set up the transaction
+			let amount = $('#amount').val();
+			
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: amount > 0 ? amount : 10,
+          }
+        }]
+      });
+    },
+		onApprove: (data, actions) => {
+			return actions.order.capture().then(details => {
+				$.post(window.location, {
+					monto: details.purchase_units[0].amount.value
+				}, data => {
+					console.log(data);
+					if(data.status === 'ok') {
+						$('#totalDonadores').text = data.newDonadores;
+						$('#totalDonaciones').text = data.newDonaciones;
+					}
+				});
+
+				console.log(details.purchase_units[0].amount.value);
+			});
+		}
+  }).render('#pp-button');
+</script>
+{{/if}}
