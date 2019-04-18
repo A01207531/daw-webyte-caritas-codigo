@@ -2,24 +2,19 @@ require('dotenv').config();
 
 const express = require('express');
 const hbs = require('express-handlebars');
-// var extend = require('handlebars-extend-block');
-// hbs = extend(hbs);
-//To format the date
-//hbs.registerHelper('dateFormat', require('handlebars-dateformat'));
 
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const path = require('path');
 const db = require('./models');
 const bcrypt = require('bcryptjs');
+const paypal = require('paypal-rest-sdk');
 
 const dashboardRouter = require('./routes/dashboard');
 const proyectRouter = require('./routes/proyectos');
 const benefRouter=require('./routes/dashboard/consultar-benef')
-//Elimine esto porque ya no era necesario. Solamente hay que poner el mapa y ya,
-//el cual es estatico
 
-const to = require('./util/to');
+// const to = require('./util/to');
 
 const app = express();
 
@@ -39,7 +34,12 @@ app.use(session({
 	}
 }));
 
-//Sub route for the dashboard
+paypal.configure({
+  'mode': 'sandbox', //sandbox or live
+  'client_id': process.env.CLIENT_PAYPAL,
+  'client_secret': process.env.SECRET_PAYPAL
+});
+
 app.use("/dashboard", dashboardRouter);
 app.use('/proyectos', proyectRouter);
 app.use('/beneficiarios',benefRouter)
@@ -50,7 +50,6 @@ app.use('/beneficiarios',benefRouter)
 
 // Setup View Engine
 
-//Topi te pasas con los modulos
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('views', path.join(__dirname, 'views'));

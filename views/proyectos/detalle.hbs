@@ -72,8 +72,10 @@
     },
 		onApprove: (data, actions) => {
 			return actions.order.capture().then(details => {
+				console.log(details);
 				$.post(window.location, {
-					monto: details.purchase_units[0].amount.value
+					monto: details.purchase_units[0].amount.value,
+					paymentId: details.purchase_units[0].payments.captures[0].id
 				}, data => {
 					console.log(data);
 					if(data.status === 'ok') {
