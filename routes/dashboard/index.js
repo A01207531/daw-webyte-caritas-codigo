@@ -3,6 +3,7 @@ const dash = require('express').Router();
 const projRouter = require('./projects');
 const benefRouter = require('./benef');
 const canRouter = require('./canalizaciones.js');
+const db = require('../../models');
 
 const CONSTANTS = require('../../constants/rbac');
 
@@ -23,12 +24,17 @@ dash.get('/', async (req, res) => {
 			layout: 'dashboard-base',
 			user: user
 		})
-	else 
+	else {
+		let proyectos = await db.query(`SELECT * FROM proyecto WHERE id IN (SELECT proyecto_id FROM dona WHERE donante_id=${req.session.userID})`);
+		proyectos = proyectos.rows;
+		// res.json({ proyectos })
 		res.render('dashboard/landing',{
 			session: req.session,
 			user: user,
-			container: true
+			container: true,
+			proyectos
 		})
+	}
 });
 
 
