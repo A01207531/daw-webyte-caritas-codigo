@@ -4,12 +4,14 @@ const projRouter = require('./projects');
 const benefRouter = require('./benef');
 const canRouter = require('./canalizaciones.js');
 
+
 const CONSTANTS = require('../../constants/rbac');
 
 //append sub router
 dash.use('/proyectos',projRouter);
 dash.use('/beneficiarios',benefRouter);
 dash.use('/canalizaciones',canRouter);
+
 
 dash.get('/', async (req, res) => {
 	if(!req.session.userID){
