@@ -12,53 +12,65 @@
           <h5 class="center">Dona con Nosotros</h5>
 
           <p class="light center">Si tienes muebles, ropa, juguetes o cualquier cosa que quieras donar no dudes en venir con nosotros.</p>
+          
         </div>
+        <a class="waves-effect red darken-1 btn center">Dona</a>
       </div>
 
       <div class="col s12 m4">
-        <div class="icon-block">
-          <h2 class="center brown-text"><img src="images/contacto1.png" alt="contacto"></h2>
-          <h5 class="center">Contáctanos</h5>
-
-          <p class="light center">Ponte en contacto con nosotros para conocer más los programas que tenemos para la gente y sepas a cuál apoyar.</p>
-           <a href="tel:+522123319" class="waves-effect waves-light">Contáctanos</a>
+        <div class="row">
+          <div class="icon-block">
+            <h2 class="center brown-text"><img src="images/contacto1.png" alt="contacto"></h2>
+            <h5 class="center">Contáctanos</h5>
+          
+            <p class="light center">Ponte en contacto con nosotros para conocer más los programas que tenemos para la gente y
+              sepas a cuál apoyar.</p>
+            <a href="tel:+522123319" class="waves-effect red darken-1 btn center">Contáctanos</a>
+          </div>
         </div>
       </div>
+
+
 
       <div class="col s12 m4">
         <div class="icon-block">
           <h2 class="center brown-text"><img src="images/nosotros.png" alt=""></h2>
           <h5 class="center">Sobre Nosotros</h5>
-
-          <p class="light center">Cáritas de Querétaro promueve la solidaridad y la justicia social hacia los más pobres y excluidos.</p>
+      
+          <p class="light center">Cáritas de Querétaro promueve la solidaridad y la justicia social hacia los más pobres y
+            excluidos.</p>
+          <a class="waves-effect red darken-1 btn center">Nosotros</a>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="row">
-      <div class="center"> <h3 class="red-text text-darken-2"> Conoce nuestros proyectos</h3></div><br><br>
-
-      {{#each projects}}
-      <div class="col s12 m4">
-            
-        <div class="card small sticky-action">
-          <div class="card-image ">
-            <img class="activator" src="https://picsum.photos/500/300/?random">
-          </div>
-          <div class="card-content">
-            <span class="card-title activator grey-text text-darken-4">{{nombre}}<i class="material-icons right">more_vert</i></span>
-          </div>
-          <div class="card-reveal">
-            <span class="card-title grey-text text-darken-4">{{nombre}}<i class="material-icons right">close</i></span>
-            <p>{{descripcion}}</p>
-          </div>
-          <div class="card-action">
-            <a href="/proyecto">Detalles</a>
-            <a href="https://paypal.com">¡Dona!</a>
-          </div>
-        </div>
+      </div>
+      </div>
+      
+      <div class="section">
+        <div class="row">
+          <div class="center">
+            <h3 class="red-text text-darken-2"> Conoce nuestros proyectos</h3>
+          </div><br><br>
+      
+          {{#each projects}}
+          <div class="col s12 m4">
+      
+            <div class="card small sticky-action">
+              <div class="card-image ">
+                <img class="activator" src="https://picsum.photos/500/300/?random">
+              </div>
+              <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">{{nombre}}<i
+                    class="material-icons right">more_vert</i></span>
+              </div>
+              <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">{{nombre}}<i class="material-icons right">close</i></span>
+                <p>{{descripcion}}</p>
+              </div>
+              <div class="card-action">
+                <a href="/proyecto">Detalles</a>
+                <a href="https://paypal.com">¡Dona!</a>
+              </div>
+            </div>
             
       </div>
       {{/each}}      
