@@ -12,7 +12,9 @@ const paypal = require('paypal-rest-sdk');
 
 const dashboardRouter = require('./routes/dashboard');
 const proyectRouter = require('./routes/proyectos');
-const benefRouter=require('./routes/dashboard/consultar-benef')
+const benefRouter=require('./routes/dashboard/consultar-benef');
+
+const nosotrosRouter = require('./routes/webpage');
 
 // const to = require('./util/to');
 
@@ -42,7 +44,9 @@ paypal.configure({
 
 app.use("/dashboard", dashboardRouter);
 app.use('/proyectos', proyectRouter);
-app.use('/beneficiarios',benefRouter)
+app.use('/beneficiarios',benefRouter);
+
+app.use('/nosotros', nosotrosRouter);
 
 //El view de contenedores el el mapa adminostrado por google, por lo que
 //para nosotros es meramente estatico
