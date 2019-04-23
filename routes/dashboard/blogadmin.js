@@ -29,7 +29,7 @@ r.get('/nuevo', (req,res) => {
 		return;
 	}
 	
-	res.render('dashboard/canalizaciones/create',{
+	res.render('dashboard/blog/create',{
 		layout: 'dashboard-base',
 		user: req.session.user
 	})
@@ -37,15 +37,10 @@ r.get('/nuevo', (req,res) => {
 
 //esto es el endpoint del form
 r.post('/nuevo', (req,res) => {
-	const con = req.body.contacto;
-	const tel = req.body.telefono;
-	const dir = req.body.direccion;
+	
+	//res.json(req.body)
 
-	const query = 'INSERT INTO canalizacion(id,contacto,telefono,direccion) VALUES (DEFAULT,$1,$2,$3)';
-
-	const values = [con,tel,dir];
-
-	db.query(query,values, (err, resp) => {
+	/*db.query(query,values, (err, resp) => {
 		if(err){
 			console.log(err.stack);
 		  //Este error viene de la BD, por lo que solo puede ser por la
@@ -62,7 +57,7 @@ r.post('/nuevo', (req,res) => {
 				user: req.session.user,
 				})
 		}
-	})
+	})*/
 
 })
 
