@@ -2,6 +2,7 @@ const router = require('express').Router();
 const db = require('../../models');
 const to = require('../../util/to');
 const uuidv4 = require('uuid/v4');
+const paypal = require('paypal-rest-sdk');
 
 router.get('/', async (req, res) => {
   let proyectos = await db.query('SELECT * from proyecto');
@@ -21,7 +22,7 @@ router.get('/:id', async (req, res) => {
       db.query('SELECT * FROM subprograma WHERE id=$1', [proyecto.subprograma_id]), 
       db.query('SELECT * FROM municipio WHERE id=$1', [proyecto.municipio_id]),
       db.query('SELECT COUNT(nombre) FROM donasporpersona'),
-      db.query('SELECT SUM(total_donado) FROM donasporpersona')
+      db.query('SELECT SUM(monto) FROM dona WHERE proyecto_id=$1', [req.params.id])
     ]);
     proyecto.municipio = municipio.rows[0];
     // subPrograma = subPrograma.rows[0];
@@ -49,20 +50,28 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/:id', async (req, res) => {
-  if(req.session.userID && req.session.user.privileges.includes('realizarDonativo')) {
-    let monto = req.body.monto;
-    monto = parseFloat(monto);
-    
-    let [err, data] = await to(db.query('INSERT INTO dona(id, proyecto_id, donante_id, monto) VALUES($1, $2, $3, $4)', [uuidv4(), req.params.id, req.session.userID, monto]))
-    if(err) {
-      res.json({status: 'err', mensaje: err});
-      return;
-    }
-    let newData = await db.query('SELECT sum(total_donado), count(nombre) FROM donasporpersona');
-    res.json({status: 'ok', newDonadores: newData.rows[0].count, newDonaciones: newData.rows[0].sum});
-    return;
-  } 
-  res.json({status: 'err', mensaje: ''});
+  let { monto, paymentId } = req.body;
+  monto = parseFloat(monto);
+  console.log("---paymentID:",paymentId);
+  await paypal.capture.get(paymentId, async (payerr, payment) => {
+    if(req.session.userID && req.session.user.privileges.includes('realizarDonativo')) {
+      if(payerr) {
+        res.json({ status: 'err', payerr });
+        return;
+      } else {
+        console.log(JSON.stringify(payment))
+        let [err, data] = await to(db.query('INSERT INTO dona(id, proyecto_id, donante_id, monto) VALUES($1, $2, $3, $4)', [uuidv4(), req.params.id, req.session.userID, monto]))
+        if(err) {
+          res.json({status: 'err', mensaje: err});
+          return;
+        }
+        let newData = await db.query('SELECT sum(total_donado), count(nombre) FROM donasporpersona');
+        res.json({status: 'ok', newDonadores: newData.rows[0].count, newDonaciones: newData.rows[0].sum});
+        return;
+      }
+    } 
+    res.json({status: 'err', mensaje: ''});
+  });
 });
 
 module.exports = router;
