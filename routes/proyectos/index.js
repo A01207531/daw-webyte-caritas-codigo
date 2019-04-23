@@ -22,7 +22,7 @@ router.get('/:id', async (req, res) => {
       db.query('SELECT * FROM subprograma WHERE id=$1', [proyecto.subprograma_id]), 
       db.query('SELECT * FROM municipio WHERE id=$1', [proyecto.municipio_id]),
       db.query('SELECT COUNT(nombre) FROM donasporpersona'),
-      db.query('SELECT SUM(total_donado) FROM donasporpersona')
+      db.query('SELECT SUM(monto) FROM dona WHERE proyecto_id=$1', [req.params.id])
     ]);
     proyecto.municipio = municipio.rows[0];
     // subPrograma = subPrograma.rows[0];
