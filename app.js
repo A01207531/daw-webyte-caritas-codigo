@@ -12,7 +12,11 @@ const paypal = require('paypal-rest-sdk');
 
 const dashboardRouter = require('./routes/dashboard');
 const proyectRouter = require('./routes/proyectos');
+
+const blogRouter = require('./routes/blog');
 const benefRouter=require('./routes/dashboard/consultar-benef');
+//Elimine esto porque ya no era necesario. Solamente hay que poner el mapa y ya,
+//el cual es estatico
 
 const nosotrosRouter = require('./routes/webpage');
 const contenedorRouter = require('./routes/webpage/contenedor');
@@ -47,6 +51,8 @@ paypal.configure({
 app.use("/dashboard", dashboardRouter);
 app.use('/proyectos', proyectRouter);
 app.use('/beneficiarios',benefRouter);
+
+app.use('/blog',blogRouter);
 
 app.use('/nosotros', nosotrosRouter);
 app.use('/contenedor', contenedorRouter);

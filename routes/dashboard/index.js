@@ -3,8 +3,8 @@ const dash = require('express').Router();
 const projRouter = require('./projects');
 const benefRouter = require('./benef');
 const canRouter = require('./canalizaciones.js');
+const blogAdminRouter = require('./blogadmin');
 const db = require('../../models');
-
 
 const CONSTANTS = require('../../constants/rbac');
 
@@ -12,6 +12,7 @@ const CONSTANTS = require('../../constants/rbac');
 dash.use('/proyectos',projRouter);
 dash.use('/beneficiarios',benefRouter);
 dash.use('/canalizaciones',canRouter);
+dash.use('/blog',blogAdminRouter);
 
 
 dash.get('/', async (req, res) => {

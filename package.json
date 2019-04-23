@@ -18,6 +18,7 @@
     },
     "homepage": "",
     "dependencies": {
+        "azure-storage": "^2.8.0",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.18.3",
         "dotenv": "^6.2.0",
@@ -26,6 +27,8 @@
         "express-session": "^1.15.6",
         "handlebars-dateformat": "^1.1.1",
         "handlebars-extend-block": "^1.0.0",
+        "into-stream": "^5.1.0",
+        "multer": "^1.4.1",
         "nodemon": "^1.18.10",
         "paypal-rest-sdk": "^1.8.1",
         "pg": "^7.8.2",
