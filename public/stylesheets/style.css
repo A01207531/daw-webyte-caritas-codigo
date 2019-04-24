@@ -59,6 +59,9 @@ nav {
     top: 10%;
   }
 }
+a{
+  color: #ffffff
+}
 
 @media only screen and (max-width : 600px) {
   #index-banner .section {
