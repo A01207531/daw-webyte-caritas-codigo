@@ -111,6 +111,10 @@ app.get('/login', (req,res) => {
 		res.render('login.hbs');
 	}
 });
+//Documentos get
+app.get('/documentos',async(req,res) => {
+  res.render('documentos/documento')
+});
 
 app.post('/login', async (req,res) => {
 	//get data
