@@ -31,6 +31,11 @@ pr.get('/nuevo', async (req, res) => {
 	})
 });
 
+function progCat(prog,cat){
+	console.log("Asociando el programa con id " + prog + " con " + cat);
+}
+
+
 pr.post('/nuevo', (req, res) => {
 	if(!req.session.userID){
 		res.redirect("/login");
@@ -64,6 +69,7 @@ pr.post('/nuevo', (req, res) => {
 		//El proyecto se creo. Ahora aqui hay que hacer un for
 		p.categorias.forEach(cat => {
 			//hacer el insert aqui
+			console.log("aqui insertamos el registro de un id con la categoria");
 		});
 		  res.render('dashboard/proyectos/success',{
 			layout: 'dashboard-base',
