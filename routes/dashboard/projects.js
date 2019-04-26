@@ -46,7 +46,7 @@ projectRouter.post('/nuevo', (req, res) => {
 	const responsable = req.session.userID;
 
 	const values = [p.name,p.desc,p.inicio,p.final,p.status,responsable,p.observation,p.sub,p.city,p.address,sol];
-
+	console.log(p)
 	//res.json(p);
 
 	db.query(query, values, (err, resp) => {
