@@ -76,9 +76,9 @@ nav {
 .icon-block .material-icons {
   font-size: inherit;
 }
-
-
-
+#parallaxContainer{
+  height: 80px;
+}
 footer.page-footer {
   margin: 0;
 }
