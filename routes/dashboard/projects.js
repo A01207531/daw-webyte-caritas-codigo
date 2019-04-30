@@ -1,6 +1,20 @@
 const db = require('../../models');
 const pr = require('express').Router();
 
+//Azure blob storage
+const multer = require('multer');
+const inMemoryStorage = multer.memoryStorage();
+uploadStrategy = multer({ storage: inMemoryStorage }).single('upload');
+const azureStorage = require('azure-storage');
+const blobService = azureStorage.createBlobService();
+const getStream = require('into-stream');
+const containerName = 'uploads';
+
+const getBlobName = originalName => {
+	const identifier = Math.random().toString().replace(/0\./, ''); // remove "0." from start of string
+	return `${identifier}-${originalName}`;
+};
+
 pr.get('/', async (req, res) => {
 	if(!req.session.userID){
 		res.redirect("/login");
@@ -35,8 +49,36 @@ function progCat(prog,cat){
 	console.log("Asociando el programa con id " + prog + " con " + cat);
 }
 
+const handleError = (err, res) => {
+	res.status(500);
+	res.render('error', { error: err });
+};
 
-pr.post('/nuevo', (req, res) => {
+function savePostInDB(title,content,img,req,res){
+	const query = 'INSERT INTO posts(titulo,cuerpo,fotourl,autor) VALUES ($1,$2,$3,$4)';
+	const values = [title,content,"https://caritasqro.blob.core.windows.net/uploads/"+img,req.session.userID];
+
+	db.query(query,values, (err, resp) => {
+		if(err){
+			console.log(err.stack);
+		  //Este error viene de la BD, por lo que solo puede ser por la
+		  //violación de la llave única. 
+		  res.render('dashboard/errors/generic',{
+			  layout: 'dashboard-base',
+			  user: req.session.user,
+			  title: 'Error al ingresar los datos',
+			  text: 'Ocurrio un error al insertar la imagen'
+		  });
+		}else{
+			res.render('dashboard/canalizaciones/success',{
+				layout: 'dashboard-base',
+				user: req.session.user,
+			})
+		}
+	})
+}
+
+pr.post('/nuevo', uploadStrategy,(req, res) => {
 	if(!req.session.userID){
 		res.redirect("/login");
 		return;
@@ -54,29 +96,25 @@ pr.post('/nuevo', (req, res) => {
 	console.log(p)
 	//res.json(p);
 
-	db.query(query, values, (err, resp) => {
-		if (err) {
-		  console.log(err.stack);
-		  //Este error viene de la BD, por lo que solo puede ser por la
-		  //violación de la llave única. 
-		  res.render('dashboard/errors/generic',{
-			  layout: 'dashboard-base',
-			  user: req.session.user,
-			  title: 'Error al ingresar los datos',
-			  text: 'El error se debe a que los datos no son validos. Es posible que el nombre del proyecto ya exista.'
-		  });
-		} else {
-		//El proyecto se creo. Ahora aqui hay que hacer un for
-		p.categorias.forEach(cat => {
-			//hacer el insert aqui
-			console.log("aqui insertamos el registro de un id con la categoria");
-		});
-		  res.render('dashboard/proyectos/success',{
-			layout: 'dashboard-base',
-			user: req.session.user,
-		  })
-		}
-	  })
+	//azure stuff
+	const
+          blobName = getBlobName(req.file.originalname)
+        , stream = getStream(req.file.buffer)
+        , streamLength = req.file.buffer.length
+		;
+		
+		blobService.createBlockBlobFromStream(containerName, blobName, stream, streamLength, err => {
+
+			if(err) {
+					handleError(err);
+					return;
+			}
+
+			//we did it. Now store the rest of the data in the DB
+			savePostInDB(title,content,blobName,req,res);
+	});
+
+	
 });
 
 pr.get('/editar/:projectid', async (req, res) => {
