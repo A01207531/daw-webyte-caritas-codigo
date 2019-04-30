@@ -60,6 +60,10 @@ nav {
   }
 }
 
+.num{
+  color: #ffffff
+}
+
 @media only screen and (max-width : 600px) {
   #index-banner .section {
     top: 0;
@@ -72,9 +76,9 @@ nav {
 .icon-block .material-icons {
   font-size: inherit;
 }
-
-
-
+#parallaxContainer{
+  height: 80px;
+}
 footer.page-footer {
   margin: 0;
 }

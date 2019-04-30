@@ -94,9 +94,7 @@
           <select id="lineadeaccion" class="browser-default" required>
             <option value="" disabled selected>Seleccione...</option>
             <option value='ASISTENCIA SOCIAL'>ASISTENCIA SOCIAL</option>
-            <option value='DESARROLLO HUMANO'>DESARROLLO HUMANO</option>
-            <option value='SUSTENTABILIDAD AMBIENTAL'>SUSTENTABILIDAD AMBIENTAL</option>
-            <option value='CANALIZACIONES'>CANALIZACIONES</option>
+            <option value='PROMOCION HUMANA'>PROMOCION HUMANA</option>
           </select>
           <label for="lineadeaccion" class="active">Linea de acción</label>
         </div>
@@ -129,6 +127,23 @@
           <input id="observation" type="text" class="validate" name="observation">
           <label for="observation">Observaciones</label>
         </div>
+        <div class="input-field col s12">
+          <select multiple name="categorias" id= "categorias">
+            <option value="" disabled selected>Selecciona las categorias</option>
+            <option value="Niños">Niños</option>
+            <option value="Mujeres">Mujeres</option>
+            <option value="Becas">Becas</option>
+            <option value="Salud">Salud</option>
+            <option value="Educacion">Educacion</option>
+            <option value="Jovenes">Jovenes</option>
+            <option value="Adultos Mayores">Adultos mayores</option>
+            <option value="Rural">Rural</option>
+            <option value="Urbano">Urbano</option>
+            <option value="Otros">Otros</option>
+
+          </select>
+          <label>Categorias</label>
+  </div>
       </div>
 
       
@@ -140,3 +155,9 @@
   <!--Testing JS for the cities-->
   <script src="/javascripts/mx-data.js"></script>
   <script src="/javascripts/new-proj-form.js"></script>
+  <script>
+     document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems, options);
+  });
+  </script>

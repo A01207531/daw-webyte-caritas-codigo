@@ -77,5 +77,44 @@ can.post('/nueva', (req,res) => {
 })
 
 
+can.get('/modificar/:id', async (req, res) => {
+  let canalizacion = await db.query('SELECT * FROM canalizacion WHERE id=$1', [req.params.id]);
+			canalizacion=canalizacion.rows[0];
+		res.render('dashboard/canalizaciones/modificar', { ...canalizacion, session: req.session 
+			,layout: 'dashboard-base',
+			user: req.session.user});
+		//res.json({canalizacion})
+});
+
+can.post('/modificar/:id', (req,res) => {
+	const con = req.body.contacto;
+	const tel = req.body.telefono;
+	const dir = req.body.direccion;
+
+	const params = [con,tel,dir,req.params.id];
+
+	const query = 'UPDATE canalizacion SET contacto=$1,telefono=$2,direccion=$3 WHERE id=$4';
+
+
+	db.query(query,params, (err, resp) => {
+		if(err){
+			console.log(err.stack);
+		  //Este error viene de la BD, por lo que solo puede ser por la
+		  //violación de la llave única. 
+		  res.render('dashboard/errors/generic',{
+			  layout: 'dashboard-base',
+			  user: req.session.user,
+			  title: 'Error al ingresar los datos',
+			  text: 'Ocurrio un error al insertar la canalizacion'
+		  });
+		}else{
+			res.render('dashboard/canalizaciones/modificado',{
+				layout: 'dashboard-base',
+				user: req.session.user,
+				})
+		}
+	})
+
+})
 
 module.exports = can;

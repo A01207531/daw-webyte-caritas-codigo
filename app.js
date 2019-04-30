@@ -21,6 +21,7 @@ const benefRouter=require('./routes/dashboard/consultar-benef');
 const nosotrosRouter = require('./routes/webpage');
 const contenedorRouter = require('./routes/webpage/contenedor');
 const contactoRouter = require('./routes/webpage/contacto');
+const ayudaRouter = require('./routes/webpage/ayuda');
 
 // const to = require('./util/to');
 
@@ -57,6 +58,7 @@ app.use('/blog',blogRouter);
 app.use('/nosotros', nosotrosRouter);
 app.use('/contenedor', contenedorRouter);
 app.use('/contacto', contactoRouter);
+app.use('/ayuda', ayudaRouter);
 
 //El view de contenedores el el mapa adminostrado por google, por lo que
 //para nosotros es meramente estatico
@@ -110,6 +112,10 @@ app.get('/login', (req,res) => {
 	}else{
 		res.render('login.hbs');
 	}
+});
+//Documentos get
+app.get('/documentos',async(req,res) => {
+  res.render('documentos/documento')
 });
 
 app.post('/login', async (req,res) => {

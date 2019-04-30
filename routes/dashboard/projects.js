@@ -1,7 +1,7 @@
 const db = require('../../models');
-const projectRouter = require('express').Router();
+const pr = require('express').Router();
 
-projectRouter.get('/', async (req, res) => {
+pr.get('/', async (req, res) => {
 	if(!req.session.userID){
 		res.redirect("/login");
 		return;
@@ -19,7 +19,7 @@ projectRouter.get('/', async (req, res) => {
 	})
 });
 
-projectRouter.get('/nuevo', async (req, res) => {
+pr.get('/nuevo', async (req, res) => {
 	if(!req.session.userID){
 		res.redirect("/login");
 		return;
@@ -31,7 +31,12 @@ projectRouter.get('/nuevo', async (req, res) => {
 	})
 });
 
-projectRouter.post('/nuevo', (req, res) => {
+function progCat(prog,cat){
+	console.log("Asociando el programa con id " + prog + " con " + cat);
+}
+
+
+pr.post('/nuevo', (req, res) => {
 	if(!req.session.userID){
 		res.redirect("/login");
 		return;
@@ -46,7 +51,7 @@ projectRouter.post('/nuevo', (req, res) => {
 	const responsable = req.session.userID;
 
 	const values = [p.name,p.desc,p.inicio,p.final,p.status,responsable,p.observation,p.sub,p.city,p.address,sol];
-
+	console.log(p)
 	//res.json(p);
 
 	db.query(query, values, (err, resp) => {
@@ -61,6 +66,11 @@ projectRouter.post('/nuevo', (req, res) => {
 			  text: 'El error se debe a que los datos no son validos. Es posible que el nombre del proyecto ya exista.'
 		  });
 		} else {
+		//El proyecto se creo. Ahora aqui hay que hacer un for
+		p.categorias.forEach(cat => {
+			//hacer el insert aqui
+			console.log("aqui insertamos el registro de un id con la categoria");
+		});
 		  res.render('dashboard/proyectos/success',{
 			layout: 'dashboard-base',
 			user: req.session.user,
@@ -69,7 +79,7 @@ projectRouter.post('/nuevo', (req, res) => {
 	  })
 });
 
-projectRouter.get('/editar/:projectid', async (req, res) => {
+pr.get('/editar/:projectid', async (req, res) => {
 	if(!req.session.userID){
 		res.redirect("/login");
 		return;
@@ -79,7 +89,7 @@ projectRouter.get('/editar/:projectid', async (req, res) => {
 });
 
 
-projectRouter.get('/programAPI',async (req, res) => {
+pr.get('/programAPI',async (req, res) => {
 	if(!req.session.userID){
 		res.redirect("/login");
 		return;
@@ -90,4 +100,4 @@ projectRouter.get('/programAPI',async (req, res) => {
 	res.json(q.rows);
 })
 
-module.exports = projectRouter;
+module.exports = pr;
