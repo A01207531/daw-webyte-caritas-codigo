@@ -26,7 +26,7 @@ dash.get('/', async (req, res) => {
 		res.render('dashboard/landing',{
 			layout: 'dashboard-base',
 			user: user,
-			createStaff: true
+			createStaff: user.privileges.includes(CONSTANTS.CREATE_USER)
 		})
 	else {
 		let proyectos = await db.query(`SELECT * FROM proyecto WHERE id IN (SELECT proyecto_id FROM dona WHERE donante_id=${req.session.userID})`);
@@ -41,5 +41,13 @@ dash.get('/', async (req, res) => {
 	}
 });
 
+dash.get('/nuevoStaff', async (req, res) => {
+	if(req.session.user.privileges.includes(CONSTANTS.CREATE_USER)) {
+		res.render('dashboard/newStaff');
+		return;
+	}
+	res.redirect('/dashboard');
+	return;
+});
 
 module.exports = dash;
