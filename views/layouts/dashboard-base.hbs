@@ -47,10 +47,17 @@
         <i class="material-icons circle red darken-2">assessment</i>
         Canalizaciones
       </a>
-      <a href="/dashboard/nuevoAdmin" class="collection-item avatar red darken-2 white-text">
-        <i class="material-icons circle red darken-2">person_add</i>
-        Crear Administrador
-      </a>
+      {{#if createStaff}}
+        <a href="/dashboard/nuevoStaff" class="collection-item avatar red darken-2 white-text">
+          <i class="material-icons circle red darken-2">person_add</i>
+          Nuevo Staff
+        </a>
+      {{else}}
+        <a href="#" class="collection-item avatar red darken-2 white-text">
+          <i class="material-icons circle red darken-2">person_add_disabled</i>
+          Nuevo Staff
+        </a>
+      {{/if}}
       <a href="/logout" class="collection-item avatar red darken-2 white-text">
         <i class="material-icons circle red darken-2">close</i>
         Salir
