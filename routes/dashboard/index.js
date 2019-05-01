@@ -25,7 +25,8 @@ dash.get('/', async (req, res) => {
 	if(user.privileges.some(r => [CONSTANTS.CREATE_BOX, CONSTANTS.CREATE_PROJECT, CONSTANTS.CREATE_USER].indexOf(r) >= 0))
 		res.render('dashboard/landing',{
 			layout: 'dashboard-base',
-			user: user
+			user: user,
+			createStaff: true
 		})
 	else {
 		let proyectos = await db.query(`SELECT * FROM proyecto WHERE id IN (SELECT proyecto_id FROM dona WHERE donante_id=${req.session.userID})`);
