@@ -5,6 +5,7 @@ const benefRouter = require('./benef');
 const canRouter = require('./canalizaciones.js');
 const blogAdminRouter = require('./blogadmin');
 const db = require('../../models');
+const bcrypt = require('bcryptjs');
 
 const CONSTANTS = require('../../constants/rbac');
 
@@ -41,10 +42,55 @@ dash.get('/', async (req, res) => {
 	}
 });
 
-dash.get('/nuevoStaff', async (req, res) => {
-	if(req.session.user.privileges.includes(CONSTANTS.CREATE_USER)) {
-		res.render('dashboard/newStaff');
+dash.get('/nuevoStaff', (req, res) => {
+	if(!req.session.userID){
+		res.redirect("/login");
 		return;
+	}
+	if(req.session.user.privileges.includes(CONSTANTS.CREATE_USER)) {
+		res.render('dashboard/newStaff', {session: req.session});
+		return;
+	}
+	res.redirect('/dashboard');
+	return;
+});
+
+dash.post('/nuevoStaff', async (req, res) => {
+	if(req.session.user.privileges.includes(CONSTANTS.CREATE_USER)) {
+		const { username, name, lastname, email, password, password2 } = req.body;
+
+		// Revisamos que el usuario haya ingresado todos sus datos
+		if(username && name && lastname && email && password && password2) {
+			// Revisamos que las contraseñas coincidan
+			if(password === password2) {
+				// Buscamos si el nombre de usuario o correo ya está registrado
+				const posibleUser = await db.query('SELECT * FROM usuario WHERE login=$1 OR email=$2', [username, email]);
+				// Si no está registrado, continuamos 👍
+				if(posibleUser.rowCount === 0) {
+					const salt = bcrypt.genSaltSync(8);
+					const passHash = bcrypt.hashSync(password, salt);
+					
+					// Creamos el Usuario
+					await db.query('INSERT INTO usuario (login, passHash, nombre, apellido, email) VALUES ($1, $2, $3, $4, $5)', [username, passHash, name, lastname, email]);
+					// const result2 = await db.query('INSERT INTO usuario_privilegio (login, priv) VALUES ($1, $2)', [username, 'realizarDonativo']);
+					const id = await db.query('SELECT id FROM usuario WHERE login=$1', [username])
+					db.query('INSERT INTO usuario_rol (id_usuario, id_rol, activo) VALUES ($1, $2, $3)', [id.rows[0].id, 2, true]);
+
+					res.json({ status: 'ok' });
+					return;
+
+				} else {
+					res.json({ status: 'err', err: '¡Ups! El nombre de usuario o correo que ingresaste ya está registrado.', posibleUser });
+					return;
+				}
+			} else {
+				res.json({ status: 'err', err: '¡Ups! Por favor, revisa tu contraseña.' });
+				return;
+			}
+		} else {
+			res.json({ status: 'err', err: '¡Ups! Por favor, ingresa todos los datos.' });
+			return;
+		}
 	}
 	res.redirect('/dashboard');
 	return;

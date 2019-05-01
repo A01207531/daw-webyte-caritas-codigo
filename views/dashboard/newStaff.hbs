@@ -71,7 +71,7 @@
     const password2 = $('#password2');
     
     const click = e => {
-      $.post('/newStaff', registroForm.serialize(), data => {
+      $.post('/dashboard/nuevoStaff', registroForm.serialize(), data => {
         if(data.status === 'ok') {
           window.location.replace('/dashboard');
         } else if(data.status === 'err') {
