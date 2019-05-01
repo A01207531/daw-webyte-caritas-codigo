@@ -153,7 +153,7 @@ app.post('/login', async (req,res) => {
 		req.session.userID = userData.id;
 		console.log("-----", userData ,'\n-----');
 		//get the RBAC privileges right now
-		let privq = await db.query('SELECT priv FROM usuario_privilegio WHERE login=$1',[userData.login]);
+		const privq = await db.query('SELECT priv FROM usuario_privilegio WHERE login=$1',[userData.login]);
 		req.session.user = {
 			name: userData.nombre,
 			lastname: userData.apellido,
