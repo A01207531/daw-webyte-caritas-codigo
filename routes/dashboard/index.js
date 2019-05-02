@@ -96,4 +96,44 @@ dash.post('/nuevoStaff', async (req, res) => {
 	return;
 });
 
+dash.get('/modificarInformacion', async (req, res) => {
+	if(!req.session.userID){
+		res.redirect("/login");
+		return;
+	}
+	let user = await db.query('SELECT login, nombre, apellido, email FROM usuario WHERE id=$1', [req.session.userID]);
+	user = user.rows[0];
+	console.log(user);
+	res.render('dashboard/modificarInformacion',{
+		session: req.session,
+		userID: req.session.userID,
+		user
+	});
+});
+
+dash.post('/modificarInformacion', async (req, res) => {
+	if(req.session.userID == req.body.userID) {
+		const { name, lastname, email } = req.body;
+
+		// Revisamos que el usuario haya ingresado todos sus datos
+		if(name && lastname && email) {
+			try {
+				await db.query('UPDATE usuario SET nombre=$1, apellido=$2, email=$3 WHERE id=$4', [name, lastname, email, req.session.userID])
+				req.session.user.name = name;
+				req.session.user.lastName = lastname;
+				req.session.user.fullName = name + ' ' + lastname;
+				res.json({status: 'ok'});
+			} catch(e) { 
+				res.json({ status: 'err', err: '¡Ups! Ocurrió un error, revisa los datos.' }); 
+			}
+			return;
+		} else {
+			res.json({ status: 'err', err: '¡Ups! Por favor, ingresa todos los datos.' });
+			return;
+		}
+	}
+	res.json({status: 'err', err: '¡Ups! Parece que quieres hacer trampa.'});
+	return;
+});
+
 module.exports = dash;
