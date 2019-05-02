@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   let query = 'SELECT * FROM proyecto ', proyectos;
   let byPrograma = undefined, byName = undefined;
-  let postman = true;
+  let postman = false;
   if(postman){
     byPrograma = req.query.byPrograma;
     byName = req.query.byName;
@@ -38,8 +38,6 @@ router.post('/', async (req, res) => {
     console.log("cuarto");
     proyectos = await db.query(query);
   }
-
-  // proyectos = proyectos.rows;
 
   res.json({proyectos});
 });

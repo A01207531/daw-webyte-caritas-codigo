@@ -12,19 +12,19 @@
           <h5>Por programa</h5>
           <p>
             <label>
-              <input class="with-gap" name="programa" type="radio" />
+              <input class="with-gap" value="1" name="programa" id="programa1" type="radio" />
               <span>Programa 1</span>
             </label>
           </p>
           <p>
             <label>
-              <input class="with-gap" name="programa" type="radio" />
+              <input class="with-gap" value="2" name="programa" id="programa2" type="radio" />
               <span>Programa 2</span>
             </label>
           </p>
           <p>
             <label>
-              <input class="with-gap" name="programa" type="radio" />
+              <input class="with-gap" value="3" name="programa" id="programa3" type="radio" />
               <span>Programa 3</span>
             </label>
           </p>
@@ -77,20 +77,24 @@
   </div>
 </section>
 
-{{!-- <script>
-  var slider = document.getElementById('test-slider');
-  noUiSlider.create(slider, {
-   start: [20, 80],
-   connect: true,
-   step: 1,
-   orientation: 'horizontal', // 'horizontal' or 'vertical'
-   range: {
-     'min': 0,
-     'max': 100
-   },
-   format: wNumb({
-     decimals: 0
-   })
+<script>
+  $('document').ready(() => {
+    let byName, byPrograma;
+
+    $("input[name='programa']:radio").change(e => {
+      byPrograma = $('input:radio[name=programa]:checked').val();
+      get({byPrograma, byName});
+    });
+
+    $('#name').change(e => {
+      byName = e.target.value;
+      get({byPrograma, byName});
+    });
+
+    let get = data => {
+      $.post('/proyectos', data, response => {
+        console.log(response);
+      });
+    }
   });
-    
-</script> --}}
+</script>
