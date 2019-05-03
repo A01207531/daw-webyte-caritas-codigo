@@ -22,6 +22,7 @@ const nosotrosRouter = require('./routes/webpage');
 const contenedorRouter = require('./routes/webpage/contenedor');
 const contactoRouter = require('./routes/webpage/contacto');
 const ayudaRouter = require('./routes/webpage/ayuda');
+const detalleBenefRouter = require('./routes/dashboard/detallebenef');
 
 // const to = require('./util/to');
 
@@ -59,6 +60,7 @@ app.use('/nosotros', nosotrosRouter);
 app.use('/contenedor', contenedorRouter);
 app.use('/contacto', contactoRouter);
 app.use('/ayuda', ayudaRouter);
+app.use('/beneficiario', detalleBenefRouter);
 
 //El view de contenedores el el mapa adminostrado por google, por lo que
 //para nosotros es meramente estatico
