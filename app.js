@@ -132,7 +132,7 @@ app.post('/login', async (req,res) => {
 
 	//We have data
 	//consult the db
-	const q = await db.query('SELECT id,nombre,apellido,passhash FROM usuario WHERE login=$1 OR email=$1',[username]);
+	const q = await db.query('SELECT id,nombre,apellido,passhash,login FROM usuario WHERE login=$1 OR email=$1',[username]);
 
 	if(!q || q.rowCount != 1){
 		res.render('login.hbs',{
@@ -151,10 +151,9 @@ app.post('/login', async (req,res) => {
 	if(bcrypt.compareSync(pass,hash)){
 		//Successfull auth
 		req.session.userID = userData.id;
-
+		console.log("-----", userData ,'\n-----');
 		//get the RBAC privileges right now
-		const privq = await db.query('SELECT priv FROM usuario_privilegio WHERE login=$1',[username]);
-
+		const privq = await db.query('SELECT priv FROM usuario_privilegio WHERE login=$1',[userData.login]);
 		req.session.user = {
 			name: userData.nombre,
 			lastname: userData.apellido,

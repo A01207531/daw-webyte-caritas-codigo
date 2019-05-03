@@ -3,15 +3,17 @@
 {{/if}}
   <div class="card separate">
     <div class="card-content">
-      <h3>Bienvenido/a <br><br>{{user.fullName}}</h3>
+      <h3>Bienvenido/a</h3>
+      <h4 class="grey-text text-darken-3">{{user.fullName}}</h4>
+      <br>
+      <a href="/dashboard/modificarInformacion" class="btn waves-effect  red darken-1 ">Edita tu información</a>
     </div>
   </div>
   <div class="row">
-    <h3>Proyectos Donados</h3>
     {{#if proyectos}}
+      <h3>Proyectos Donados</h3>
       {{#each proyectos}}
         <div class="col s12 m4">
-              
           <div class="card small sticky-action">
             <div class="card-image ">
               <img class="activator" src="https://picsum.photos/500/300/?random">
