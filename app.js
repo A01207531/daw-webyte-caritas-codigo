@@ -68,7 +68,7 @@ app.use('/beneficiario', detalleBenefRouter);
 
 // Setup View Engine
 
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('views', path.join(__dirname, 'views'));
 
