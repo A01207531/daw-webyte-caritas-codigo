@@ -103,27 +103,19 @@ r.post('/nuevo',uploadStrategy,(req,res) => {
 			savePostInDB(title,content,blobName,req,res);
 	});
 
-	/*db.query(query,values, (err, resp) => {
-		if(err){
-			console.log(err.stack);
-		  //Este error viene de la BD, por lo que solo puede ser por la
-		  //violación de la llave única. 
-		  res.render('dashboard/errors/generic',{
-			  layout: 'dashboard-base',
-			  user: req.session.user,
-			  title: 'Error al ingresar los datos',
-			  text: 'Ocurrio un error al insertar la canalizacion'
-		  });
-		}else{
-			res.render('dashboard/canalizaciones/success',{
-				layout: 'dashboard-base',
-				user: req.session.user,
-				})
-		}
-	})*/
-
 })
 
-
+//-----------------Editar POST-----------------------
+r.get("/editar/:id",async (req,res) => {
+	let post = await db.query('SELECT * FROM posts WHERE id=$1', [req.params.id]);
+  if(post.rowCount>0) {
+    post = post.rows[0];
+    //res.json(proyecto);
+  
+    res.render('dashboard/blog/edit', { layout: 'dashboard-base',post, session: req.session });
+  } else {
+    res.render('404', { status:'err', err:'No se pudo encontrar el proyecto solicitado', session: req.session });
+  }
+})
 
 module.exports = r;
