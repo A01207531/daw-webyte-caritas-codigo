@@ -54,37 +54,8 @@ const handleError = (err, res) => {
 	res.render('error', { error: err });
 };
 
-function savePostInDB(title,content,img,req,res){
-	const query = 'INSERT INTO posts(titulo,cuerpo,fotourl,autor) VALUES ($1,$2,$3,$4)';
-	const values = [title,content,"https://caritasqro.blob.core.windows.net/uploads/"+img,req.session.userID];
-
-	db.query(query,values, (err, resp) => {
-		if(err){
-			console.log(err.stack);
-		  //Este error viene de la BD, por lo que solo puede ser por la
-		  //violación de la llave única. 
-		  res.render('dashboard/errors/generic',{
-			  layout: 'dashboard-base',
-			  user: req.session.user,
-			  title: 'Error al ingresar los datos',
-			  text: 'Ocurrio un error al insertar la imagen'
-		  });
-		}else{
-			res.render('dashboard/canalizaciones/success',{
-				layout: 'dashboard-base',
-				user: req.session.user,
-			})
-		}
-	})
-}
-
-pr.post('/nuevo', uploadStrategy,(req, res) => {
-	if(!req.session.userID){
-		res.redirect("/login");
-		return;
-	}
-
-	const query = 'INSERT INTO proyecto(id,nombre,descripcion,inicio,final,estatus,responsable,observaciones,subprograma_id,municipio_id,direccion,solicitado) VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)';
+function savePostInDB(img,req,res){
+	const query = 'INSERT INTO proyecto(id,nombre,descripcion,inicio,final,estatus,responsable,observaciones,subprograma_id,municipio_id,direccion,solicitado,img) VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)';
 
 	const p = req.body; //p de post
 
@@ -92,9 +63,35 @@ pr.post('/nuevo', uploadStrategy,(req, res) => {
 
 	const responsable = req.session.userID;
 
-	const values = [p.name,p.desc,p.inicio,p.final,p.status,responsable,p.observation,p.sub,p.city,p.address,sol];
-	console.log(p)
+	const values = [p.name,p.desc,p.inicio,p.final,p.status,responsable,p.observation,p.sub,p.city,p.address,sol,"https://caritasqro.blob.core.windows.net/uploads/"+img];
+
 	//res.json(p);
+
+	db.query(query, values, (err, resp) => {
+		if (err) {
+		  console.log(err.stack);
+		  //Este error viene de la BD, por lo que solo puede ser por la
+		  //violación de la llave única. 
+		  res.render('dashboard/errors/generic',{
+			  layout: 'dashboard-base',
+			  user: req.session.user,
+			  title: 'Error al ingresar los datos',
+			  text: 'El error se debe a que los datos no son validos. Es posible que el nombre del proyecto ya exista.'
+		  });
+		} else {
+		  res.render('dashboard/proyectos/success',{
+			layout: 'dashboard-base',
+			user: req.session.user,
+		  })
+		}
+})
+}
+
+pr.post('/nuevo', uploadStrategy,(req, res) => {
+	if(!req.session.userID){
+		res.redirect("/login");
+		return;
+	}
 
 	//azure stuff
 	const
@@ -111,7 +108,7 @@ pr.post('/nuevo', uploadStrategy,(req, res) => {
 			}
 
 			//we did it. Now store the rest of the data in the DB
-			savePostInDB(title,content,blobName,req,res);
+			savePostInDB(blobName,req,res);
 	});
 
 	
