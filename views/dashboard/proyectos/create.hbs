@@ -1,6 +1,6 @@
 <h1>Registrar nuevo proyecto</h1>
 
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
       <div class="row">
         <div class="input-field col m6 s12">
           <input id="name" type="text" class="validate" name="name" required>
@@ -145,6 +145,8 @@
           <label>Categorias</label>
   </div>
       </div>
+
+      <input type="file" name="upload" id="upload">
 
       
       <button class="btn waves-effect waves-light" type="submit" name="action">Registrar</button>
