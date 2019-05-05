@@ -87,7 +87,7 @@ app.locals.title = 'Cáritas de Querétaro';
 
 //Index
 app.get('/', async (req, res) => {
-	const query = await db.query('SELECT nombre,descripcion FROM proyecto LIMIT 6');
+	const query = await db.query('SELECT nombre,descripcion,img FROM proyecto LIMIT 6');
 	// console.log(query);
 	const data = query.rows;
 	// console.log(data);
