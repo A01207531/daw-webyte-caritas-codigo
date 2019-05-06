@@ -6,6 +6,8 @@
     <div class=" white row card" style="display: inline-block; padding: 32px 48px 0px 48px;">
       <h4>Regístrate como Donante</h4>
       <p id="err" class="err"></p>
+      <p id="success" class="success"></p>
+
       <form id="registroForm" class="col s12" method="POST">
 
         <div class='row'>
@@ -62,7 +64,9 @@
 <script>
   $('document').ready(() => {
     const errCont = $('#err');
+    const succCont = $('#success');
     errCont.toggleClass('hidden');
+    succCont.toggleClass('hidden');  
 
     const registroForm = $('#registroForm');
     const userName = $('#username');
@@ -75,7 +79,10 @@
     const click = e => {
       $.post('/registro', registroForm.serialize(), data => {
         if(data.status === 'ok') {
-          window.location.replace('/login');
+           window.scrollTo(0,0);
+          if(succCont.hasClass('hidden'))
+            succCont.toggleClass('hidden');
+          succCont.html("Se ha registrado exitosamente");
         } else if(data.status === 'err') {
           window.scrollTo(0,0);
           if(errCont.hasClass('hidden'))
