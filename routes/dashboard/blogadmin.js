@@ -143,12 +143,55 @@ function updateWithoutImg(title,content,req,res,id){
 	})
 }
 
+function updateWithImg(title,content,req,res,id,img){
+	//const query = 'INSERT INTO posts(titulo,cuerpo,fotourl,autor) VALUES ($1,$2,$3,$4)';
+	const query = 'UPDATE posts SET titulo=$1,cuerpo=$2,fotourl=$3 WHERE id=$4';
+	const values = [title,content,img,id];
+
+	db.query(query,values, (err, resp) => {
+		if(err){
+			console.log(err.stack);
+		  //Este error viene de la BD, por lo que solo puede ser por la
+		  //violación de la llave única. 
+		  res.render('dashboard/errors/generic',{
+			  layout: 'dashboard-base',
+			  user: req.session.user,
+			  title: 'Error al ingresar los datos',
+			  text: 'Ocurrio un error al insertar la imagen'
+		  });
+		}else{
+			res.render('dashboard/canalizaciones/success',{
+				layout: 'dashboard-base',
+				user: req.session.user,
+			})
+		}
+	})
+}
+
 r.post('/editar/:id',uploadStrategy,(req,res) => {
 	//res.json(req.body)
 	const title = req.body.titulo;
 	const content = req.body.contenido;
 	if(req.file){
-		res.end("File Detected");
+		//do azure stuff here
+		//azure stuff
+		const
+		blobName = getBlobName(req.file.originalname)
+	, stream = getStream(req.file.buffer)
+	, streamLength = req.file.buffer.length
+	;
+
+	blobService.createBlockBlobFromStream(containerName, blobName, stream, streamLength, err => {
+
+		if(err) {
+			handleError(err);
+			return;
+		}
+
+		//we did it. Now store the rest of the data in the DB
+		//savePostInDB(title,content,blobName,req,res);
+		updateWithImg(title,content,req,res,req.params.id,"https://caritasqro.blob.core.windows.net/uploads/"+blobName);
+	});
 	}else {
 		//Execute a simple update
 		updateWithoutImg(title,content,req,res,req.params.id);
