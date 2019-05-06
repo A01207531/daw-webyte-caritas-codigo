@@ -118,10 +118,10 @@ r.get("/editar/:id",async (req,res) => {
   }
 })
 
-function updateWithoutImg(title,content,req,res){
+function updateWithoutImg(title,content,req,res,id){
 	//const query = 'INSERT INTO posts(titulo,cuerpo,fotourl,autor) VALUES ($1,$2,$3,$4)';
-	const query = 'UPDATE posts SET titulo=$1,cuerpo=$2';
-	const values = [title,content];
+	const query = 'UPDATE posts SET titulo=$1,cuerpo=$2 WHERE id=$3';
+	const values = [title,content,id];
 
 	db.query(query,values, (err, resp) => {
 		if(err){
@@ -151,9 +151,8 @@ r.post('/editar/:id',uploadStrategy,(req,res) => {
 		res.end("File Detected");
 	}else {
 		//Execute a simple update
-		updateWithoutImg(title,content,req,res);
+		updateWithoutImg(title,content,req,res,req.params.id);
 	}
-
 
 })
 
