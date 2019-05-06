@@ -118,4 +118,43 @@ r.get("/editar/:id",async (req,res) => {
   }
 })
 
+function updateWithoutImg(title,content,req,res){
+	//const query = 'INSERT INTO posts(titulo,cuerpo,fotourl,autor) VALUES ($1,$2,$3,$4)';
+	const query = 'UPDATE posts SET titulo=$1,cuerpo=$2';
+	const values = [title,content];
+
+	db.query(query,values, (err, resp) => {
+		if(err){
+			console.log(err.stack);
+		  //Este error viene de la BD, por lo que solo puede ser por la
+		  //violación de la llave única. 
+		  res.render('dashboard/errors/generic',{
+			  layout: 'dashboard-base',
+			  user: req.session.user,
+			  title: 'Error al ingresar los datos',
+			  text: 'Ocurrio un error al insertar la imagen'
+		  });
+		}else{
+			res.render('dashboard/canalizaciones/success',{
+				layout: 'dashboard-base',
+				user: req.session.user,
+			})
+		}
+	})
+}
+
+r.post('/editar/:id',uploadStrategy,(req,res) => {
+	//res.json(req.body)
+	const title = req.body.titulo;
+	const content = req.body.contenido;
+	if(req.file){
+		res.end("File Detected");
+	}else {
+		//Execute a simple update
+		updateWithoutImg(title,content,req,res);
+	}
+
+
+})
+
 module.exports = r;
