@@ -158,8 +158,46 @@
   <script src="/javascripts/mx-data.js"></script>
   <script src="/javascripts/new-proj-form.js"></script>
   <script>
-     document.addEventListener('DOMContentLoaded', function() {
+    let pr;
+
+    function geoPopulate(){
+      const stateShort = pr.municipio.estado;
+      const state = map[stateShort];
+
+      //change value
+      $("#state").val(state);
+      //populate cities
+      //get the cities
+      const cities = mx[$('#state').val()];
+      //we have the cities
+      //clear the select
+      $('#city').empty();
+      //populate the cities
+      for(const c in cities){
+          const city = cities[c];
+          $('#city').append('<option value="'+city.id+'">'+city.nombre+'</option>');
+      }
+
+      //set the correct value
+
+      $("#city").val(pr.municipio.id);
+
+
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems, options);
+    var instances = M.FormSelect.init(elems);
+
+
+    //Populate the rest here using JS and a really badly optimized API here
+
+
+    $.getJSON("/dashboard/proyectos/json/"+location.pathname.split("/").pop(), data => {
+      pr = data;
+      //poblar el estado y la ciudad
+      geoPopulate();
+    })
+
   });
   </script>
