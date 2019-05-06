@@ -185,6 +185,40 @@
 
     }
 
+    function subProgramPopulate(){
+      const p = pr.programa;
+      $('#lineadeaccion').val(p.lineadeaccion);
+
+      const progs = root[$('#lineadeaccion').val()];
+      //clear the select
+      $('#program').empty();
+      //populate the program
+      $('#program').append('<option value="" disabled selected>Seleccione...</option>')
+      for(const p in progs){
+          $('#program').append(
+              '<option value="'+p+'">'+p+'</option>'
+          );
+      }
+
+      $('#program').val(p.nombre);
+
+      const la = $('#lineadeaccion').val();
+    const pro = $('#program').val();
+
+    const subs = root[la][pro];
+
+    $('#sub').empty();
+
+    for(i in subs){
+        const sub = subs[i];
+        console.log(sub);
+        $('#sub').append(
+            '<option value="'+sub.id+'">'+sub.sub+'</option>'
+        )
+    }
+
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems);
@@ -197,6 +231,11 @@
       pr = data;
       //poblar el estado y la ciudad
       geoPopulate();
+      //ahora poblar el estatus
+      $("#status").val(pr.estatus);
+      //ahora poblar las lineas de accion
+      subProgramPopulate();
+
     })
 
   });
