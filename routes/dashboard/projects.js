@@ -194,4 +194,66 @@ pr.get('/json/:id',async (req,res) => {
   }
 })
 
+function updateWithoutImg(p,id,res,session){
+	const query = 'UPDATE proyecto SET nombre=$1,descripcion=$2,inicio=$3,final=$4,estatus=$5,observaciones=$6,subprograma_id=$7,municipio_id=$8,direccion=$9,solicitado=$10 WHERE id=$11';
+
+	const values = [p.name,p.desc,p.inicio,p.final,p.status,p.observation,p.sub,p.city,p.address,p.solicitado,id];
+
+	db.query(query,values, (err, resp) => {
+		if(err){
+			console.log(err.stack);
+		  //Este error viene de la BD, por lo que solo puede ser por la
+		  //violación de la llave única. 
+		  res.render('dashboard/errors/generic',{
+			  layout: 'dashboard-base',
+			  user: req.session.user,
+			  title: 'Error al ingresar los datos',
+			  text: 'Ocurrio un error'
+		  });
+		}else{
+			res.render('dashboard/canalizaciones/success',{
+				layout: 'dashboard-base',
+				user: session.user,
+			})
+		}
+	})
+}
+
+pr.post('/editar/:id',uploadStrategy,(req,res) => {
+	if(!req.session.userID){
+		res.redirect("/login");
+		return;
+	}
+
+	const project = req.body;
+	const session = req.session;
+
+	if(req.file){
+		//do azure stuff here
+		//azure stuff
+		const
+		blobName = getBlobName(req.file.originalname)
+	, stream = getStream(req.file.buffer)
+	, streamLength = req.file.buffer.length
+	;
+
+	blobService.createBlockBlobFromStream(containerName, blobName, stream, streamLength, err => {
+
+		if(err) {
+			handleError(err);
+			return;
+		}
+
+		//we did it. Now store the rest of the data in the DB
+		//savePostInDB(title,content,blobName,req,res);
+		updateWithImg(title,content,req,res,req.params.id,"https://caritasqro.blob.core.windows.net/uploads/"+blobName);
+	});
+	}else {
+		//Execute a simple update
+		//updateWithoutImg(title,content,req,res,req.params.id);
+		updateWithoutImg(project,req.params.id,res,session);
+	}
+
+})
+
 module.exports = pr;

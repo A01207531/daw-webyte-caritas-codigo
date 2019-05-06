@@ -3,7 +3,7 @@ $('select').formSelect();
 
 let root = {
     "ASISTENCIA SOCIAL": [],
-    "DESARROLLO HUMANO": [],
+    "PROMOCION HUMANA": [],
     "SUSTENTABILIDAD AMBIENTAL": [],
     "CANALIZACIONES": []
 }
