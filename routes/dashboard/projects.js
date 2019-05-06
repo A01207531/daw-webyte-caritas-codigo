@@ -144,10 +144,10 @@ pr.get('/editar/:id', async (req, res) => {
     res.render(
       'dashboard/proyectos/edit', 
       { 
+				layout: 'dashboard-base',
         status:'ok', 
         proyecto, 
-        session: req.session,
-         });
+        session: req.session,});
   } else {
     res.render('404', { status:'err', err:'No se pudo encontrar el proyecto solicitado', session: req.session });
   }

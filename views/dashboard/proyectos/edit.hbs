@@ -70,7 +70,7 @@
       
       <div class="row">
         <div class="input-field col s12">
-          <input id="address" name="address"type="text" class="validate"  value="proyecto.direccion" required>
+          <input id="address" name="address"type="text" class="validate"  value="{{proyecto.direccion}}" required>
           <label for="address">Dirección</label>
         </div>
       </div>
@@ -79,11 +79,11 @@
       <div class="row">
         <div class="input-field col m6 s12">
           Fecha de inicio
-          <input type="date" name="inicio" id="inicio" value="{{proyecto.inicio}}" required>
+          <input type="date" name="inicio" id="inicio" value="{{dateFormat proyecto.inicio "YYYY-MM-DD"}}" required>
         </div>
         <div class="input-field col m6 s12">
           Fecha de fin
-          <input type="date" name="final" id="final" value="{{proyecto.final}}" required>
+          <input type="date" name="final" id="final" value="{{dateFormat proyecto.final "YYYY-MM-DD"}}" required>
           
         </div>
       </div>
