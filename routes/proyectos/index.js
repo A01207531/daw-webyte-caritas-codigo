@@ -25,6 +25,13 @@ router.get('/:id', async (req, res) => {
     proyecto = proyecto.rows[0];
 
     const catindex = proyecto.categorias.split(',');
+
+    let catStrings = [];
+
+    catindex.forEach(indexStr => {
+      const i = parseInt(indexStr);
+      catStrings.push(cats[i]);
+    });
   
     let [ subPrograma, municipio, totalDonadores, totalDonaciones ] = await Promise.all([
       db.query('SELECT * FROM subprograma WHERE id=$1', [proyecto.subprograma_id]), 
@@ -47,7 +54,8 @@ router.get('/:id', async (req, res) => {
       'proyectos/detalle', 
       { 
         status:'ok', 
-        proyecto, 
+        proyecto,
+        categorias : catStrings,
         session: req.session,
         totalDonadores,
         totalDonaciones, 
