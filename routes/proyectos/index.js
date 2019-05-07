@@ -4,6 +4,12 @@ const to = require('../../util/to');
 const uuidv4 = require('uuid/v4');
 const paypal = require('paypal-rest-sdk');
 
+
+
+const cats = ["Niños","Mujeres","Becas","Salud","Educacion",
+"Jovenes","Adultos","Rural","Urbano","Otros"]
+
+
 router.get('/', async (req, res) => {
   let proyectos = await db.query('SELECT * from proyecto');
   proyectos = proyectos.rows;
@@ -17,6 +23,8 @@ router.get('/:id', async (req, res) => {
   let proyecto = await db.query('SELECT * FROM proyecto WHERE id=$1', [req.params.id]);
   if(proyecto.rowCount>0) {
     proyecto = proyecto.rows[0];
+
+    const catindex = proyecto.categorias.split(',');
   
     let [ subPrograma, municipio, totalDonadores, totalDonaciones ] = await Promise.all([
       db.query('SELECT * FROM subprograma WHERE id=$1', [proyecto.subprograma_id]), 

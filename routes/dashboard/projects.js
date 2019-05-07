@@ -55,7 +55,7 @@ const handleError = (err, res) => {
 };
 
 function savePostInDB(img,req,res){
-	const query = 'INSERT INTO proyecto(id,nombre,descripcion,inicio,final,estatus,responsable,observaciones,subprograma_id,municipio_id,direccion,solicitado,img) VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)';
+	const query = 'INSERT INTO proyecto(id,nombre,descripcion,inicio,final,estatus,responsable,observaciones,subprograma_id,municipio_id,direccion,solicitado,img,categorias) VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)';
 
 	const p = req.body; //p de post
 
@@ -67,7 +67,7 @@ function savePostInDB(img,req,res){
 
 	const responsable = req.session.userID;
 
-	const values = [p.name,p.desc,p.inicio,p.final,p.status,responsable,p.observation,p.sub,p.city,p.address,sol,"https://caritasqro.blob.core.windows.net/uploads/"+img];
+	const values = [p.name,p.desc,p.inicio,p.final,p.status,responsable,p.observation,p.sub,p.city,p.address,sol,"https://caritasqro.blob.core.windows.net/uploads/"+img,cats.join(',')];
 
 	//res.json(p);
 
@@ -199,9 +199,11 @@ pr.get('/json/:id',async (req,res) => {
 })
 
 function updateWithoutImg(p,id,res,session){
-	const query = 'UPDATE proyecto SET nombre=$1,descripcion=$2,inicio=$3,final=$4,estatus=$5,observaciones=$6,subprograma_id=$7,municipio_id=$8,direccion=$9,solicitado=$10 WHERE id=$11';
+	const query = 'UPDATE proyecto SET nombre=$1,descripcion=$2,inicio=$3,final=$4,estatus=$5,observaciones=$6,subprograma_id=$7,municipio_id=$8,direccion=$9,solicitado=$10,categorias=$12 WHERE id=$11';
 
-	const values = [p.name,p.desc,p.inicio,p.final,p.status,p.observation,p.sub,p.city,p.address,p.solicitado,id];
+	console.log(p.categorias);
+
+	const values = [p.name,p.desc,p.inicio,p.final,p.status,p.observation,p.sub,p.city,p.address,p.solicitado,id,p.categorias.join(',')];
 
 	db.query(query,values, (err, resp) => {
 		if(err){
@@ -224,9 +226,11 @@ function updateWithoutImg(p,id,res,session){
 }
 
 function updateWithImg(p,id,res,session,img){
-	const query = 'UPDATE proyecto SET nombre=$1,descripcion=$2,inicio=$3,final=$4,estatus=$5,observaciones=$6,subprograma_id=$7,municipio_id=$8,direccion=$9,solicitado=$10,img=$12 WHERE id=$11';
+	const query = 'UPDATE proyecto SET nombre=$1,descripcion=$2,inicio=$3,final=$4,estatus=$5,observaciones=$6,subprograma_id=$7,municipio_id=$8,direccion=$9,solicitado=$10,img=$12,categorias=$13 WHERE id=$11';
 
-	const values = [p.name,p.desc,p.inicio,p.final,p.status,p.observation,p.sub,p.city,p.address,p.solicitado,id,img];
+	console.log(p.categorias);
+
+	const values = [p.name,p.desc,p.inicio,p.final,p.status,p.observation,p.sub,p.city,p.address,p.solicitado,id,img,p.categorias.join(',')];
 
 	db.query(query,values, (err, resp) => {
 		if(err){
