@@ -84,6 +84,8 @@
 							if(data.status === 'ok') {
 								$('#totalDonadores').text = data.newDonadores;
 								$('#totalDonaciones').text = data.newDonaciones;
+							} else {
+								M.toast({html: 'Ocurrió un error, intentalo de nuevo'});
 							}
 						});
 
