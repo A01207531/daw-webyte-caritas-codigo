@@ -115,9 +115,9 @@ benef.post('/modificar/:id', (req,res) => {
 		checkExtrangero=false;
 	}
 	
-	const params = [name,lastname,checkIndigena,checkExtrangero,nacimiento,address,curp,rfc,profesion,status,estadoCivil,req.params.id];
+	const params = [name,lastname,checkIndigena,checkExtrangero,nacimiento,address,curp,rfc,profesion,status,estadoCivil,canalizacion,req.params.id];
 	console.log(...params);
-	const query = 'UPDATE beneficiario SET nombre=$1,apellido=$2,indigente=$3,extranjero=$4,nacimiento=$5,direccion=$6,curp=$7,rfc=$8,profesion=$9,sexo=$10,estadocivil=$11 WHERE id=$12';
+	const query = 'UPDATE beneficiario SET nombre=$1,apellido=$2,indigente=$3,extranjero=$4,nacimiento=$5,direccion=$6,curp=$7,rfc=$8,profesion=$9,sexo=$10,estadocivil=$11,canalizacion_id=$12 WHERE id=$13';
 
 
 	db.query(query,params, (err, resp) => {
