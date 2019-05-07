@@ -45,7 +45,7 @@ app.use(session({
 }));
 
 paypal.configure({
-  'mode': 'sandbox', //sandbox or live
+  'mode': 'live', //sandbox or live
   'client_id': process.env.CLIENT_PAYPAL,
   'client_secret': process.env.SECRET_PAYPAL
 });
