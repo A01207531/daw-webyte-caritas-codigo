@@ -4,6 +4,7 @@ $('.carousel.carousel-slider').carousel({
   
 }).height(500);
 
+
 (function($){
   $(function(){
 
