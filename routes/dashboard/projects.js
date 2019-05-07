@@ -45,9 +45,6 @@ pr.get('/nuevo', async (req, res) => {
 	})
 });
 
-function progCat(prog,cat){
-	console.log("Asociando el programa con id " + prog + " con " + cat);
-}
 
 const handleError = (err, res) => {
 	res.status(500);
@@ -55,11 +52,15 @@ const handleError = (err, res) => {
 };
 
 function savePostInDB(img,req,res){
-	const query = 'INSERT INTO proyecto(id,nombre,descripcion,inicio,final,estatus,responsable,observaciones,subprograma_id,municipio_id,direccion,solicitado,img,categorias) VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)';
+	const query = 'INSERT INTO proyecto(id,nombre,descripcion,inicio,final,estatus,responsable,observaciones,subprograma_id,municipio_id,direccion,solicitado,img,categorias,desafios,apoyarias,localidad,colonia) VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)';
 
 	const p = req.body; //p de post
 
-	const cats = p.categorias;
+	let cats = p.categorias;
+
+	if(typeof(cats) == Array){
+		cats = cats.join(',')
+	}
 
 	console.log(cats);
 
@@ -67,7 +68,7 @@ function savePostInDB(img,req,res){
 
 	const responsable = req.session.userID;
 
-	const values = [p.name,p.desc,p.inicio,p.final,p.status,responsable,p.observation,p.sub,p.city,p.address,sol,"https://caritasqro.blob.core.windows.net/uploads/"+img,cats.join(',')];
+	const values = [p.name,p.desc,p.inicio,p.final,p.status,responsable,p.observation,p.sub,p.city,p.address,sol,"https://caritasqro.blob.core.windows.net/uploads/"+img,cats, p.desafios,p.apoyarias,p.loc,p.col];
 
 	//res.json(p);
 
