@@ -35,6 +35,10 @@ p {
   color: #26a69a;
 }
 
+.sidenav-overlay {
+  z-index: 99 !important;
+}
+
 .parallax-container {
   min-height: 380px;
   line-height: 0;
@@ -47,7 +51,6 @@ p {
 
 nav {
   position: relative;
-  z-index: 1000;
 }
 
 @media only screen and (max-width : 992px) {
@@ -197,7 +200,12 @@ section#main {
   flex-direction: column;
 }
 
-.center-flex {
-  
+.sidebar {
+  overflow-y: scroll;
 }
-  
+
+.sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+.side
