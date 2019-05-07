@@ -102,3 +102,39 @@ const mx = {
             {id:2401,nombre:"APOZOL"},{id:2402,nombre:"APULCO"},{id:2403,nombre:"ATOLINGA"},{id:2404,nombre:"BENITO JUÁREZ"},{id:2405,nombre:"CALERA"},{id:2406,nombre:"CAÑITAS DE FELIPE PESCADOR"},{id:2407,nombre:"CONCEPCIÓN DEL ORO"},{id:2408,nombre:"CUAUHTÉMOC"},{id:2409,nombre:"CHALCHIHUITES"},{id:2410,nombre:"FRESNILLO"},{id:2411,nombre:"TRINIDAD GARCÍA DE LA CADENA"},{id:2412,nombre:"GENARO CODINA"},{id:2413,nombre:"GENERAL ENRIQUE ESTRADA"},{id:2414,nombre:"GENERAL FRANCISCO R. MURGUÍA"},{id:2415,nombre:"EL PLATEADO DE JOAQUÍN AMARO"},{id:2416,nombre:"GENERAL PÁNFILO NATERA"},{id:2417,nombre:"GUADALUPE"},{id:2418,nombre:"HUANUSCO"},{id:2419,nombre:"JALPA"},{id:2420,nombre:"JEREZ"},{id:2421,nombre:"JIMÉNEZ DEL TEUL"},{id:2422,nombre:"JUAN ALDAMA"},{id:2423,nombre:"JUCHIPILA"},{id:2424,nombre:"LORETO"},{id:2425,nombre:"LUIS MOYA"},{id:2426,nombre:"MAZAPIL"},{id:2427,nombre:"MELCHOR OCAMPO"},{id:2428,nombre:"MEZQUITAL DEL ORO"},{id:2429,nombre:"MIGUEL AUZA"},{id:2430,nombre:"MOMAX"},{id:2431,nombre:"MONTE ESCOBEDO"},{id:2432,nombre:"MORELOS"},{id:2433,nombre:"MOYAHUA DE ESTRADA"},{id:2434,nombre:"NOCHISTLÁN DE MEJÍA"},{id:2435,nombre:"NORIA DE ÁNGELES"},{id:2436,nombre:"OJOCALIENTE"},{id:2437,nombre:"PÁNUCO"},{id:2438,nombre:"PINOS"},{id:2439,nombre:"RÍO GRANDE"},{id:2440,nombre:"SAIN ALTO"},{id:2441,nombre:"EL SALVADOR"},{id:2442,nombre:"SOMBRERETE"},{id:2443,nombre:"SUSTICACÁN"},{id:2444,nombre:"TABASCO"},{id:2445,nombre:"TEPECHITLÁN"},{id:2446,nombre:"TEPETONGO"},{id:2447,nombre:"TEÚL DE GONZÁLEZ ORTEGA"},{id:2448,nombre:"TLALTENANGO DE SÁNCHEZ ROMÁN"},{id:2449,nombre:"VALPARAÍSO"},{id:2450,nombre:"VETAGRANDE"},{id:2451,nombre:"VILLA DE COS"},{id:2452,nombre:"VILLA GARCÍA"},{id:2453,nombre:"VILLA GONZÁLEZ ORTEGA"},{id:2454,nombre:"VILLA HIDALGO"},{id:2455,nombre:"VILLANUEVA"},{id:2456,nombre:"ZACATECAS"},{id:2457,nombre:"TRANCOSO"},{id:2458,nombre:"SANTA MARÍA DE LA PAZ"}
     ]
 }
+
+const map = {
+    "AGU" : "AGUASCALIENTES",
+    "BCN" : "BAJA CALIFORNIA",
+    "BCS" : "BAJA CALIFORNIA SUR",
+    "CAM" : "CAMPECHE",
+    "CHP" : "CHIAPAS",
+    "CHH" : "CHIHUAHUA",
+    "CMX" : "CDMX",
+    "COA" : "COAHUILA",
+    "COL" : "COLIMA",
+    "DUR" : "DURANGO",
+    "GUA" : "GUANAJUATO",
+    "GRO" : "GUERRERO",
+    "HID" : "HIDALGO",
+    "JAL" : "JALISCO",
+    "MEX" : "EDOMEX",
+    "MIC" : "MICHOACAN",
+    "MOR" : "MORELIA",
+    "NAY" : "NAYARIT",
+    "NLE" : "NUEVO LEON",
+    "OAX" : "OAXACA",
+    "PUE" : "PUEBLA",
+    "QUE" : "QUERETARO",
+    "ROO" : "QUINTANA ROO",
+    "SLP" : "SAN LUIS POTOSI",
+    "SIN" : "SINALOA",
+    "SON" : "SONORA",
+    "TAB" : "TABASCO",
+    "TAM" : "TAMAULIPAS",
+    "TLA" : "TLAXCALA",
+    "VER" : "VERACRUZ",
+    "YUC" : "YUCATAN",
+    "ZAC" : "ZACATECAS",
+    "Internacional" : "Internacional"
+}

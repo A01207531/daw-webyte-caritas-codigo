@@ -22,6 +22,7 @@ const nosotrosRouter = require('./routes/webpage');
 const contenedorRouter = require('./routes/webpage/contenedor');
 const contactoRouter = require('./routes/webpage/contacto');
 const ayudaRouter = require('./routes/webpage/ayuda');
+const detalleBenefRouter = require('./routes/dashboard/detallebenef');
 
 // const to = require('./util/to');
 
@@ -59,6 +60,7 @@ app.use('/nosotros', nosotrosRouter);
 app.use('/contenedor', contenedorRouter);
 app.use('/contacto', contactoRouter);
 app.use('/ayuda', ayudaRouter);
+app.use('/beneficiario', detalleBenefRouter);
 
 //El view de contenedores el el mapa adminostrado por google, por lo que
 //para nosotros es meramente estatico
@@ -66,6 +68,7 @@ app.use('/ayuda', ayudaRouter);
 
 // Setup View Engine
 
+//I'm going to allow this but only in develop
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('views', path.join(__dirname, 'views'));
@@ -87,7 +90,7 @@ app.locals.title = 'Cáritas de Querétaro';
 
 //Index
 app.get('/', async (req, res) => {
-	const query = await db.query('SELECT nombre,descripcion FROM proyecto LIMIT 6');
+	const query = await db.query('SELECT nombre,descripcion,img FROM proyecto LIMIT 6');
 	// console.log(query);
 	const data = query.rows;
 	// console.log(data);

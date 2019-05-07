@@ -1,21 +1,21 @@
-<h1>Registrar nuevo proyecto</h1>
+<h1>Modificar Proyecto</h1>
 
     <form method="POST" enctype="multipart/form-data">
       <div class="row">
         <div class="input-field col m6 s12">
-          <input id="name" type="text" class="validate" name="name" required>
+          <input id="name" type="text" class="validate" name="name" value="{{proyecto.nombre}}" required>
           <label for="name">Nombre</label>
         </div>
         <div class="input-field col m6 s12">
           <input id="last_name" type="text" class="validate"
-            name="desc" required>
+            name="desc" value="{{proyecto.descripcion}}" required>
           <label for="last_name">Descripción corta</label>
         </div>
       </div>
 
       <div class="row">
         <div class="input-field col m6 s12">
-          <input id="solicitado" type="number" class="validate" name="solicitado" required>
+          <input id="solicitado" type="number" class="validate" name="solicitado" value="{{proyecto.solicitado}}" required>
           <label for="solicitado">Monto Solicitado</label>
         </div>
         
@@ -70,7 +70,7 @@
       
       <div class="row">
         <div class="input-field col s12">
-          <input id="address" name="address"type="text" class="validate" required>
+          <input id="address" name="address"type="text" class="validate"  value="{{proyecto.direccion}}" required>
           <label for="address">Dirección</label>
         </div>
       </div>
@@ -79,11 +79,11 @@
       <div class="row">
         <div class="input-field col m6 s12">
           Fecha de inicio
-          <input type="date" name="inicio" id="inicio" required>
+          <input type="date" name="inicio" id="inicio" value="{{dateFormat proyecto.inicio "YYYY-MM-DD"}}" required>
         </div>
         <div class="input-field col m6 s12">
           Fecha de fin
-          <input type="date" name="final" id="final" required>
+          <input type="date" name="final" id="final" value="{{dateFormat proyecto.final "YYYY-MM-DD"}}" required>
           
         </div>
       </div>
@@ -146,7 +146,7 @@
   </div>
       </div>
 
-      <input type="file" name="upload" id="upload" required="required">
+      <input type="file" name="upload" id="upload">
 
       
       <button class="btn waves-effect waves-light" type="submit" name="action">Registrar</button>
@@ -158,8 +158,85 @@
   <script src="/javascripts/mx-data.js"></script>
   <script src="/javascripts/new-proj-form.js"></script>
   <script>
-     document.addEventListener('DOMContentLoaded', function() {
+    let pr;
+
+    function geoPopulate(){
+      const stateShort = pr.municipio.estado;
+      const state = map[stateShort];
+
+      //change value
+      $("#state").val(state);
+      //populate cities
+      //get the cities
+      const cities = mx[$('#state').val()];
+      //we have the cities
+      //clear the select
+      $('#city').empty();
+      //populate the cities
+      for(const c in cities){
+          const city = cities[c];
+          $('#city').append('<option value="'+city.id+'">'+city.nombre+'</option>');
+      }
+
+      //set the correct value
+
+      $("#city").val(pr.municipio.id);
+
+
+    }
+
+    function subProgramPopulate(){
+      const p = pr.programa;
+      $('#lineadeaccion').val(p.lineadeaccion);
+
+      const progs = root[$('#lineadeaccion').val()];
+      //clear the select
+      $('#program').empty();
+      //populate the program
+      $('#program').append('<option value="" disabled selected>Seleccione...</option>')
+      for(const p in progs){
+          $('#program').append(
+              '<option value="'+p+'">'+p+'</option>'
+          );
+      }
+
+      $('#program').val(p.nombre);
+
+      const la = $('#lineadeaccion').val();
+      const pro = $('#program').val();
+
+    const subs = root[la][pro];
+
+    $('#sub').empty();
+
+    for(i in subs){
+        const sub = subs[i];
+        console.log(sub);
+        $('#sub').append(
+            '<option value="'+sub.id+'">'+sub.sub+'</option>'
+        )
+    }
+
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems, options);
+    var instances = M.FormSelect.init(elems);
+
+
+    //Populate the rest here using JS and a really badly optimized API here
+
+
+    $.getJSON("/dashboard/proyectos/json/"+location.pathname.split("/").pop(), data => {
+      pr = data;
+      //poblar el estado y la ciudad
+      geoPopulate();
+      //ahora poblar el estatus
+      $("#status").val(pr.estatus);
+      //ahora poblar las lineas de accion
+      subProgramPopulate();
+
+    })
+
   });
   </script>
