@@ -7,7 +7,7 @@
 		<h6 class="grey-text text-darken-2">Programa: {{proyecto.programa.nombre}}</h6>
 		<h6 class="grey-text text-darken-2">Subprograma: {{proyecto.programa.subPrograma.nombre}}</h6>
 		<h6>Categorias:</h6>
-		<ul>
+		<ul> 
 			{{#each categorias}}
 			<li> - {{ this }}</li>
 			{{/each}}
@@ -60,7 +60,7 @@
 	</div>
 </div>
 
-<script src=https://www.paypal.com/sdk/js?client-id&#x3D;AVaWhsP2BcEWN9uPMvebFyIgWDb4_my5n-HAN8HW2u6A4l4KztzkSeQYAp7lP_8aASwRBsUSsgsOlNXT&amp;currency&#x3D;MXN></script>
+<script src={{paypal_string}}></script>
 {{#if session.user}}
 <script>
   paypal.Buttons({
@@ -77,20 +77,31 @@
       });
     },
 		onApprove: (data, actions) => {
+			M.toast({html: 'Donación Realizada'});
 			return actions.order.capture().then(details => {
 				console.log(details);
-				$.post(window.location, {
-					monto: details.purchase_units[0].amount.value,
-					paymentId: details.purchase_units[0].payments.captures[0].id
-				}, data => {
-					console.log(data);
-					if(data.status === 'ok') {
-						$('#totalDonadores').text = data.newDonadores;
-						$('#totalDonaciones').text = data.newDonaciones;
-					}
-				});
+				switch(details.status) {
+					case "COMPLETED": 
+						$.post(window.location, {
+							monto: details.purchase_units[0].amount.value,
+							paymentId: details.purchase_units[0].payments.captures[0].id
+						}, data => {
+							console.log(data);
+							if(data.status === 'ok') {
+								$('#totalDonadores').text = data.newDonadores;
+								$('#totalDonaciones').text = data.newDonaciones;
+							} else {
+								M.toast({html: 'Ocurrió un error, intentalo de nuevo'});
+							}
+						});
 
-				console.log(details.purchase_units[0].amount.value);
+						console.log(details.purchase_units[0].amount.value);
+
+						break;
+					default:
+						M.toast({html: 'Ocurrió un error, intentalo de nuevo'});
+						break;
+				}
 			});
 		}
   }).render('#pp-button');

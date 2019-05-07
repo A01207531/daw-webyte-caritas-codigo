@@ -8,7 +8,7 @@ const paypal = require('paypal-rest-sdk');
 
 const cats = ["Niños","Mujeres","Becas","Salud","Educacion",
 "Jovenes","Adultos","Rural","Urbano","Otros"]
-
+ 
 
 router.get('/', async (req, res) => {
   let proyectos = await db.query('SELECT * from proyecto');
