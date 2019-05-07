@@ -13,6 +13,35 @@ router.get('/', async (req, res) => {
   // res.json(proyectos)
 });
 
+router.post('/', async (req, res) => {
+  let query = 'SELECT * FROM proyecto ', proyectos;
+  let byPrograma = undefined, byName = undefined;
+  let postman = false;
+  if(postman){
+    byPrograma = req.query.byPrograma;
+    byName = req.query.byName;
+  } else {
+    byPrograma = req.body.byPrograma;
+    byName = req.body.byName;
+  }
+
+  if(byPrograma && byName) {
+    console.log("primero");
+    proyectos = await db.query(query + "WHERE subprograma_id=$1 AND (nombre LIKE $2 OR nombre LIKE $2)", [byPrograma, `%${byName}%`]);
+  } else if(byPrograma){
+    console.log("segundo");
+    proyectos = await db.query(query + "WHERE subprograma_id=$1", [byPrograma]);
+  } else if(byName){
+    console.log("ByName:", byName);
+    proyectos = await db.query(query + "WHERE nombre LIKE $1 OR descripcion LIKE $1", [`%${byName}%`]);
+  } else {
+    console.log("cuarto");
+    proyectos = await db.query(query);
+  }
+
+  res.json({proyectos});
+});
+
 router.get('/:id', async (req, res) => {
   let proyecto = await db.query('SELECT * FROM proyecto WHERE id=$1', [req.params.id]);
   if(proyecto.rowCount>0) {
