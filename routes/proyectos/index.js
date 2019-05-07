@@ -4,6 +4,12 @@ const to = require('../../util/to');
 const uuidv4 = require('uuid/v4');
 const paypal = require('paypal-rest-sdk');
 
+
+
+const cats = ["Niños","Mujeres","Becas","Salud","Educacion",
+"Jovenes","Adultos","Rural","Urbano","Otros"]
+
+
 router.get('/', async (req, res) => {
   let proyectos = await db.query('SELECT * from proyecto');
   proyectos = proyectos.rows;
@@ -13,10 +19,48 @@ router.get('/', async (req, res) => {
   // res.json(proyectos)
 });
 
+router.post('/', async (req, res) => {
+  let query = 'SELECT * FROM proyecto ', proyectos;
+  let byPrograma = undefined, byName = undefined;
+  let postman = false;
+  if(postman){
+    byPrograma = req.query.byPrograma;
+    byName = req.query.byName;
+  } else {
+    byPrograma = req.body.byPrograma;
+    byName = req.body.byName;
+  }
+
+  if(byPrograma && byName) {
+    console.log("primero");
+    proyectos = await db.query(query + "WHERE subprograma_id=$1 AND (nombre LIKE $2 OR nombre LIKE $2)", [byPrograma, `%${byName}%`]);
+  } else if(byPrograma){
+    console.log("segundo");
+    proyectos = await db.query(query + "WHERE subprograma_id=$1", [byPrograma]);
+  } else if(byName){
+    console.log("ByName:", byName);
+    proyectos = await db.query(query + "WHERE nombre LIKE $1 OR descripcion LIKE $1", [`%${byName}%`]);
+  } else {
+    console.log("cuarto");
+    proyectos = await db.query(query);
+  }
+
+  res.json({proyectos});
+});
+
 router.get('/:id', async (req, res) => {
   let proyecto = await db.query('SELECT * FROM proyecto WHERE id=$1', [req.params.id]);
   if(proyecto.rowCount>0) {
     proyecto = proyecto.rows[0];
+
+    const catindex = proyecto.categorias.split(',');
+
+    let catStrings = [];
+
+    catindex.forEach(indexStr => {
+      const i = parseInt(indexStr);
+      catStrings.push(cats[i]);
+    });
   
     let [ subPrograma, municipio, totalDonadores, totalDonaciones ] = await Promise.all([
       db.query('SELECT * FROM subprograma WHERE id=$1', [proyecto.subprograma_id]), 
@@ -39,7 +83,8 @@ router.get('/:id', async (req, res) => {
       'proyectos/detalle', 
       { 
         status:'ok', 
-        proyecto, 
+        proyecto,
+        categorias : catStrings,
         session: req.session,
         totalDonadores,
         totalDonaciones, 
