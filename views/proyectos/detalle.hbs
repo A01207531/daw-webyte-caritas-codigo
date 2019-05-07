@@ -71,20 +71,29 @@
       });
     },
 		onApprove: (data, actions) => {
+			M.toast({html: 'Donación Realizada'});
 			return actions.order.capture().then(details => {
 				console.log(details);
-				$.post(window.location, {
-					monto: details.purchase_units[0].amount.value,
-					paymentId: details.purchase_units[0].payments.captures[0].id
-				}, data => {
-					console.log(data);
-					if(data.status === 'ok') {
-						$('#totalDonadores').text = data.newDonadores;
-						$('#totalDonaciones').text = data.newDonaciones;
-					}
-				});
+				switch(details.status) {
+					case "COMPLETED": 
+						$.post(window.location, {
+							monto: details.purchase_units[0].amount.value,
+							paymentId: details.purchase_units[0].payments.captures[0].id
+						}, data => {
+							console.log(data);
+							if(data.status === 'ok') {
+								$('#totalDonadores').text = data.newDonadores;
+								$('#totalDonaciones').text = data.newDonaciones;
+							}
+						});
 
-				console.log(details.purchase_units[0].amount.value);
+						console.log(details.purchase_units[0].amount.value);
+
+						break;
+					default:
+						M.toast({html: 'Ocurrió un error, intentalo de nuevo'});
+						break;
+				}
 			});
 		}
   }).render('#pp-button');
