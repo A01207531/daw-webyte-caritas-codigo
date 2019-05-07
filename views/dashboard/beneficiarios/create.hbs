@@ -114,11 +114,22 @@
     </div>
     <div class="input-field col m6 s12">
       <select id="canalizacion" name="canalizacion" class="browser-default">
-        <option value="" disabled selected>Seleccione...</option>         
+        <option  disabled selected>Seleccione...</option>   
+        {{#each bene}}
+        <option value="{{id}}">{{contacto}}</option>
+        {{/each}}      
       </select>
       <label for="canalizacion" class="active">Canalización</label>
     </div>
-     
+     <div class="input-field col m6 s12">
+      <select multiple id="proyectos" name="proyectos" >
+        <option  value="" disabled selected >Seleccione...</option>   
+        {{#each proj}}
+        <option value="{{id}}">{{nombre}}</option>
+        {{/each}}      
+      </select>
+      <label for="proyectos" class="active">Proyectos</label>
+    </div>
   </div>
 
   

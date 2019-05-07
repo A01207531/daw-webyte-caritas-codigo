@@ -27,7 +27,7 @@
                 
                      <label for="first_name"><h6>¿Es extranjero?</h6></label>
                         
-                     <h7 id="checkExtranjero">{{beneficiario.extranjero}}</h7>
+                     <h7 id="checkExtranjero"></h7>
                 </div>
                     
                     <div class="divider"></div>
@@ -40,7 +40,7 @@
                     <div class="col s4 grey lighten-4">
                                             
                     <label for="first_name"><h6>¿Es Indigente?</h6></label>
-                        <h7 id="checkIndigente">{{beneficiario.indigente}}</h7>
+                        <h7 id="checkIndigente"></h7>
                     </div>
                     <div class="col s4 grey lighten-4"><label for="first_name"><h6>Profesión</h6></label>
                         <h7>{{beneficiario.profesion}}</h7>
@@ -85,19 +85,15 @@
             
         </div>
         <script>
-            document.getElementById("checkIndigente").value = "{{beneficiario.indigente}}";
-
-            if({{ beneficiario.extranjero }}){
-                document.getElementById("checkExtranjero").value = "Si";
+            
+            
+            if({{ extranjero }}){
+                $('#checkExtranjero').value("Si");
+                //document.getElementById("checkExtranjero").value = "Si";
             } else{
-                document.getElementById("checkExtranjero").value = "No";
+                //document.getElementById("checkExtranjero").value = "No";
+                $('#checkExtranjero').value("No");
             }
-            if ({{ beneficiario.indigente }}) {
-                    document.getElementById("checkIndigente").value = "Si";
-                } else {
-                    document.getElementById("checkIndigente").value = "No";
-                }
-
         
         </script>
 
