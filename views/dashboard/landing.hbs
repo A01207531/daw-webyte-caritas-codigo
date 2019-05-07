@@ -11,11 +11,12 @@
       <a href="/dashboard/cambiarcontrasena" class="btn waves-effect  red darken-1 center ">Cambia tu contraseña</a>
     </div>
   </div>
+  
   <div class="row">
     {{#if proyectos}}
-      <h3>Proyectos Donados</h3>
+      <h4>Proyectos Donados <br> Gracias! Siguenos ayudando, tu donacion es muy valiosa</h4>
       {{#each proyectos}}
-        <div class="col s12 m4">
+        <div class="col s12 m6">
           <div class="card small sticky-action">
             <div class="card-image ">
               <img class="activator" src="https://picsum.photos/500/300/?random">
@@ -28,12 +29,13 @@
               <p>{{descripcion}}</p>
             </div>
             <div class="card-action">
-              <a href="/proyectos/{{id}}">Detalles</a>
-              <a href="https://paypal.com">¡Dona!</a>
+              <a href="/proyectos/{{id}}" class=" red-text text-darken-4">Detalles</a>
+              <a href="https://paypal.com" class=" red-text text-darken-4">¡Dona!</a>
             </div>
           </div>
               
         </div>
+        
       {{/each}}
     {{/if}}
   </div>
