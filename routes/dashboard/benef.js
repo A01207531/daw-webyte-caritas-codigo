@@ -72,6 +72,26 @@ benef.get('/:id', async (req, res) => {
   res.render('dashboard/beneficiarios/detail', { beneficiario, session: req.session,layout:"dashboard-base",user: req.session.user });
 });
 
+//--Edit
+benef.get('/json/:id',async (req,res) => {
+	let beneficiario = await db.query('SELECT * FROM beneficiario WHERE id=$1', [req.params.id]);
+  if(beneficiario.rowCount>0) {
+    beneficiario = beneficiario.rows[0];
+  
+    let [ municipio ] = await Promise.all([
+       
+      db.query('SELECT * FROM municipio WHERE id=$1', [beneficiario.municipio_id]),
+      
+    ]);
+    beneficiario.municipio = municipio.rows[0];
+    
+    // console.log("Donadores: ", totalDonadores, "Donaciones: ", totalDonaciones)
+    res.json(beneficiario);
+  } else {
+    res.render('404', { status:'err', err:'No se pudo encontrar el beneficiario solicitado', session: req.session });
+  }
+})
+
 benef.post('/modificar/:id', (req,res) => {
 	const name = req.body.name;
 	const lastname = req.body.lastname;
@@ -93,6 +113,7 @@ benef.post('/modificar/:id', (req,res) => {
 	if (checkExtrangero==null) {
 		checkExtrangero=false;
 	}
+	
 	const params = [name,lastname,checkIndigena,checkExtrangero,nacimiento,address,curp,rfc,profesion,status,estadoCivil,req.params.id];
 	console.log(...params);
 	const query = 'UPDATE beneficiario SET nombre=$1,apellido=$2,indigente=$3,extranjero=$4,nacimiento=$5,direccion=$6,curp=$7,rfc=$8,profesion=$9,sexo=$10,estadocivil=$11 WHERE id=$12';
