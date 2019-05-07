@@ -1,21 +1,21 @@
-<h1>Registrar nuevo beneficiario</h1>
+<h1>Modificar beneficiario</h1>
 
 <form method="POST">
   <div class="row">
     <div class="input-field col m6 s12">
-      <input id="name" type="text" class="validate" name="name">
+      <input value='{{nombre}}' id="name" type="text" class="validate" name="name">
       <label for="name">Nombre</label>
     </div>
 
-    <div class="input-field col m6 s12">
-      <input id="last_name" type="text" class="validate"
+    <div value='{{apellido}}' class="input-field col m6 s12">
+      <input value='{{apellido}}'id="last_name" type="text" class="validate"
         name="lastname">
       <label for="last_name">Apellido</label>
     </div>
 
     <div class="input-field col m6 s12">
       <label>
-        <input type="checkbox" name="checkIndigena" id="checkIndigena" />
+        <input checked=false type="checkbox" name="checkIndigena" id="checkIndigena" />
         <span>¿Es indigente?</span>
       </label>
     </div>
@@ -27,7 +27,7 @@
     </div>
 
     <div class="input-field col m6 s12 margin-top">
-      <select name="state" id="state" class="browser-default">
+      <select value='{{municipioid}}' name="state" id="state" class="browser-default">
         <option value="" disabled selected>Seleccione...</option>
         <option value='AGUASCALIENTES'>AGUASCALIENTES</option>
         <option value='BAJA CALIFORNIA'>BAJA CALIFORNIA</option>
@@ -73,29 +73,29 @@
   
     <div class="input-field col m6 s12">
       Fecha de nacimiento
-      <input type="date" name="nacimiento" id="nacimiento">
+      <input value='' type="date" name="nacimiento" id="nacimiento">
     </div>
     <div class="input-field col m6 s12">
-      <input id="address" name="address"type="text" class="validate">
+      <input value='{{direccion}}' id="address" name="address"type="text" class="validate">
       <label for="address">Dirección</label>
     </div>
 
     <div class="input-field col m6 s12">
-      <input id="curp" name="curp"type="text" class="validate">
+      <input value='{{curp}}' id="curp" name="curp"type="text" class="validate">
       <label for="curp">CURP</label>
     </div>
     <div class="input-field col m6 s12">
-      <input id="rfc" type="text" class="validate" name="rfc">
+      <input value='{{rfc}}' id="rfc" type="text" class="validate" name="rfc">
       <label for="rfc">RFC</label>
     </div>
     <div class="input-field col m6 s12">
-      <input id="profesion" type="text" class="validate"
+      <input value='{{profesion}}' id="profesion" type="text" class="validate"
         name="profesion">
-      <label for="profesion">Profesion</label>
+      <label for="ine">Profesion</label>
     </div>
 
     <div class="input-field col m6 s12">
-      <select id="sexo" name="sexo" class="browser-default">
+      <select value='' id="status" name="status" class="browser-default">
         <option value="" disabled selected>Seleccione...</option>
         <option value="M">Masculino</option>
         <option value="F">Femenino</option>
@@ -103,7 +103,7 @@
       <label for="first_name" class="active">Género</label>
     </div>
     <div class="input-field col m6 s12">
-      <select id="estadoCivil" name="estadoCivil" class="browser-default">
+      <select value='{{estadocivil}}' id="estadoCivil" name="estadoCivil" class="browser-default">
         <option value="" disabled selected>Seleccione...</option>
         <option value="CASADO">Casado</option>
         <option value="DIVORCIADO">Divorciado</option>
@@ -121,15 +121,7 @@
       </select>
       <label for="canalizacion" class="active">Canalización</label>
     </div>
-     <div class="input-field col m6 s12">
-      <select multiple id="proyectos" name="proyectos" >
-        <option  value="" disabled selected >Seleccione...</option>   
-        {{#each proj}}
-        <option value="{{id}}">{{nombre}}</option>
-        {{/each}}      
-      </select>
-      <label for="proyectos" class="active">Proyectos</label>
-    </div>
+     
   </div>
 
   
@@ -142,6 +134,42 @@
   <script src="/javascripts/mx-data.js"></script>
   <script src="/javascripts/new-proj-form.js"></script>
   <script>
+    let benef;
+
+    function geoPopulate(){
+      const stateShort = benef.municipio.estado;
+      const state = map[stateShort];
+
+      //change value
+      $("#state").val(state);
+      //populate cities
+      //get the cities
+      const cities = mx[$('#state').val()];
+      //we have the cities
+      //clear the select
+      $('#city').empty();
+      //populate the cities
+      for(const c in cities){
+          const city = cities[c];
+          $('#city').append('<option value="'+city.id+'">'+city.nombre+'</option>');
+      }
+
+      //set the correct value
+
+      $("#city").val(benef.municipio.id);
+
+
+    }
+
+
+    document.getElementById("status").value = "{{sexo}}";
+    document.getElementById("estadoCivil").value = "{{estadocivil}}";
+    document.getElementById("nacimiento").value = "{{dateFormat nacimiento "YYYY-MM-DD"}}";
+    document.getElementById("checkExtrangero").checked = {{extranjero}};
+    document.getElementById("checkIndigena").checked = {{indigente}};
+    $("#canalizacion").val({{canalizacion_id}});
+      
+
     document.addEventListener('DOMContentLoaded', () => {
       const checkIndigena = $("#checkIndigena");
       checkIndigena.on("click", () => {
@@ -153,5 +181,12 @@
           $('#city').prop('disabled', false); 
         }
       });
+    $.getJSON('/dashboard/beneficiarios/json/'+location.pathname.split("/").pop(),data =>{
+      console.log(data);
+      benef = data;
+      geoPopulate();
+
+    })
+
     });
   </script>

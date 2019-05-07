@@ -14,7 +14,7 @@ const dashboardRouter = require('./routes/dashboard');
 const proyectRouter = require('./routes/proyectos');
 
 const blogRouter = require('./routes/blog');
-const benefRouter=require('./routes/dashboard/consultar-benef');
+const benefRouter=require('./routes/dashboard/benef');
 //Elimine esto porque ya no era necesario. Solamente hay que poner el mapa y ya,
 //el cual es estatico
 
@@ -22,7 +22,7 @@ const nosotrosRouter = require('./routes/webpage');
 const contenedorRouter = require('./routes/webpage/contenedor');
 const contactoRouter = require('./routes/webpage/contacto');
 const ayudaRouter = require('./routes/webpage/ayuda');
-const detalleBenefRouter = require('./routes/dashboard/detallebenef');
+// const detalleBenefRouter = require('./routes/dashboard/benef');
 
 // const to = require('./util/to');
 
@@ -60,7 +60,7 @@ app.use('/nosotros', nosotrosRouter);
 app.use('/contenedor', contenedorRouter);
 app.use('/contacto', contactoRouter);
 app.use('/ayuda', ayudaRouter);
-app.use('/beneficiario', detalleBenefRouter);
+// app.use('/beneficiario', detalleBenefRouter);
 
 //El view de contenedores el el mapa adminostrado por google, por lo que
 //para nosotros es meramente estatico

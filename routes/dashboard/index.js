@@ -30,14 +30,14 @@ dash.get('/', async (req, res) => {
 			createStaff: user.privileges.includes(CONSTANTS.CREATE_USER)
 		})
 	else {
-		let proyectos = await db.query(`SELECT * FROM proyecto WHERE id IN (SELECT proyecto_id FROM dona WHERE donante_id=${req.session.userID})`);
-		proyectos = proyectos.rows;
+		let donativos = await db.query('SELECT * FROM donativos_bonito WHERE donante_id='+req.session.userID);
+		donativos = donativos.rows;
 		// res.json({ proyectos })
 		res.render('dashboard/landing',{
 			session: req.session,
 			user: user,
 			container: true,
-			proyectos
+			proyectos: donativos
 		})
 	}
 });
@@ -135,5 +135,60 @@ dash.post('/modificarInformacion', async (req, res) => {
 	res.json({status: 'err', err: '¡Ups! Parece que quieres hacer trampa.'});
 	return;
 });
+
+dash.get("/cambiarcontrasena", (req,res) => {
+	if(!req.session.userID){
+		res.redirect("/login");
+		return;
+	}
+	
+	res.render('dashboard/cambiar-pass',{
+		session: req.session,
+	});
+})
+
+dash.post('/cambiarcontrasena', async (req,res) => {
+	const data = req.body;
+
+	const passQ = await db.query("SELECT passhash FROM usuario WHERE id="+req.session.userID);
+
+	if(passQ.rowCount <= 0){
+		res.end('Error 500');
+	}
+
+	const hash = passQ.rows[0].passhash;
+
+	console.log(hash);
+	console.log(data);
+
+	if(bcrypt.compareSync(data.currentPass,hash)){
+		//la contraseña es correcta
+		//checar confirmacion
+		if(data.newpass1 == data.newpass2){
+			//yei
+			const salt = bcrypt.genSaltSync(8);
+			const passHash = bcrypt.hashSync(data.newpass1, salt);
+
+			db.query("UPDATE usuario SET passhash='"+passHash+"' WHERE id="+req.session.userID,(err,resq) => {
+				if(err){
+					console.log(err);
+					res.end("error 500");
+				}else{
+					res.render('dashboard/canalizaciones/success',{
+						layout: 'dashboard-base',
+						user: req.session.user,
+					})
+				}
+			})
+		} else {
+			res.end('Las contraseñas no coinciden')
+		} 
+	}else{
+		//incorrecta
+		res.end('incorrecta');
+	}
+
+
+})
 
 module.exports = dash;
