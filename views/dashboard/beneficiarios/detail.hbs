@@ -85,10 +85,20 @@
             
         </div>
         <script>
-            document.getElementById("checkExtranjero").value = "{{beneficiario.extranjero}}";
-            
+            document.getElementById("checkIndigente").value = "{{beneficiario.indigente}}";
 
-            if()
+            if({{ beneficiario.extranjero }}){
+                document.getElementById("checkExtranjero").value = "Si";
+            } else{
+                document.getElementById("checkExtranjero").value = "No";
+            }
+            if ({{ beneficiario.indigente }}) {
+                    document.getElementById("checkIndigente").value = "Si";
+                } else {
+                    document.getElementById("checkIndigente").value = "No";
+                }
+
+        
         </script>
 
 
