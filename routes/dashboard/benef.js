@@ -59,9 +59,10 @@ benef.get('/modificar/:id', async (req, res) => {
   }
   let beneficiario = await db.query('SELECT * FROM beneficiario WHERE id=$1', [req.params.id]);
 			beneficiario=beneficiario.rows[0];
+			const pq = await db.query('SELECT * FROM canalizacion ', );
 		res.render('dashboard/beneficiarios/modificar', { ...beneficiario, session: req.session 
 			,layout: 'dashboard-base',
-			user: req.session.user});
+			user: req.session.user,bene:pq.rows});
 		//res.json({canalizacion})
 });
 
