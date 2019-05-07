@@ -30,14 +30,14 @@ dash.get('/', async (req, res) => {
 			createStaff: user.privileges.includes(CONSTANTS.CREATE_USER)
 		})
 	else {
-		let proyectos = await db.query(`SELECT * FROM proyecto WHERE id IN (SELECT proyecto_id FROM dona WHERE donante_id=${req.session.userID})`);
-		proyectos = proyectos.rows;
+		let donativos = await db.query('SELECT * FROM donativos_bonito WHERE donante_id='+req.session.userID);
+		donativos = donativos.rows;
 		// res.json({ proyectos })
 		res.render('dashboard/landing',{
 			session: req.session,
 			user: user,
 			container: true,
-			proyectos
+			proyectos: donativos
 		})
 	}
 });

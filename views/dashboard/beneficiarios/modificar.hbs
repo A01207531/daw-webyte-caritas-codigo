@@ -114,7 +114,10 @@
     </div>
     <div class="input-field col m6 s12">
       <select id="canalizacion" name="canalizacion" class="browser-default">
-        <option  disabled selected>Seleccione...</option>         
+        <option  disabled selected>Seleccione...</option>   
+        {{#each bene}}
+        <option value="{{id}}">{{contacto}}</option>
+        {{/each}}      
       </select>
       <label for="canalizacion" class="active">Canalización</label>
     </div>
@@ -131,7 +134,6 @@
   <script src="/javascripts/mx-data.js"></script>
   <script src="/javascripts/new-proj-form.js"></script>
   <script>
-<<<<<<< HEAD
     let benef;
 
     function geoPopulate(){
@@ -160,15 +162,12 @@
     }
 
 
-=======
-     
->>>>>>> c126f812fd7213475736a46726ed3f07626c4a87
     document.getElementById("status").value = "{{sexo}}";
     document.getElementById("estadoCivil").value = "{{estadocivil}}";
     document.getElementById("nacimiento").value = "{{dateFormat nacimiento "YYYY-MM-DD"}}";
     document.getElementById("checkExtrangero").checked = {{extranjero}};
     document.getElementById("checkIndigena").checked = {{indigente}};
-
+    $("#canalizacion").val({{canalizacion_id}});
       
 
     document.addEventListener('DOMContentLoaded', () => {
