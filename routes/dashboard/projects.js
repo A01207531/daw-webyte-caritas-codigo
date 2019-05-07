@@ -59,6 +59,10 @@ function savePostInDB(img,req,res){
 
 	const p = req.body; //p de post
 
+	const cats = p.categorias;
+
+	console.log(cats);
+
 	const sol = p.solicitado;
 
 	const responsable = req.session.userID;
