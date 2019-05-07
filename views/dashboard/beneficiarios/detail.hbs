@@ -26,8 +26,8 @@
                     <div class="col s4 grey lighten-4 ">
                 
                      <label for="first_name"><h6>¿Es extranjero?</h6></label>
-
-                     <h7>{{beneficiario.extranjero}}</h7>
+                        
+                     <h7 id="checkExtranjero">{{beneficiario.extranjero}}</h7>
                 </div>
                     
                     <div class="divider"></div>
@@ -40,7 +40,7 @@
                     <div class="col s4 grey lighten-4">
                                             
                     <label for="first_name"><h6>¿Es Indigente?</h6></label>
-                        <h7>{{beneficiario.indigente}}</h7>
+                        <h7 id="checkIndigente">{{beneficiario.indigente}}</h7>
                     </div>
                     <div class="col s4 grey lighten-4"><label for="first_name"><h6>Profesión</h6></label>
                         <h7>{{beneficiario.profesion}}</h7>
@@ -84,7 +84,12 @@
                 
             
         </div>
-        
+        <script>
+            document.getElementById("checkExtranjero").value = "{{beneficiario.extranjero}}";
+            
+
+            if()
+        </script>
 
 
 
