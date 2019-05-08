@@ -148,8 +148,17 @@ benef.get('/:id', async (req, res) => {
 		
 		
   let beneficiario = await db.query('SELECT * FROM beneficiario WHERE id=$1', [req.params.id]);
-  beneficiario = beneficiario.rows[0];
-  // console.log(beneficiario)
+	beneficiario = beneficiario.rows[0];
+
+	const query = 'SELECT proyecto.nombre,proyecto_id as pnombre FROM proyecto_beneficiario, proyecto WHERE proyecto_id = proyecto.id AND beneficiario_id = $1';
+	
+	const q = await db.query(query,[req.params.id]);
+
+	if(q){
+		beneficiario.projects = q.rows;
+	}
+
+  console.log(beneficiario)
   res.render('dashboard/beneficiarios/detail', { beneficiario, session: req.session,layout:"dashboard-base",user: req.session.user });
 	}else{
 	  res.redirect('/dashboard');
