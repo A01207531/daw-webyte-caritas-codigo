@@ -24,6 +24,8 @@ const contactoRouter = require('./routes/webpage/contacto');
 const ayudaRouter = require('./routes/webpage/ayuda');
 // const detalleBenefRouter = require('./routes/dashboard/benef');
 
+const forgotRouter = require('./routes/forgot');
+
 // const to = require('./util/to');
 
 const app = express();
@@ -45,7 +47,7 @@ app.use(session({
 }));
 
 paypal.configure({
-  'mode': 'sandbox', //sandbox or live
+  'mode': 'live', //sandbox or live
   'client_id': process.env.CLIENT_PAYPAL,
   'client_secret': process.env.SECRET_PAYPAL
 });
@@ -60,6 +62,7 @@ app.use('/nosotros', nosotrosRouter);
 app.use('/contenedor', contenedorRouter);
 app.use('/contacto', contactoRouter);
 app.use('/ayuda', ayudaRouter);
+app.use('/forgot',forgotRouter);
 // app.use('/beneficiario', detalleBenefRouter);
 
 //El view de contenedores el el mapa adminostrado por google, por lo que

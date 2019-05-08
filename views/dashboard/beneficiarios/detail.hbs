@@ -27,7 +27,7 @@
                 
                      <label for="first_name"><h6>¿Es extranjero?</h6></label>
                         
-                     <h7 id="checkExtranjero">{{beneficiario.extranjero}}</h7>
+                     <h7 id="checkExtranjero"></h7>
                 </div>
                     
                     <div class="divider"></div>
@@ -85,6 +85,15 @@
             
         </div>
         <script>
+            
+            
+            if({{ extranjero }}){
+                $('#checkExtranjero').value("Si");
+                //document.getElementById("checkExtranjero").value = "Si";
+            } else{
+                //document.getElementById("checkExtranjero").value = "No";
+                $('#checkExtranjero').value("No");
+            }
             document.getElementById("checkIndigente").value = {{ beneficiario.indigente }};
             document.getElementById("checkIndigente").value = {{beneficiario.indigente}};
 

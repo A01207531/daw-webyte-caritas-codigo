@@ -30,14 +30,14 @@ dash.get('/', async (req, res) => {
 			createStaff: user.privileges.includes(CONSTANTS.CREATE_USER)
 		})
 	else {
-		let proyectos = await db.query(`SELECT * FROM proyecto WHERE id IN (SELECT proyecto_id FROM dona WHERE donante_id=${req.session.userID})`);
-		proyectos = proyectos.rows;
+		let donativos = await db.query('SELECT * FROM donativos_bonito WHERE donante_id='+req.session.userID);
+		donativos = donativos.rows;
 		// res.json({ proyectos })
 		res.render('dashboard/landing',{
 			session: req.session,
 			user: user,
 			container: true,
-			proyectos
+			proyectos: donativos
 		})
 	}
 });
@@ -174,9 +174,11 @@ dash.post('/cambiarcontrasena', async (req,res) => {
 					console.log(err);
 					res.end("error 500");
 				}else{
-					res.render('dashboard/canalizaciones/success',{
-						layout: 'dashboard-base',
+					res.render('generic-message',{
 						user: req.session.user,
+						session: req.session,
+						title: 'Exito',
+						content: 'Se ha cambiado la contraseña de forma exitosa.'
 					})
 				}
 			})

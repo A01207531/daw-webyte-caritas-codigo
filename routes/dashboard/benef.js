@@ -33,10 +33,11 @@ benef.get('/nuevo', async (req, res) => {
 		res.redirect("/login");
 		return;
 	}
-	
+	const pq = await db.query('SELECT * FROM canalizacion ', );
+	const bq = await db.query('SELECT * FROM proyecto ', );
 
 	res.render('dashboard/beneficiarios/create',{
-		layout: 'dashboard-base'
+		layout: 'dashboard-base',bene:pq.rows, proj:bq.rows
 	});
 
 });
@@ -48,7 +49,49 @@ benef.post('/nuevo', async (req, res) => {
 	}
 
 	res.json(req.body);
+	const name = req.body.name;
+	const lastname = req.body.lastname;
+	let checkIndigena = req.body.checkIndigena;
+	let checkExtrangero = req.body.checkExtrangero;
+	const state = req.body.state;
+	const city = req.body.city;
+	const nacimiento = req.body.nacimiento;
+	const address = req.body.address;
+	const curp = req.body.curp;
+	const rfc = req.body.rfc;
+	const profesion = req.body.profesion;
+	const status = req.body.status;
+	const estadoCivil = req.body.estadoCivil;
+	const canalizacion = req.body.canalizacion;
+	if (checkIndigena==null) {
+		checkIndigena=false;
+	}
+	if (checkExtrangero==null) {
+		checkExtrangero=false;
+	}
+	
+	const params = [name,lastname,checkIndigena,checkExtrangero,nacimiento,address,curp,rfc,profesion,status,estadoCivil,canalizacion,req.params.id];
+	console.log(...params);
+	const query = 'INSERT INTO beneficiario(DEFAULT,nombre,apellido,curp,sexo,nacimiento,municipio_id,direccion,canalizacion_id,rfc,estadocivil,zonageografica,extranjero,indigente,profesion,calle,numero,cp,colonia,tipodeayuda) VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)';
 
+	db.query(query,params, (err, resp) => {
+		if(err){
+			console.log(err.stack);
+		  //Este error viene de la BD, por lo que solo puede ser por la
+		  //violación de la llave única. 
+		  res.render('dashboard/errors/generic',{
+			  layout: 'dashboard-base',
+			  user: req.session.user,
+			  title: 'Error al ingresar los datos',
+			  text: 'Ocurrio un error al insertar los datos'
+		  });
+		}else{
+			res.render('dashboard/beneficiarios/modificado',{
+				layout: 'dashboard-base',
+				user: req.session.user,
+				})
+		}
+	})
 });
 
 
