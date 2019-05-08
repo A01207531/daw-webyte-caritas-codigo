@@ -10,6 +10,8 @@ const nodemailer = require('nodemailer');
 const gmail = process.env.gmail;
 const gmailPass = process.env.gmailpass;
 
+const deleteQuery = 'DELETE FROM forget_pass WHERE token=$1'
+
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -31,9 +33,25 @@ function sendToken(user,token){
     const mailOptions = {
         from: 'no-reply@caritasdequeretaro.org', // sender address
         to: user.email, // list of receivers
-        subject: 'Código de recuperación de contraseña', // Subject line
+        subject: 'Recuperar contraseña Cáritas de Querétaro', // Subject line
         // plain text body
-        html: 'Tu código de recuperación de contraseña es: <h2>'+token+'</h2>'
+        html: 'Hola '+user.nombre+'<br>Tu código de recuperación de contraseña es:<br> <h2>'+token+'</h2>'
+      };
+    transporter.sendMail(mailOptions, function (err, info) {
+        if(err)
+          console.log(err)
+        else
+          console.log(info);
+     });
+}
+
+function notifyChange(user){
+    const mailOptions = {
+        from: 'no-reply@caritasdequeretaro.org', // sender address
+        to: user.email, // list of receivers
+        subject: 'Cambio de contraseña para Cáritas de Querétaro', // Subject line
+        // plain text body
+        html: 'Hola '+user.nombre+'<br>Tu contraseña ha sido cambiada'
       };
     transporter.sendMail(mailOptions, function (err, info) {
         if(err)
@@ -120,6 +138,16 @@ f.post('/token',async (req,res) => {
             console.log(err);
             res.end("error 500");
         }else{
+
+            db.query(deleteQuery,[token],(err2,resq2) => {
+                if(err2){
+                    console.log(err2);
+                } else {
+                    console.log('Removed recovery token '+token);
+                    console.log(resq2);
+                }
+            })
+
             res.render('generic-message',{
                 title: 'Contraseña cambiada',
                 content: 'Se ha cambiado la contraseña',
