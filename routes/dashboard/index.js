@@ -174,9 +174,11 @@ dash.post('/cambiarcontrasena', async (req,res) => {
 					console.log(err);
 					res.end("error 500");
 				}else{
-					res.render('dashboard/canalizaciones/success',{
-						layout: 'dashboard-base',
+					res.render('generic-message',{
 						user: req.session.user,
+						session: req.session,
+						title: 'Exito',
+						content: 'Se ha cambiado la contraseña de forma exitosa.'
 					})
 				}
 			})
