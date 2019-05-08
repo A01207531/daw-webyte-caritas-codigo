@@ -19,14 +19,6 @@ benef.get('/', async (req, res) => {
         benef: bq.rows
 	});
 });
-	benef.get('/', async (req, res) => {
-
-
-		res.render('beneficiario/index', {
-
-		});
-
-	});
 	
 benef.get('/nuevo', async (req, res) => {
 	if(!req.session.userID){
@@ -48,34 +40,22 @@ benef.post('/nuevo', async (req, res) => {
 		return;
 	}
 
-	res.json(req.body);
-	const name = req.body.name;
-	const lastname = req.body.lastname;
-	let checkIndigena = req.body.checkIndigena;
-	let checkExtrangero = req.body.checkExtrangero;
-	const state = req.body.state;
-	const city = req.body.city;
-	const nacimiento = req.body.nacimiento;
-	const address = req.body.address;
-	const curp = req.body.curp;
-	const rfc = req.body.rfc;
-	const profesion = req.body.profesion;
-	const status = req.body.status;
-	const estadoCivil = req.body.estadoCivil;
-	const canalizacion = req.body.canalizacion;
-	if (checkIndigena==null) {
-		checkIndigena=false;
-	}
-	if (checkExtrangero==null) {
-		checkExtrangero=false;
-	}
+	let { calle, numero, cp, colonia, profesion, name, lastname, curp, sexo, nacimiento, city, canalizacion, rfc, estadoCivil, zona, checkIndigena, checkExtrangero } = req.body;
 	
-	const params = [name,lastname,checkIndigena,checkExtrangero,nacimiento,address,curp,rfc,profesion,status,estadoCivil,canalizacion,req.params.id];
-	console.log(...params);
-	const query = 'INSERT INTO beneficiario(DEFAULT,nombre,apellido,curp,sexo,nacimiento,municipio_id,direccion,canalizacion_id,rfc,estadocivil,zonageografica,extranjero,indigente,profesion,calle,numero,cp,colonia,tipodeayuda) VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)';
+	checkIndigena = !!checkIndigena;
+	checkExtrangero = !!checkExtrangero;
 
-	db.query(query,params, (err, resp) => {
-		if(err){
+	const params = [name,lastname,curp,sexo,nacimiento,city,canalizacion,rfc,estadoCivil,zona,checkExtrangero,checkIndigena,profesion,calle,numero,cp,colonia];
+	// console.table(params);
+	// res.json({params});
+
+	// console.log(req.body.proyectos);
+	
+	// console.log(...params);
+	const query = 'INSERT INTO beneficiario(ID,nombre,apellido,curp,sexo,nacimiento,municipio_id,canalizacion_id,rfc,estadocivil,zonageografica,extranjero,indigente,profesion,calle,numero,cp,colonia) VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)';
+
+	db.query(query,params, async (err, resp) => {
+		if(err) {
 			console.log(err.stack);
 		  //Este error viene de la BD, por lo que solo puede ser por la
 		  //violación de la llave única. 
@@ -85,11 +65,21 @@ benef.post('/nuevo', async (req, res) => {
 			  title: 'Error al ingresar los datos',
 			  text: 'Ocurrio un error al insertar los datos'
 		  });
-		}else{
+		} else {
+			console.log(resp);
+
+			let idBenef = await db.query('SELECT id FROM beneficiario WHERE curp=$1', [curp]);
+			idBenef = idBenef.rows[0].id;
+			console.log("IDBenef:",idBenef);
+			req.body.proyectos.forEach(id => {
+				db.query('INSERT INTO proyecto_beneficiario(proyecto_id, beneficiario_id) VALUES($1, $2)', [parseInt(id), parseInt(idBenef)]);
+				// console.log(id);
+			});
+
 			res.render('dashboard/beneficiarios/modificado',{
 				layout: 'dashboard-base',
 				user: req.session.user,
-				})
+			});
 		}
 	})
 });
