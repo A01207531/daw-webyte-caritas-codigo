@@ -150,7 +150,7 @@ benef.get('/:id', async (req, res) => {
   let beneficiario = await db.query('SELECT * FROM beneficiario WHERE id=$1', [req.params.id]);
 	beneficiario = beneficiario.rows[0];
 
-	const query = 'SELECT proyecto.nombre,beneficiario_id as pnombre FROM proyecto_beneficiario, proyecto WHERE proyecto_id = proyecto.id AND beneficiario_id = $1';
+	const query = 'SELECT proyecto.nombre,proyecto_id as pnombre FROM proyecto_beneficiario, proyecto WHERE proyecto_id = proyecto.id AND beneficiario_id = $1';
 	
 	const q = await db.query(query,[req.params.id]);
 
