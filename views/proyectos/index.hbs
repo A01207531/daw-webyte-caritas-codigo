@@ -10,46 +10,34 @@
         </div>
         <div class="block">    
           <h5>Por programa</h5>
-          <p>
-            <label>
-              <input class="with-gap" value="1" name="programa" id="programa1" type="radio" />
-              <span>Programa 1</span>
-            </label>
-          </p>
-          <p>
-            <label>
-              <input class="with-gap" value="2" name="programa" id="programa2" type="radio" />
-              <span>Programa 2</span>
-            </label>
-          </p>
-          <p>
-            <label>
-              <input class="with-gap" value="3" name="programa" id="programa3" type="radio" />
-              <span>Programa 3</span>
-            </label>
-          </p>
+          {{#each sub_programas}}
+            <p>
+              <label>
+                <input class="with-gap" value={{id}} name="programa" id="programa{{id}}" type="radio" />
+                <span>{{nombre}}</span>
+              </label>
+            </p>
+          {{/each}}
         </div>
 
-        <div class="block">
-          <h5>Orden</h5>
-          <p>
-            <label>
-              <input class="with-gap" name="orden" type="radio" />
-              <span>Ascendente</span>
-            </label>
-          </p>
-          <p>
-            <label>
-              <input class="with-gap" name="orden" type="radio" />
-              <span>Descendente</span>
-            </label>
-          </p>
+        <div class="block">    
+          <h5>Por categorías</h5>
+          {{#each categorias}}
+            <p>
+              <label>
+                <input class="with-gap" value={{id}} name="categoria" id="categoria{{id}}" type="radio" />
+                <span>{{nombre}}</span>
+              </label>
+            </p>
+          {{/each}}
         </div>
+
+        
         {{!-- <div id="test-slider"></div> --}}
       </div>
     </div>
   </div>
-  <div class="row col s12 m9">
+  <div class="row col s12 m9 cardContainer">
     {{#if proyectos}}
       {{#each proyectos}}
         <div class="col s12 m4">
@@ -78,21 +66,55 @@
 
 <script>
   $('document').ready(() => {
-    let byName, byPrograma;
+
+    let createCard = ({img, nombre, id, descripcion}) => {
+      let col = `
+        <div class="col s12 m4">
+          <div class="card small sticky-action">
+            <div class="card-image ">
+              <img class="activator" src="${img}">
+            </div>
+            <div class="card-content">
+              <span class="card-title activator grey-text text-darken-4">${nombre}<i class="material-icons right">more_vert</i></span>
+            </div>
+            <div class="card-reveal">
+              <span class="card-title grey-text text-darken-4">${nombre}<i class="material-icons right">close</i></span>
+              <p>${descripcion}</p>
+            </div>
+            <div class="card-action">
+              <a class="waves-effect red darken-1 btn" href="/proyectos/${id}">Detalles</a>
+            </div>
+          </div>
+        </div>
+      `
+
+      return col;
+    }
+    
+    let byName, byPrograma, byCategoria;
 
     $("input[name='programa']:radio").change(e => {
       byPrograma = $('input:radio[name=programa]:checked').val();
-      get({byPrograma, byName});
+      get({byPrograma, byName, byCategoria});
+    });
+
+    $("input[name='categoria']:radio").change(e => {
+      byCategoria = $('input:radio[name=categoria]:checked').val();
+      get({byCategoria, byName, byPrograma});
     });
 
     $('#name').change(e => {
       byName = e.target.value;
-      get({byPrograma, byName});
+      get({byPrograma, byName, byCategoria});
     });
 
     let get = data => {
       $.post('/proyectos', data, response => {
-        console.log(response);
+        console.log(response.proyectos.rows);
+        $('.cardContainer').html('');
+        response.proyectos.rows.forEach(proyecto => {
+          $('.cardContainer').append(createCard(proyecto));
+        });
       });
     }
   });
