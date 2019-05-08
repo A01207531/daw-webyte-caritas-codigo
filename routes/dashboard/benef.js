@@ -181,8 +181,13 @@ function reasoc(benef_id,projects){
 	})
 }
 
+const projectIdsQuery = 'SELECT proyecto_id FROM proyecto_beneficiario WHERE beneficiario_id=$1';
+
 //--Edit
 benef.get('/json/:id',async (req,res) => {
+
+	//get the active projects
+	const pids = await db.query(projectIdsQuery,[req.params.id]);
 
 	if(!req.session.userID){
 		    res.redirect("/login");
@@ -194,7 +199,9 @@ benef.get('/json/:id',async (req,res) => {
 
 	let beneficiario = await db.query('SELECT * FROM beneficiario WHERE id=$1', [req.params.id]);
   if(beneficiario.rowCount>0) {
-    beneficiario = beneficiario.rows[0];
+		beneficiario = beneficiario.rows[0];
+		
+		beneficiario.projects = pids.rows;
   
     let [ municipio ] = await Promise.all([
        
