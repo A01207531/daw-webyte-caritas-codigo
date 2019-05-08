@@ -97,17 +97,17 @@
                             <!--Canalización -->
                         
                     </div>
-                    <div class="col s12 grey lighten-4">
+                    <div class="col s12 grey lighten-4 center">
                     
                         <label for="first_name">
                             <h6 class="center">Proyecto</h6>
-                        </label>
+                        </label> 
                         <!--<h7 class="center" id="project">{{beneficiario.proyecto_id}}</h7> <br>
                         <h7 class="center" id="project">{{beneficiario.proyecto_id}}</h7> <br>
                         <label for="first_name">-->
-                            <ul>
-                                {{#each beneficiario.proyecto_id}}
-                                <li> - {{ this }}</li>
+                            <ul class="center">
+                                {{#each beneficiario.projects}}
+                                <li class="center"> - <a class="center" href="/proyectos/{{pnombre}}">{{nombre}}</a>  </li>
                                 {{/each}}
                             </ul>
                             

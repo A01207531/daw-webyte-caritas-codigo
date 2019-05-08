@@ -268,7 +268,11 @@ function updateWithImg(p,id,res,session,img){
 
 	console.log(p.categorias);
 
-	const values = [p.name,p.desc,p.inicio,p.final,p.status,p.observation,p.sub,p.city,p.address,p.solicitado,id,img,p.categorias.join(',')];
+	let cat = p.categorias;
+
+	if(typeof(cat) != Array) cat = [cat];
+
+	const values = [p.name,p.desc,p.inicio,p.final,p.status,p.observation,p.sub,p.city,p.address,p.solicitado,id,img,cat.join(',')];
 
 	db.query(query,values, (err, resp) => {
 		if(err){
