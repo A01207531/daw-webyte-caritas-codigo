@@ -3,8 +3,20 @@ const db = require('../models');
 const uuidv4 = require('uuid/v4');
 const to = require('../util/to');
 const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
 
 //En go seria data, err := db.Query("SELECT ...")
+
+const gmail = process.env.gmail;
+const gmailPass = process.env.gmailpass;
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+           user: gmail,
+           pass: gmailPass
+       }
+   });
 
 f.get('/',(req,res) => {
     if(req.session.userID){
@@ -14,6 +26,22 @@ f.get('/',(req,res) => {
 
     res.render('recuperar-contrasena/mail');
 });
+
+function sendToken(user,token){
+    const mailOptions = {
+        from: 'no-reply@caritasdequeretaro.org', // sender address
+        to: 'eduardoandrescp@outlook.com', // list of receivers
+        subject: 'Código de recuperación de contraseña', // Subject line
+        // plain text body
+        html: 'Tu código de recuperación de contraseña es: <h1>'+token+'</h1>'
+      };
+    transporter.sendMail(mailOptions, function (err, info) {
+        if(err)
+          console.log(err)
+        else
+          console.log(info);
+     });
+}
 
 f.post('/',async (req,res) => {
     const username = req.body.email;
@@ -38,7 +66,7 @@ f.post('/',async (req,res) => {
             res.end("error 500");
         }else{
             //no error, send via EMAIL
-            console.log("Hola, tu código de recuperación es "+token);
+            sendToken(user,token);
             res.redirect('/forgot/token');
         }
     })
@@ -47,6 +75,7 @@ f.post('/',async (req,res) => {
 });
 
 f.get('/token',(req,res) => {
+    console.log(gmail);
     res.render('recuperar-contrasena/token')
 });
 
