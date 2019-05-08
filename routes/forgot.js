@@ -91,7 +91,11 @@ f.post('/token',async (req,res) => {
             console.log(err);
             res.end("error 500");
         }else{
-            res.end('Se ha recuperado la contraseña')
+            res.render('generic-message',{
+                title: 'Contraseña cambiada',
+                content: 'Se ha cambiado la contraseña',
+                session: req.session
+            });
         }
     })
 })
