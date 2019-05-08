@@ -64,7 +64,7 @@
                             <label for="first_name">
                                 <h6>Municipio</h6>
                             </label>
-                            <h7>{{beneficiario.municipio_id}}</h7>
+                            <h7 id="city">{{beneficiario.municipio_id}}</h7>
                     </div>
                     <div class="col s4 grey lighten-4">
                             <label for="first_name">
@@ -87,13 +87,13 @@
         <script>
             
             
-            if({{ extranjero }}){
+            /*if({{ extranjero }}){
                 $('#checkExtranjero').value("Si");
                 //document.getElementById("checkExtranjero").value = "Si";
             } else{
                 //document.getElementById("checkExtranjero").value = "No";
                 $('#checkExtranjero').value("No");
-            }
+            }*/
             document.getElementById("checkIndigente").value = {{ beneficiario.indigente }};
             document.getElementById("checkIndigente").value = {{beneficiario.indigente}};
 
@@ -108,7 +108,14 @@
                     document.getElementById("checkIndigente").textContent ="No";
                 }
 
-            console.log({{beneficiario.indigente}})
+            $.getJSON("/dashboard/beneficiarios/json/" + location.pathname.split("/").pop(), data => {
+                    const m = data.municipio;
+
+                    $("#city").text(m.nombre+ ", "+m.estado);
+
+
+                })
+
 
         
         </script>
