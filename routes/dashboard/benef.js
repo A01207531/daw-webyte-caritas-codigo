@@ -169,15 +169,32 @@ function reasoc(benef_id,projects){
 		}
 
 		//now do a for each and add all the data
-		projects.forEach(id => {
-			db.query('INSERT INTO proyecto_beneficiario(proyecto_id, beneficiario_id) VALUES($1, $2)', [id, benef_id],(err2,res2) => {
+
+		//error for typeof
+		console.log(projects);
+		
+		//if(projects && projects.forEach) 
+		
+		if(projects && projects.forEach){
+			projects.forEach(id => {
+				console.log("INSERTING"+id)
+				db.query('INSERT INTO proyecto_beneficiario(proyecto_id, beneficiario_id) VALUES($1, $2)', [id, benef_id],(err2,res2) => {
+					if(err){
+						console.log(err);
+					}else{
+						
+					}
+				});
+			});
+		} else if(projects) {
+			db.query('INSERT INTO proyecto_beneficiario(proyecto_id, beneficiario_id) VALUES($1, $2)', [projects, benef_id],(err2,res2) => {
 				if(err){
 					console.log(err);
 				}else{
-					console.log(res2);
+					
 				}
 			});
-		});
+		}
 	})
 }
 
@@ -222,6 +239,8 @@ benef.get('/json/:id',async (req,res) => {
 })
 
 benef.post('/modificar/:id', (req,res) => {
+
+	console.log(req.body.proyectos);
 
 	if(!req.session.userID){
 		    res.redirect("/login");
