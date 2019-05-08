@@ -63,16 +63,20 @@ function savePostInDB(title,content,img,req,res){
 			console.log(err.stack);
 		  //Este error viene de la BD, por lo que solo puede ser por la
 		  //violación de la llave única. 
-		  res.render('dashboard/errors/generic',{
+		  res.render('generic-message',{
 			  layout: 'dashboard-base',
-			  user: req.session.user,
+				user: req.session.user,
+				session: req.session,
 			  title: 'Error al ingresar los datos',
-			  text: 'Ocurrio un error al insertar la imagen'
+			  conent: 'Ocurrio un error al insertar la imagen'
 		  });
 		}else{
-			res.render('dashboard/canalizaciones/success',{
+			res.render('generic-message',{
 				layout: 'dashboard-base',
 				user: req.session.user,
+				session: req.session,
+				title: 'Exito',
+				content: 'Post creado correctamente'
 			})
 		}
 	})
@@ -135,9 +139,12 @@ function updateWithoutImg(title,content,req,res,id){
 			  text: 'Ocurrio un error al insertar la imagen'
 		  });
 		}else{
-			res.render('dashboard/canalizaciones/success',{
+			res.render('generic-message',{
 				layout: 'dashboard-base',
 				user: req.session.user,
+				session: req.session,
+				title: "Exito",
+				content: "Post creado correctamente"
 			})
 		}
 	})
@@ -160,9 +167,12 @@ function updateWithImg(title,content,req,res,id,img){
 			  text: 'Ocurrio un error al insertar la imagen'
 		  });
 		}else{
-			res.render('dashboard/canalizaciones/success',{
+			res.render('generic-message',{
 				layout: 'dashboard-base',
 				user: req.session.user,
+				session: req.session,
+				title: "Exito",
+				content: "post actualizado"
 			})
 		}
 	})
