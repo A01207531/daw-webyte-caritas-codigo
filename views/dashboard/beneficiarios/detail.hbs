@@ -45,8 +45,25 @@
                     <div class="col s4 grey lighten-4"><label for="first_name"><h6>Profesión</h6></label>
                         <h7>{{beneficiario.profesion}}</h7>
                     </div>
-                    <br> <br>
-
+        
+                    <div class="col s4 grey lighten-4">
+                        <label for="first_name">
+                            <h6>Colonia</h6>
+                        </label>
+                        <h7>{{beneficiario.colonia}}</h7>
+                    </div>
+                    <div class="col s4 grey lighten-4">
+                        <label for="first_name">
+                            <h6>Calle</h6>
+                        </label>
+                        <h7>{{beneficiario.calle}}</h7>
+                    </div>
+                    <div class="col s4 grey lighten-4">
+                        <label for="first_name">
+                            <h6>CP</h6>
+                        </label>
+                        <h7>{{beneficiario.cp}}</h7>
+                    </div>
                     
                     <div class="col s12 grey lighten-4">
                         
@@ -54,11 +71,16 @@
                                 <h6>CURP</h6>
                             </label>
                             <h7>{{beneficiario.curp}}</h7>
-                            <label for="first_name">
-                                <h6>RFC</h6>
-                            </label>
-                            <h7>{{beneficiario.rfc}}</h7>
                     </div>
+
+                    <div class="col s4 grey lighten-4">
+                    
+                        <label for="first_name">
+                            <h6>RFC</h6>
+                        </label>
+                        <h7>{{beneficiario.rfc}}</h7>
+                    </div>
+
                     <div class="col s4 grey lighten-4">
                         
                             <label for="first_name">
@@ -66,13 +88,8 @@
                             </label>
                             <h7 id="city">{{beneficiario.municipio_id}}</h7>
                     </div>
+                    
                     <div class="col s4 grey lighten-4">
-                            <label for="first_name">
-                                <h6>Dirección</h6>
-                            </label>
-                            <h7>{{beneficiario.direccion}}</h7>
-                    </div>
-                            <div class="col s4 grey lighten-4">
                             <label for="first_name">
                                 <h6>Zona Geográfica</h6>
                             </label>
@@ -85,9 +102,16 @@
                         <label for="first_name">
                             <h6 class="center">Proyecto</h6>
                         </label>
+                        <!--<h7 class="center" id="project">{{beneficiario.proyecto_id}}</h7> <br>
                         <h7 class="center" id="project">{{beneficiario.proyecto_id}}</h7> <br>
-                        <h7 class="center" id="project">{{beneficiario.proyecto_id}}</h7> <br>
-                        <label for="first_name">
+                        <label for="first_name">-->
+                            <ul>
+                                {{#each beneficiario.proyecto_id}}
+                                <li> - {{ this }}</li>
+                                {{/each}}
+                            </ul>
+                            
+                                
                     </div>
                 </div>
                 
