@@ -11,35 +11,66 @@ const cats = ["Niños","Mujeres","Becas","Salud","Educacion",
  
 
 router.get('/', async (req, res) => {
-  let proyectos = await db.query('SELECT * from proyecto');
+  let [proyectos, sub_programas] = await Promise.all([
+    db.query('SELECT * from proyecto'), 
+    db.query('SELECT * FROM subprograma')
+  ]);
+
+  categorias = [
+    {id:0, nombre:'Niños'},
+    {id:1, nombre:'Mujeres'},
+    {id:2, nombre:'Becas'},
+    {id:3, nombre:'Salud'},
+    {id:4, nombre:'Educacion'},
+    {id:5, nombre:'Jovenes'},
+    {id:6, nombre:'Adultos Mayores'},
+    {id:7, nombre:'Rural'},
+    {id:8, nombre:'Urbano'},
+    {id:9, nombre:'Otros'},
+  ]
+
   proyectos = proyectos.rows;
+  sub_programas = sub_programas.rows;
   const session = req.session;
 
-  res.render('proyectos/index', { proyectos, session });
+  res.render('proyectos/index', { proyectos, session, sub_programas, categorias });
   // res.json(proyectos)
 });
 
 router.post('/', async (req, res) => {
   let query = 'SELECT * FROM proyecto ', proyectos;
-  let byPrograma = undefined, byName = undefined;
+  let byPrograma = undefined, byName = undefined, byCategoria;
   let postman = false;
+
   if(postman){
     byPrograma = req.query.byPrograma;
+    byCategoria = req.query.byCategoria;
     byName = req.query.byName;
   } else {
+    byCategoria = req.body.byCategoria;
     byPrograma = req.body.byPrograma;
     byName = req.body.byName;
   }
 
-  if(byPrograma && byName) {
+  console.log(byCategoria)
+
+  if(byPrograma && byName && byCategoria) {
     console.log("primero");
-    proyectos = await db.query(query + "WHERE subprograma_id=$1 AND (nombre LIKE $2 OR nombre LIKE $2)", [byPrograma, `%${byName}%`]);
-  } else if(byPrograma){
+    proyectos = await db.query(query + "WHERE subprograma_id=$1 AND (nombre LIKE $2 OR descripcion LIKE $2) AND (categorias LIKE $3)", [byPrograma, `%${byName}%`, `%${byCategoria}%`]);
+  } else if(byPrograma && byName){
     console.log("segundo");
-    proyectos = await db.query(query + "WHERE subprograma_id=$1", [byPrograma]);
-  } else if(byName){
+    proyectos = await db.query(query + "WHERE subprograma_id=$1  AND (nombre LIKE $2 OR descripcion LIKE $2)", [byPrograma, `%${byName}%`]);
+  } else if(byName && byCategoria){
     console.log("ByName:", byName);
-    proyectos = await db.query(query + "WHERE nombre LIKE $1 OR descripcion LIKE $1", [`%${byName}%`]);
+    proyectos = await db.query(query + "WHERE (nombre LIKE $1 OR descripcion LIKE $1) AND (categorias LIKE $2)", [`%${byName}%`, `%${byCategoria}%`]);
+  } else if(byPrograma && byCategoria) {
+    proyectos = await db.query(query + "WHERE subprograma_id=$1  AND categorias LIKE $2", [byPrograma, `%${byCategoria}%`])
+  } else if(byName) {
+    proyectos = await db.query(query + "WHERE (nombre LIKE $1 OR descripcion LIKE $1)", [`%${byName}%`] )
+  } else if(byPrograma) {
+    proyectos = await db.query(query + "WHERE subprograma_id=$1", [byPrograma])
+  } else if(byCategoria) {
+    proyectos = await db.query(query + "WHERE categorias LIKE $1", [`%${byCategoria}%`])
   } else {
     console.log("cuarto");
     proyectos = await db.query(query);
