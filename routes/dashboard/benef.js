@@ -123,12 +123,14 @@ benef.get('/modificar/:id', async (req, res) => {
 		res.redirect("/login");
 		return;
 	}
+	const bq = await db.query('SELECT * FROM proyecto ', );
 	if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
   let beneficiario = await db.query('SELECT * FROM beneficiario WHERE id=$1', [req.params.id]);
 			beneficiario=beneficiario.rows[0];
 			const pq = await db.query('SELECT * FROM canalizacion ', );
 		res.render('dashboard/beneficiarios/modificar', { ...beneficiario, session: req.session 
 			,layout: 'dashboard-base',
+			proj: bq.rows,
 			user: req.session.user,bene:pq.rows});
 		//res.json({canalizacion})
 	}else{
@@ -154,6 +156,30 @@ benef.get('/:id', async (req, res) => {
   	return;
   }
 });
+
+
+function reasoc(benef_id,projects){
+	//delete all records of this benef
+	const query = "DELETE FROM proyecto_beneficiario WHERE beneficiario_id=$1";
+
+	db.query(query,[benef_id], (err, resp) => {
+		if(err){
+			console.log(err);
+			return;
+		}
+
+		//now do a for each and add all the data
+		projects.forEach(id => {
+			db.query('INSERT INTO proyecto_beneficiario(proyecto_id, beneficiario_id) VALUES($1, $2)', [id, benef_id],(err2,res2) => {
+				if(err){
+					console.log(err);
+				}else{
+					console.log(res2);
+				}
+			});
+		});
+	})
+}
 
 //--Edit
 benef.get('/json/:id',async (req,res) => {
@@ -212,6 +238,7 @@ benef.post('/modificar/:id', (req,res) => {
 	const status = req.body.status;
 	const estadoCivil = req.body.estadoCivil;
 	const canalizacion = req.body.canalizacion;
+	
 	if (checkIndigena==null) {
 		checkIndigena=false;
 	}
@@ -222,6 +249,9 @@ benef.post('/modificar/:id', (req,res) => {
 	const params = [name,lastname,checkIndigena,checkExtrangero,nacimiento,address,curp,rfc,profesion,status,estadoCivil,canalizacion,req.params.id];
 	console.log(...params);
 	const query = 'UPDATE beneficiario SET nombre=$1,apellido=$2,indigente=$3,extranjero=$4,nacimiento=$5,direccion=$6,curp=$7,rfc=$8,profesion=$9,sexo=$10,estadocivil=$11,canalizacion_id=$12 WHERE id=$13';
+
+	//Reassociate projects with beneficiaries
+	reasoc(req.params.id,req.body.proyectos);
 
 
 	db.query(query,params, (err, resp) => {

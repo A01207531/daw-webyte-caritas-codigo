@@ -121,7 +121,15 @@
       </select>
       <label for="canalizacion" class="active">Canalización</label>
     </div>
-     
+     <div class="input-field col m6 s12">
+      <select multiple id="proyectos" name="proyectos" >
+        <option  value="" disabled >Seleccione...</option>   
+        {{#each proj}}
+        <option value="{{id}}">{{nombre}}</option>
+        {{/each}}      
+      </select>
+      <label for="proyectos" class="active">Proyectos</label>
+    </div>
   </div>
 
   
