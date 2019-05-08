@@ -56,7 +56,7 @@ f.post('/token',async (req,res) => {
     const token = req.body.token;
 
     //The expiration of the token is 8 hours
-    const query = "SELECT user_id FROM forget_pass WHERE token=$1";
+    const query = "SELECT user_id FROM forget_pass WHERE token=$1 AND created BETWEEN NOW() - INTERVAL '12 HOURS' AND NOW()";
 
     const q = (await to(db.query(query,[token])))[1]; //Por que Topi, por que ...
 
