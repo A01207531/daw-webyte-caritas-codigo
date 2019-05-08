@@ -1,6 +1,6 @@
 const db = require('../../models');
 const pr = require('express').Router();
-
+const CONSTANTS = require('../../constants/rbac');
 //Azure blob storage
 const multer = require('multer');
 const inMemoryStorage = multer.memoryStorage();
@@ -20,7 +20,8 @@ pr.get('/', async (req, res) => {
 		res.redirect("/login");
 		return;
 	}
-
+	if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
+	
 	//Ask the projects to the db
 	const pq = await db.query('SELECT nombre,descripcion,inicio,final,estatus,id FROM proyecto');
 	
@@ -31,6 +32,10 @@ pr.get('/', async (req, res) => {
 		user: req.session.user,
 		proj: pq.rows
 	})
+}else{
+	res.redirect('/dashboard');
+	return;
+	}
 });
 
 pr.get('/nuevo', async (req, res) => {
@@ -38,11 +43,16 @@ pr.get('/nuevo', async (req, res) => {
 		res.redirect("/login");
 		return;
 	}
-
+	if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
+	
 	res.render('dashboard/proyectos/create',{
 		layout: 'dashboard-base',
 		user: req.session.user,
 	})
+	}else{
+		res.redirect('/dashboard');
+		return;
+		}
 });
 
 
@@ -97,7 +107,8 @@ pr.post('/nuevo', uploadStrategy,(req, res) => {
 		res.redirect("/login");
 		return;
 	}
-
+	if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
+	
 	//azure stuff
 	const
           blobName = getBlobName(req.file.originalname)
@@ -115,7 +126,10 @@ pr.post('/nuevo', uploadStrategy,(req, res) => {
 			//we did it. Now store the rest of the data in the DB
 			savePostInDB(blobName,req,res);
 	});
-
+}else{
+	res.redirect('/dashboard');
+	return;
+	}
 	
 });
 
@@ -124,6 +138,7 @@ pr.get('/editar/:id', async (req, res) => {
 		res.redirect("/login");
 		return;
 	}
+	if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
 	
 	let proyecto = await db.query('SELECT * FROM proyecto WHERE id=$1', [req.params.id]);
   if(proyecto.rowCount>0) {
@@ -155,7 +170,11 @@ pr.get('/editar/:id', async (req, res) => {
         session: req.session,});
   } else {
     res.render('404', { status:'err', err:'No se pudo encontrar el proyecto solicitado', session: req.session });
-  }
+	}
+	}else{
+		res.redirect('/dashboard');
+		return;
+		}
 });
 
 
@@ -164,16 +183,28 @@ pr.get('/programAPI',async (req, res) => {
 		res.redirect("/login");
 		return;
 	}
-
+	if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
+	
 	const q = await db.query("SELECT * FROM resumen_programas");
 
 	res.json(q.rows);
+	}else{
+		res.redirect('/dashboard');
+		return;
+		}
 })
 
 //--Edit
 pr.get('/json/:id',async (req,res) => {
+	if(!req.session.userID){
+		res.redirect("/login");
+		return;
+	}
+	if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
+	
 	let proyecto = await db.query('SELECT * FROM proyecto WHERE id=$1', [req.params.id]);
-  if(proyecto.rowCount>0) {
+	
+	if(proyecto.rowCount>0) {
     proyecto = proyecto.rows[0];
   
     let [ subPrograma, municipio, totalDonadores, totalDonaciones ] = await Promise.all([
@@ -196,7 +227,11 @@ pr.get('/json/:id',async (req,res) => {
     res.json(proyecto);
   } else {
     res.render('404', { status:'err', err:'No se pudo encontrar el proyecto solicitado', session: req.session });
-  }
+	}
+}else{
+	res.redirect('/dashboard');
+	return;
+	}
 })
 
 function updateWithoutImg(p,id,res,session){
@@ -258,7 +293,7 @@ pr.post('/editar/:id',uploadStrategy,(req,res) => {
 		res.redirect("/login");
 		return;
 	}
-
+	if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
 	const project = req.body;
 	const session = req.session;
 
@@ -287,7 +322,10 @@ pr.post('/editar/:id',uploadStrategy,(req,res) => {
 		//updateWithoutImg(title,content,req,res,req.params.id);
 		updateWithoutImg(project,req.params.id,res,session);
 	}
-
+}else{
+	  res.redirect('/dashboard');
+	  return;
+	  }
 })
 
 module.exports = pr;

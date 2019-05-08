@@ -1,13 +1,14 @@
 const db = require('../../models');
 
 const benef = require('express').Router();
-
+const CONSTANTS = require('../../constants/rbac');
 benef.get('/', async (req, res) => {
 	if(!req.session.userID){
 		res.redirect("/login");
 		return;
     }
-    
+     if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
+		
     //Ask the beneficiaries to the db
     const bq = await db.query('SELECT nombre,apellido,curp,sexo,nacimiento,id FROM beneficiario');
 
@@ -18,14 +19,27 @@ benef.get('/', async (req, res) => {
         user: req.session.user,
         benef: bq.rows
 	});
+}else{
+	  res.redirect('/dashboard');
+	  return;
+	  }
 });
 	benef.get('/', async (req, res) => {
-
+		if(!req.session.userID){
+			    res.redirect("/login");
+			    return;
+			  }
+			  if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
+			
+			
 
 		res.render('beneficiario/index', {
 
 		});
-
+	}else{
+		  res.redirect('/dashboard');
+		  return;
+		  }
 	});
 	
 benef.get('/nuevo', async (req, res) => {
@@ -33,13 +47,18 @@ benef.get('/nuevo', async (req, res) => {
 		res.redirect("/login");
 		return;
 	}
+	if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
+	
 	const pq = await db.query('SELECT * FROM canalizacion ', );
 	const bq = await db.query('SELECT * FROM proyecto ', );
 
 	res.render('dashboard/beneficiarios/create',{
 		layout: 'dashboard-base',bene:pq.rows, proj:bq.rows
 	});
-
+}else{
+	  res.redirect('/dashboard');
+	  return;
+	  }
 });
 
 benef.post('/nuevo', async (req, res) => {
@@ -47,7 +66,7 @@ benef.post('/nuevo', async (req, res) => {
 		res.redirect("/login");
 		return;
 	}
-
+	if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
 	res.json(req.body);
 	const name = req.body.name;
 	const lastname = req.body.lastname;
@@ -92,6 +111,10 @@ benef.post('/nuevo', async (req, res) => {
 				})
 		}
 	})
+}else{
+	  res.redirect('/dashboard');
+	  return;
+	  }
 });
 
 
@@ -99,7 +122,8 @@ benef.get('/modificar/:id', async (req, res) => {
 	if(!req.session.userID){
 		res.redirect("/login");
 		return;
-  }
+	}
+	if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
   let beneficiario = await db.query('SELECT * FROM beneficiario WHERE id=$1', [req.params.id]);
 			beneficiario=beneficiario.rows[0];
 			const pq = await db.query('SELECT * FROM canalizacion ', );
@@ -107,17 +131,41 @@ benef.get('/modificar/:id', async (req, res) => {
 			,layout: 'dashboard-base',
 			user: req.session.user,bene:pq.rows});
 		//res.json({canalizacion})
+	}else{
+		  res.redirect('/dashboard');
+		  return;
+		  }
 });
 
 benef.get('/:id', async (req, res) => {
+	if(!req.session.userID){
+		    res.redirect("/login");
+		    return;
+		  }
+		  if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
+		
+		
   let beneficiario = await db.query('SELECT * FROM beneficiario WHERE id=$1', [req.params.id]);
   beneficiario = beneficiario.rows[0];
   // console.log(beneficiario)
   res.render('dashboard/beneficiarios/detail', { beneficiario, session: req.session,layout:"dashboard-base",user: req.session.user });
+	}else{
+		  res.redirect('/dashboard');
+		  return;
+		  }
 });
 
 //--Edit
 benef.get('/json/:id',async (req,res) => {
+
+	if(!req.session.userID){
+		    res.redirect("/login");
+		    return;
+		  }
+		  if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
+		
+		
+
 	let beneficiario = await db.query('SELECT * FROM beneficiario WHERE id=$1', [req.params.id]);
   if(beneficiario.rowCount>0) {
     beneficiario = beneficiario.rows[0];
@@ -133,10 +181,23 @@ benef.get('/json/:id',async (req,res) => {
     res.json(beneficiario);
   } else {
     res.render('404', { status:'err', err:'No se pudo encontrar el beneficiario solicitado', session: req.session });
-  }
+	}
+}else{
+	  res.redirect('/dashboard');
+	  return;
+	  }
 })
 
 benef.post('/modificar/:id', (req,res) => {
+
+	if(!req.session.userID){
+		    res.redirect("/login");
+		    return;
+		  }
+		  if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
+		
+		
+
 	const name = req.body.name;
 	const lastname = req.body.lastname;
 	let checkIndigena = req.body.checkIndigena;
@@ -181,7 +242,10 @@ benef.post('/modificar/:id', (req,res) => {
 				})
 		}
 	})
-
+}else{
+	  res.redirect('/dashboard');
+	  return;
+	  }
 })
 
 module.exports = benef;
