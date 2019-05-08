@@ -64,7 +64,7 @@
                             <label for="first_name">
                                 <h6>Municipio</h6>
                             </label>
-                            <h7>{{beneficiario.municipio_id}}</h7>
+                            <h7 id="city">{{beneficiario.municipio_id}}</h7>
                     </div>
                     <div class="col s4 grey lighten-4">
                             <label for="first_name">
@@ -93,20 +93,7 @@
             } else{
                 //document.getElementById("checkExtranjero").value = "No";
                 $('#checkExtranjero').value("No");
-            }
-            let beneficiario = await db.query('SELECT * FROM beneficiario WHERE id=$1', [req.params.id]);
-  if(beneficiario.rowCount>0) {
-    beneficiario = beneficiario.rows[0];
-  
-    let [ municipio ] = await Promise.all([
-       
-      db.query('SELECT * FROM municipio WHERE id=$1', [beneficiario.municipio_id]),
-      
-    ]);
-    beneficiario.municipio = municipio.rows[0];
-            
-            
-            */
+            }*/
             document.getElementById("checkIndigente").value = {{ beneficiario.indigente }};
             document.getElementById("checkIndigente").value = {{beneficiario.indigente}};
 
@@ -121,7 +108,14 @@
                     document.getElementById("checkIndigente").textContent ="No";
                 }
 
-            console.log({{beneficiario.indigente}})
+            $.getJSON("/dashboard/beneficiarios/json/" + location.pathname.split("/").pop(), data => {
+                    const m = data.municipio;
+
+                    $("#city").text(m.nombre+ ", "+m.estado);
+
+
+                })
+
 
         
         </script>
