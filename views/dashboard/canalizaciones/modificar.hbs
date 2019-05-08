@@ -20,9 +20,20 @@
           <input  value='{{direccion}}'id="direccion" name="direccion" type="text" class="validate" required>
           <label for="direccion">Dirección</label>
         </div>
+        <div class="input-field col m6 s12">
+          <label>
+          <input type="checkbox" name="carta" id="carta" />
+          <span>¿Entregó carta?</span>
+      </label>
+    </div>
       </div>
       <button class="btn waves-effect waves-light red darken-2" type="submit" name="action">Guardar</button>
     </form>
   </div>
 
   
+<script>
+  
+    document.getElementById("carta").checked = {{carta}};
+  
+</script>
