@@ -27,7 +27,7 @@
     </div>
 
     <div class="input-field col m6 s12 margin-top">
-      <select name="state" id="state" class="browser-default">
+      <select name="state" id="state" class="">
         <option value="" disabled selected>Seleccione...</option>
         <option value='AGUASCALIENTES'>AGUASCALIENTES</option>
         <option value='BAJA CALIFORNIA'>BAJA CALIFORNIA</option>
@@ -70,14 +70,37 @@
       </select>
       <label class="active">Municipio</label>
     </div>
+
+    <div class="input-field col m6 s12 margin-top" >
+      <select name="zona" id="zona" class="">
+        <option value="URBANA">Urbana</option>
+        <option value="RURAL">Rural</option>
+      </select>
+      <label class="active">Zona Geográfica</label>
+    </div>
   
     <div class="input-field col m6 s12">
-      Fecha de nacimiento
+      Fehca de Nacimiento
       <input type="date" name="nacimiento" id="nacimiento">
     </div>
     <div class="input-field col m6 s12">
-      <input id="address" name="address"type="text" class="validate">
-      <label for="address">Dirección</label>
+      <input id="calle" name="calle"type="text" class="validate">
+      <label for="calle">Calle</label>
+    </div>
+    
+    <div class="input-field col m6 s12">
+      <input id="numero" name="numero"type="text" class="validate">
+      <label for="numero">Número</label>
+    </div>
+    
+    <div class="input-field col m6 s12">
+      <input id="cp" name="cp"type="text" class="validate">
+      <label for="cp">Código Postal</label>
+    </div>
+    
+    <div class="input-field col m6 s12">
+      <input id="colonia" name="colonia"type="text" class="validate">
+      <label for="colonia">Colonia</label>
     </div>
 
     <div class="input-field col m6 s12">
@@ -95,7 +118,7 @@
     </div>
 
     <div class="input-field col m6 s12">
-      <select id="sexo" name="sexo" class="browser-default">
+      <select id="sexo" name="sexo" class="">
         <option value="" disabled selected>Seleccione...</option>
         <option value="M">Masculino</option>
         <option value="F">Femenino</option>
@@ -103,7 +126,7 @@
       <label for="first_name" class="active">Género</label>
     </div>
     <div class="input-field col m6 s12">
-      <select id="estadoCivil" name="estadoCivil" class="browser-default">
+      <select id="estadoCivil" name="estadoCivil" class="">
         <option value="" disabled selected>Seleccione...</option>
         <option value="CASADO">Casado</option>
         <option value="DIVORCIADO">Divorciado</option>
@@ -113,12 +136,23 @@
       <label for="estadoCivil" class="active">Estado Civil</label>
     </div>
     <div class="input-field col m6 s12">
-      <select id="canalizacion" name="canalizacion" class="browser-default">
-        <option value="" disabled selected>Seleccione...</option>         
+      <select id="canalizacion" name="canalizacion" class="">
+        <option  disabled selected>Seleccione...</option>   
+        {{#each bene}}
+        <option value="{{id}}">{{contacto}}</option>
+        {{/each}}      
       </select>
       <label for="canalizacion" class="active">Canalización</label>
     </div>
-     
+     <div class="input-field col m6 s12">
+      <select multiple id="proyectos" name="proyectos" >
+        <option  value="" disabled >Seleccione...</option>   
+        {{#each proj}}
+        <option value="{{id}}">{{nombre}}</option>
+        {{/each}}      
+      </select>
+      <label for="proyectos" class="active">Proyectos</label>
+    </div>
   </div>
 
   
@@ -132,14 +166,19 @@
   <script src="/javascripts/new-proj-form.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      $('.datepicker').datepicker();
+      $('select').material_select();
+
       const checkIndigena = $("#checkIndigena");
       checkIndigena.on("click", () => {
         if(checkIndigena.is(':checked')) {
           $('#state').prop('disabled', true);
           $('#city').prop('disabled', true);
+          $('select').material_select();
         } else {
           $('#state').prop('disabled', false);
           $('#city').prop('disabled', false); 
+          $('select').material_select();
         }
       });
     });

@@ -24,6 +24,8 @@ const contactoRouter = require('./routes/webpage/contacto');
 const ayudaRouter = require('./routes/webpage/ayuda');
 // const detalleBenefRouter = require('./routes/dashboard/benef');
 
+const forgotRouter = require('./routes/forgot');
+
 // const to = require('./util/to');
 
 const app = express();
@@ -45,7 +47,7 @@ app.use(session({
 }));
 
 paypal.configure({
-  'mode': 'sandbox', //sandbox or live
+  'mode': 'live', //sandbox or live
   'client_id': process.env.CLIENT_PAYPAL,
   'client_secret': process.env.SECRET_PAYPAL
 });
@@ -60,6 +62,7 @@ app.use('/nosotros', nosotrosRouter);
 app.use('/contenedor', contenedorRouter);
 app.use('/contacto', contactoRouter);
 app.use('/ayuda', ayudaRouter);
+app.use('/forgot',forgotRouter);
 // app.use('/beneficiario', detalleBenefRouter);
 
 //El view de contenedores el el mapa adminostrado por google, por lo que
@@ -90,7 +93,7 @@ app.locals.title = 'Cáritas de Querétaro';
 
 //Index
 app.get('/', async (req, res) => {
-	const query = await db.query('SELECT nombre,descripcion,img FROM proyecto LIMIT 6');
+	const query = await db.query('SELECT * FROM proyecto LIMIT 6');
 	// console.log(query);
 	const data = query.rows;
 	// console.log(data);
@@ -120,7 +123,51 @@ app.get('/login', (req,res) => {
 app.get('/documentos',async(req,res) => {
   res.render('documentos/documento')
 });
+app.get('/proyectos/:id', async (req, res) => {
+  let proyecto = await db.query('SELECT * FROM proyecto WHERE id=$1', [req.params.id]);
+  if(proyecto.rowCount>0) {
+    proyecto = proyecto.rows[0];
 
+    const catindex = proyecto.categorias.split(',');
+
+    let catStrings = [];
+
+    catindex.forEach(indexStr => {
+      const i = parseInt(indexStr);
+      catStrings.push(cats[i]);
+    });
+  
+    let [ subPrograma, municipio, totalDonadores, totalDonaciones ] = await Promise.all([
+      db.query('SELECT * FROM subprograma WHERE id=$1', [proyecto.subprograma_id]), 
+      db.query('SELECT * FROM municipio WHERE id=$1', [proyecto.municipio_id]),
+      db.query('SELECT COUNT(nombre) FROM donasporpersona'),
+      db.query('SELECT SUM(monto) FROM dona WHERE proyecto_id=$1', [req.params.id])
+    ]);
+    proyecto.municipio = municipio.rows[0];
+    // subPrograma = subPrograma.rows[0];
+    let programa = await db.query('SELECT * FROM programa WHERE id=$1', [subPrograma.rows[0].programa_id]);
+    proyecto.programa = programa.rows[0];
+    proyecto.programa.subPrograma = subPrograma.rows[0];
+    
+    let paypal_string = process.env.paypal_string;
+    totalDonadores = totalDonadores.rows[0].count;
+    totalDonaciones = totalDonaciones.rows[0].sum;
+
+    // console.log("Donadores: ", totalDonadores, "Donaciones: ", totalDonaciones)
+    res.render(
+      'proyectos/detalle', 
+      { 
+        status:'ok', 
+        proyecto,
+        categorias : catStrings,
+        session: req.session,
+        totalDonadores,
+        totalDonaciones, 
+        paypal_string });
+  } else {
+    res.render('404', { status:'err', err:'No se pudo encontrar el proyecto solicitado', session: req.session });
+  }
+});
 app.post('/login', async (req,res) => {
 	//get data
 	const username = req.body.email;
