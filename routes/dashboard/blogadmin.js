@@ -1,6 +1,6 @@
 const db = require('../../models');
 const r = require('express').Router();
-
+const CONSTANTS = require('../../constants/rbac');
 const multer = require('multer');
 const inMemoryStorage = multer.memoryStorage();
 uploadStrategy = multer({ storage: inMemoryStorage }).single('upload');
@@ -21,6 +21,7 @@ r.get('/', async (req,res) => {
 			res.redirect("/login");
 			return;
 		}
+		if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
 		
 		//En esta hacemos un query sencillo a las canalizaciones
 		const cq = await db.query('SELECT id,titulo,fecha FROM posts ORDER BY fecha');
@@ -32,7 +33,11 @@ r.get('/', async (req,res) => {
 			layout: 'dashboard-base',
 			user: req.session.user,
 			posts: cq.rows
-        })
+				})
+			}else{
+				  res.redirect('/dashboard');
+				  return;
+				  }
 })
 
 
@@ -42,11 +47,15 @@ r.get('/nuevo', (req,res) => {
 		res.redirect("/login");
 		return;
 	}
-	
+	if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
 	res.render('dashboard/blog/create',{
 		layout: 'dashboard-base',
 		user: req.session.user
 	})
+}else{
+	  res.redirect('/dashboard');
+	  return;
+	  }
 })
 
 const handleError = (err, res) => {
@@ -85,6 +94,13 @@ function savePostInDB(title,content,img,req,res){
 //esto es el endpoint del form
 r.post('/nuevo',uploadStrategy,(req,res) => {
 	
+	if(!req.session.userID){
+		    res.redirect("/login");
+		    return;
+		  }
+		  if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
+		
+		
 	//res.json(req.body)
 	const title = req.body.titulo;
 	const content = req.body.contenido;
@@ -106,11 +122,21 @@ r.post('/nuevo',uploadStrategy,(req,res) => {
 			//we did it. Now store the rest of the data in the DB
 			savePostInDB(title,content,blobName,req,res);
 	});
-
+}else{
+	  res.redirect('/dashboard');
+	  return;
+	  }
 })
 
 //-----------------Editar POST-----------------------
 r.get("/editar/:id",async (req,res) => {
+	if(!req.session.userID){
+		    res.redirect("/login");
+		    return;
+		  }
+		  if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
+		
+		
 	let post = await db.query('SELECT * FROM posts WHERE id=$1', [req.params.id]);
   if(post.rowCount>0) {
     post = post.rows[0];
@@ -119,7 +145,11 @@ r.get("/editar/:id",async (req,res) => {
     res.render('dashboard/blog/edit', { layout: 'dashboard-base',post, session: req.session });
   } else {
     res.render('404', { status:'err', err:'No se pudo encontrar el proyecto solicitado', session: req.session });
-  }
+	}
+}else{
+	  res.redirect('/dashboard');
+	  return;
+	  }
 })
 
 function updateWithoutImg(title,content,req,res,id){
@@ -179,6 +209,14 @@ function updateWithImg(title,content,req,res,id,img){
 }
 
 r.post('/editar/:id',uploadStrategy,(req,res) => {
+	if(!req.session.userID){
+		    res.redirect("/login");
+		    return;
+		  }
+		  if(req.session.user.privileges.includes(CONSTANTS.CREATE_PROJECT)) {
+		
+		
+
 	//res.json(req.body)
 	const title = req.body.titulo;
 	const content = req.body.contenido;
@@ -206,7 +244,10 @@ r.post('/editar/:id',uploadStrategy,(req,res) => {
 		//Execute a simple update
 		updateWithoutImg(title,content,req,res,req.params.id);
 	}
-
+}else{
+	  res.redirect('/dashboard');
+	  return;
+	  }
 })
 
 module.exports = r;

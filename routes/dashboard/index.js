@@ -101,6 +101,8 @@ dash.get('/modificarInformacion', async (req, res) => {
 		res.redirect("/login");
 		return;
 	}
+		
+	
 	let user = await db.query('SELECT login, nombre, apellido, email FROM usuario WHERE id=$1', [req.session.userID]);
 	user = user.rows[0];
 	console.log(user);
@@ -109,6 +111,7 @@ dash.get('/modificarInformacion', async (req, res) => {
 		userID: req.session.userID,
 		user
 	});
+	
 });
 
 dash.post('/modificarInformacion', async (req, res) => {
