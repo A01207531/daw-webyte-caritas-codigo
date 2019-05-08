@@ -27,7 +27,7 @@
                 
                      <label for="first_name"><h6>¿Es extranjero?</h6></label>
                         
-                     <h7 id="checkExtranjero"></h7>
+                     <h7 id="checkExtranjero"><h7>{{beneficiario.extranjero}}</h7>
                 </div>
                     
                     <div class="divider"></div>
@@ -40,7 +40,7 @@
                     <div class="col s4 grey lighten-4">
                                             
                     <label for="first_name"><h6>¿Es Indigente?</h6></label>
-                        <h7 id="checkIndigente"></h7>
+                        <h7 id="checkIndigente"> <h7>{{beneficiario.indigente}}</h7>
                     </div>
                     <div class="col s4 grey lighten-4"><label for="first_name"><h6>Profesión</h6></label>
                         <h7>{{beneficiario.profesion}}</h7>
@@ -57,15 +57,14 @@
                             <label for="first_name">
                                 <h6>RFC</h6>
                             </label>
-                            <h7>SABCAEDWD2D2</h7>
-                        
+                            <h7>{{beneficiario.rfc}}</h7>
                     </div>
                     <div class="col s4 grey lighten-4">
                         
                             <label for="first_name">
                                 <h6>Municipio</h6>
                             </label>
-                            <h7>117</h7>
+                            <h7 id="city">{{beneficiario.municipio_id}}</h7>
                     </div>
                     <div class="col s4 grey lighten-4">
                             <label for="first_name">
@@ -75,9 +74,10 @@
                     </div>
                             <div class="col s4 grey lighten-4">
                             <label for="first_name">
-                                <h6>Estado</h6>
+                                <h6>Zona Geográfica</h6>
                             </label>
-                            <h7>{{beneficiario.estado}}</h7>
+                            <h7>{{beneficiario.zonageografica}}</h7>
+                            <!--Canalización -->
                         
                     </div>
                 </div>
@@ -87,13 +87,36 @@
         <script>
             
             
-            if({{ extranjero }}){
+            /*if({{ extranjero }}){
                 $('#checkExtranjero').value("Si");
                 //document.getElementById("checkExtranjero").value = "Si";
             } else{
                 //document.getElementById("checkExtranjero").value = "No";
                 $('#checkExtranjero').value("No");
+            }*/
+            document.getElementById("checkIndigente").value = {{ beneficiario.indigente }};
+            document.getElementById("checkIndigente").value = {{beneficiario.indigente}};
+
+            if({{ beneficiario.extranjero }}){
+                document.getElementById("checkExtranjero").textContent = "Si";
+            } else{
+                document.getElementById("checkExtranjero").textContent = "No";
             }
+            if ({{ beneficiario.indigente }}) {
+                    document.getElementById("checkIndigente").textContent ="Si";
+                } else {
+                    document.getElementById("checkIndigente").textContent ="No";
+                }
+
+            $.getJSON("/dashboard/beneficiarios/json/" + location.pathname.split("/").pop(), data => {
+                    const m = data.municipio;
+
+                    $("#city").text(m.nombre+ ", "+m.estado);
+
+
+                })
+
+
         
         </script>
 
