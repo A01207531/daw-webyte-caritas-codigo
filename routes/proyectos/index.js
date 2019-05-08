@@ -130,23 +130,20 @@ router.post('/:id', async (req, res) => {
   monto = parseFloat(monto);
   console.log("---paymentID:",paymentId);
   await paypal.capture.get(paymentId, async (payerr, payment) => {
-    if(req.session.userID && req.session.user.privileges.includes('realizarDonativo')) {
-      if(payerr) {
-        res.json({ status: 'err', payerr });
-        return;
-      } else {
-        console.log(JSON.stringify(payment))
-        let [err, data] = await to(db.query('INSERT INTO dona(id, proyecto_id, donante_id, monto) VALUES($1, $2, $3, $4)', [uuidv4(), req.params.id, req.session.userID, monto]))
-        if(err) {
-          res.json({status: 'err', mensaje: err});
-          return;
-        }
-        let newData = await db.query('SELECT sum(total_donado), count(nombre) FROM donasporpersona');
-        res.json({status: 'ok', newDonadores: newData.rows[0].count, newDonaciones: newData.rows[0].sum});
+    if(payerr) {
+      res.json({ status: 'err', payerr });
+      return;
+    } else {
+      console.log(JSON.stringify(payment))
+      let [err, data] = await to(db.query('INSERT INTO dona(id, proyecto_id, donante_id, monto) VALUES($1, $2, $3, $4)', [uuidv4(), req.params.id, req.session.userID, monto]))
+      if(err) {
+        res.json({status: 'err', mensaje: err});
         return;
       }
-    } 
-    res.json({status: 'err', mensaje: ''});
+      let newData = await db.query('SELECT sum(total_donado), count(nombre) FROM donasporpersona');
+      res.json({status: 'ok', newDonadores: newData.rows[0].count, newDonaciones: newData.rows[0].sum});
+      return;
+    }
   });
 });
 
