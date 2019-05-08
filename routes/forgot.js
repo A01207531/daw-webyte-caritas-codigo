@@ -30,10 +30,10 @@ f.get('/',(req,res) => {
 function sendToken(user,token){
     const mailOptions = {
         from: 'no-reply@caritasdequeretaro.org', // sender address
-        to: 'eduardoandrescp@outlook.com', // list of receivers
+        to: user.email, // list of receivers
         subject: 'Código de recuperación de contraseña', // Subject line
         // plain text body
-        html: 'Tu código de recuperación de contraseña es: <h1>'+token+'</h1>'
+        html: 'Tu código de recuperación de contraseña es: <h2>'+token+'</h2>'
       };
     transporter.sendMail(mailOptions, function (err, info) {
         if(err)
