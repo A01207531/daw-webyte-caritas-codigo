@@ -4,8 +4,7 @@ $('select').formSelect();
 let root = {
     "ASISTENCIA SOCIAL": [],
     "PROMOCION HUMANA": [],
-    "SUSTENTABILIDAD AMBIENTAL": [],
-    "CANALIZACIONES": []
+    
 }
 
 //Organizarlos en un arbol quien sabe como
