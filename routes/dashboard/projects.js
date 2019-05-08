@@ -218,9 +218,11 @@ function updateWithoutImg(p,id,res,session){
 			  text: 'Ocurrio un error'
 		  });
 		}else{
-			res.render('dashboard/canalizaciones/success',{
+			res.render('generic-message',{
 				layout: 'dashboard-base',
 				user: session.user,
+				content: "Se ha actualizado el proyecto",
+				title: "Exito"
 			})
 		}
 	})
@@ -245,9 +247,11 @@ function updateWithImg(p,id,res,session,img){
 			  text: 'Ocurrio un error'
 		  });
 		}else{
-			res.render('dashboard/canalizaciones/success',{
+			res.render('generic-message',{
 				layout: 'dashboard-base',
 				user: session.user,
+				title: "Exito",
+				content: "Se a actualizado el proyecto correctamente"
 			})
 		}
 	})
