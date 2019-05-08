@@ -143,6 +143,7 @@
   <script src="/javascripts/new-proj-form.js"></script>
   <script>
     let benef;
+    let projectIds = [];
 
     function geoPopulate(){
       const stateShort = benef.municipio.estado;
@@ -193,6 +194,11 @@
       console.log(data);
       benef = data;
       geoPopulate();
+
+      benef.projects.forEach(p => {projectIds.push(p.proyecto_id)});
+
+
+      $('#proyectos').val(projectIds);
 
     })
 
