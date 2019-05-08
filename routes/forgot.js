@@ -3,8 +3,22 @@ const db = require('../models');
 const uuidv4 = require('uuid/v4');
 const to = require('../util/to');
 const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
 
 //En go seria data, err := db.Query("SELECT ...")
+
+const gmail = process.env.gmail;
+const gmailPass = process.env.gmailpass;
+
+const deleteQuery = 'DELETE FROM forget_pass WHERE token=$1'
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+           user: gmail,
+           pass: gmailPass
+       }
+   });
 
 f.get('/',(req,res) => {
     if(req.session.userID){
@@ -14,6 +28,38 @@ f.get('/',(req,res) => {
 
     res.render('recuperar-contrasena/mail');
 });
+
+function sendToken(user,token){
+    const mailOptions = {
+        from: 'no-reply@caritasdequeretaro.org', // sender address
+        to: user.email, // list of receivers
+        subject: 'Recuperar contraseña Cáritas de Querétaro', // Subject line
+        // plain text body
+        html: 'Hola '+user.nombre+'<br>Tu código de recuperación de contraseña es:<br> <h2>'+token+'</h2>'
+      };
+    transporter.sendMail(mailOptions, function (err, info) {
+        if(err)
+          console.log(err)
+        else
+          console.log(info);
+     });
+}
+
+function notifyChange(user){
+    const mailOptions = {
+        from: 'no-reply@caritasdequeretaro.org', // sender address
+        to: user.email, // list of receivers
+        subject: 'Cambio de contraseña para Cáritas de Querétaro', // Subject line
+        // plain text body
+        html: 'Hola '+user.nombre+'<br>Tu contraseña ha sido cambiada'
+      };
+    transporter.sendMail(mailOptions, function (err, info) {
+        if(err)
+          console.log(err)
+        else
+          console.log(info);
+     });
+}
 
 f.post('/',async (req,res) => {
     const username = req.body.email;
@@ -38,7 +84,7 @@ f.post('/',async (req,res) => {
             res.end("error 500");
         }else{
             //no error, send via EMAIL
-            console.log("Hola, tu código de recuperación es "+token);
+            sendToken(user,token);
             res.redirect('/forgot/token');
         }
     })
@@ -47,6 +93,7 @@ f.post('/',async (req,res) => {
 });
 
 f.get('/token',(req,res) => {
+    console.log(gmail);
     res.render('recuperar-contrasena/token')
 });
 
@@ -91,6 +138,16 @@ f.post('/token',async (req,res) => {
             console.log(err);
             res.end("error 500");
         }else{
+
+            db.query(deleteQuery,[token],(err2,resq2) => {
+                if(err2){
+                    console.log(err2);
+                } else {
+                    console.log('Removed recovery token '+token);
+                    console.log(resq2);
+                }
+            })
+
             res.render('generic-message',{
                 title: 'Contraseña cambiada',
                 content: 'Se ha cambiado la contraseña',
