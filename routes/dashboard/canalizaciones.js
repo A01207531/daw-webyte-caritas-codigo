@@ -66,10 +66,10 @@ can.post('/nueva', (req,res) => {
 	const con = req.body.contacto;
 	const tel = req.body.telefono;
 	const dir = req.body.direccion;
+	const car=	req.body.carta;
+	const query = 'INSERT INTO canalizacion(id,contacto,telefono,direccion,carta) VALUES (DEFAULT,$1,$2,$3,$4)';
 
-	const query = 'INSERT INTO canalizacion(id,contacto,telefono,direccion) VALUES (DEFAULT,$1,$2,$3)';
-
-	const values = [con,tel,dir];
+	const values = [con,tel,dir,car];
 
 	db.query(query,values, (err, resp) => {
 		if(err){
@@ -125,10 +125,11 @@ can.post('/modificar/:id', (req,res) => {
 	const con = req.body.contacto;
 	const tel = req.body.telefono;
 	const dir = req.body.direccion;
+	const car=req.body.carta;
 
-	const params = [con,tel,dir,req.params.id];
+	const params = [con,tel,dir,car,req.params.id];
 
-	const query = 'UPDATE canalizacion SET contacto=$1,telefono=$2,direccion=$3 WHERE id=$4';
+	const query = 'UPDATE canalizacion SET contacto=$1,telefono=$2,direccion=$3,carta=$4 WHERE id=$5';
 
 
 	db.query(query,params, (err, resp) => {
